@@ -1,0 +1,12 @@
+import type { TestUserConfig } from 'vitest/node';
+
+/**
+ * Base Vitest configuration for Node.js packages.
+ * Use with defineConfig() in your vitest.config.ts
+ */
+export const vitestNodeConfig: TestUserConfig = {
+  environment: 'node',
+  exclude: ['node_modules', 'dist', 'build', '.turbo', '.react-router'],
+  globals: true,
+  include: ['**/*.test.ts', '**/*.test.tsx'],
+};

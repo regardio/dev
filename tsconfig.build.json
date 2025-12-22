@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src"
+  },
+  "extends": ["./tsconfig.json", "./src/typescript/build.json"],
+  "include": ["src/**/*.ts"]
+}
