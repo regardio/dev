@@ -1,0 +1,6 @@
+{
+  "config": {
+    "extends": "./src/markdownlint/markdownlint.json"
+  },
+  "ignores": [".changeset/**"]
+}

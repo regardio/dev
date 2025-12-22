@@ -47,4 +47,5 @@ jobs:
           commit: "chore(release): version packages"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # OIDC trusted publishing - no NPM_TOKEN needed
+          # Configure trusted publisher at npmjs.com/package/@regardio/dev/access
