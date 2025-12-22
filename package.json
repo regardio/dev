@@ -69,20 +69,9 @@
       "types": "./dist/vitest/react.d.ts"
     }
   },
-  "files": [
-    "dist",
-    "src"
-  ],
+  "files": ["dist", "src"],
   "homepage": "https://github.com/regardio/dev/blob/main/README.md",
-  "keywords": [
-    "dev",
-    "tooling",
-    "testing",
-    "linting",
-    "biome",
-    "vitest",
-    "playwright"
-  ],
+  "keywords": ["dev", "tooling", "testing", "linting", "biome", "vitest", "playwright"],
   "license": "MIT",
   "name": "@regardio/dev",
   "private": false,
