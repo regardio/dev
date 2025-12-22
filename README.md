@@ -341,6 +341,51 @@ pnpm build      # Build the package
 pnpm release    # Publish to npm
 ```
 
+### GitHub Repository Setup
+
+Before the release action works, configure these in **GitHub repo settings**:
+
+#### 1. NPM_TOKEN Secret
+
+```text
+Settings → Secrets and variables → Actions → New repository secret
+Name: NPM_TOKEN
+Value: <your npm access token with publish permissions>
+```
+
+To create an npm token:
+
+```bash
+npm login
+npm token create --read-only=false
+```
+
+#### 2. GitHub Actions Permissions
+
+```text
+Settings → Actions → General → Workflow permissions
+☑ Read and write permissions
+☑ Allow GitHub Actions to create and approve pull requests
+```
+
+#### 3. Branch Protection Ruleset
+
+```text
+Settings → Rules → Rulesets → New ruleset → New branch ruleset
+
+Ruleset Name: main-protection
+Enforcement: Active
+Target: Add target → Include by pattern → main
+
+Rules to enable:
+☑ Restrict deletions
+☑ Require a pull request before merging
+☑ Require status checks to pass
+  - Require up to date: ☑
+  - Status checks: Release (appears after first workflow run)
+☑ Block force pushes
+```
+
 ---
 
 ## License
