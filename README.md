@@ -336,8 +336,9 @@ This command:
 
 1. Creates a changeset file with the specified bump type and message
 2. Runs `changeset version` to update package.json and CHANGELOG
-3. Commits all changes with `chore(release): vX.Y.Z`
-4. Pushes to the current branch
+3. Updates the lockfile (`pnpm install --ignore-workspace`)
+4. Commits all changes with `chore(release): vX.Y.Z`
+5. Pushes to the current branch
 
 The GitHub Action then publishes to npm automatically.
 

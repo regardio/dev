@@ -7,8 +7,9 @@
  * This script:
  * 1. Creates a changeset file with the specified bump type
  * 2. Runs `changeset version` to apply the version bump
- * 3. Commits all changes
- * 4. Pushes to the current branch
+ * 3. Updates the lockfile (pnpm install --ignore-workspace)
+ * 4. Commits all changes
+ * 5. Pushes to the current branch
  *
  * The GitHub Action will then publish to npm automatically.
  */
@@ -65,6 +66,11 @@ console.log(`Created changeset: .changeset/${changesetId}.md`);
 
 // Run changeset version to apply the bump
 run('pnpm changeset version');
+
+// Update lockfile to ensure it matches package.json
+// Use --ignore-workspace to update this package's lockfile independently
+console.log('Updating lockfile...');
+run('pnpm install --ignore-workspace');
 
 // Stage all changes
 run('git add -A');
