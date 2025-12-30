@@ -1,10 +1,24 @@
 # @regardio/dev
 
-## 1.4.0
+## 1.5.0
 
 ### Minor Changes
 
 - Move devDependencies to dependencies, add flow-release command
+
+- Move devDependencies to dependencies, add flow-release command
+
+### Patch Changes
+
+- Add lockfile sync to flow-release workflow
+
+- Add GitHub Release creation to workflow, install latest npm for OIDC support
+
+- Update markdownlint config
+
+## 1.4.0
+
+### Minor Changes
 
 - Move devDependencies to dependencies, add flow-release command
 
@@ -20,8 +34,6 @@
 
 - Move devDependencies to dependencies, add flow-release command
 
-- Move devDependencies to dependencies, add flow-release command
-
 ### Patch Changes
 
 - Add lockfile sync to flow-release workflow
@@ -29,8 +41,6 @@
 ## 1.2.0
 
 ### Minor Changes
-
-- Move devDependencies to dependencies, add flow-release command
 
 - Move devDependencies to dependencies, add flow-release command
 
