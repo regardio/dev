@@ -8,6 +8,7 @@
     "exec-s": "./dist/bin/exec-s.js",
     "exec-ts": "./dist/bin/exec-ts.js",
     "exec-tsc": "./dist/bin/exec-tsc.js",
+    "flow-release": "./dist/bin/flow-release.js",
     "lint-biome": "./dist/bin/lint-biome.js",
     "lint-commit": "./dist/bin/lint-commit.js",
     "lint-md": "./dist/bin/lint-md.js"
@@ -15,8 +16,7 @@
   "bugs": {
     "url": "https://github.com/regardio/dev/issues"
   },
-  "description": "Regardio developer tooling for testing, linting, and build workflows",
-  "devDependencies": {
+  "dependencies": {
     "@biomejs/biome": "2.3.10",
     "@changesets/changelog-github": "0.5.2",
     "@changesets/cli": "2.29.8",
@@ -29,7 +29,7 @@
     "@types/node": "25.0.3",
     "@vitest/ui": "4.0.16",
     "husky": "9.1.7",
-    "jsdom": "27.3.0",
+    "jsdom": "27.4.0",
     "markdownlint-cli2": "0.20.0",
     "npm-run-all": "4.1.5",
     "rimraf": "6.1.2",
@@ -38,14 +38,11 @@
     "vite": "7.3.0",
     "vitest": "4.0.16"
   },
+  "description": "Regardio developer tooling for testing, linting, and build workflows",
   "engines": {
     "node": ">=18"
   },
   "exports": {
-    ".": {
-      "default": "./dist/index.js",
-      "types": "./dist/index.d.ts"
-    },
     "./biome": "./src/biome/preset.json",
     "./commitlint": "./src/commitlint/commitlint.cjs",
     "./markdownlint": "./src/markdownlint/markdownlint.json",
@@ -69,9 +66,25 @@
       "types": "./dist/vitest/react.d.ts"
     }
   },
-  "files": ["dist", "src"],
+  "files": [
+    "dist",
+    "src"
+  ],
   "homepage": "https://github.com/regardio/dev/blob/main/README.md",
-  "keywords": ["dev", "tooling", "testing", "linting", "biome", "vitest", "playwright"],
+  "keywords": [
+    "biome",
+    "changesets",
+    "commitlint",
+    "dev",
+    "husky",
+    "linting",
+    "markdownlint",
+    "playwright",
+    "testing",
+    "tooling",
+    "typescript",
+    "vitest"
+  ],
   "license": "MIT",
   "name": "@regardio/dev",
   "private": false,
@@ -93,12 +106,12 @@
     "lint:biome": "biome check .",
     "lint:md": "markdownlint-cli2 \"**/*.md\" \"**/*.mdx\" \"!**/node_modules/**\" \"!**/dist/**\"",
     "prepare": "pnpm run build && husky",
-    "release": "pnpm changeset publish",
+    "release": "pnpm exec tsx src/bin/flow-release.ts",
     "test": "run-p test:*",
     "test:unit": "vitest run",
     "version": "pnpm changeset version"
   },
   "sideEffects": false,
   "type": "module",
-  "version": "1.0.1"
+  "version": "1.2.0"
 }

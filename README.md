@@ -35,7 +35,7 @@ Exceptions are allowed but must be intentional and documented. The goal is code 
 
 ## What's inside
 
-- **CLI bins**: exec-clean, exec-husky, exec-p, exec-s, exec-ts, exec-tsc, lint-biome, lint-commit, lint-md
+- **CLI bins**: exec-clean, exec-husky, exec-p, exec-s, exec-ts, exec-tsc, flow-release, lint-biome, lint-commit, lint-md
 - **Config presets**: Biome, Commitlint, Markdownlint, TypeScript (base/react)
 - **Testing configs**: Vitest (node/react), Playwright base config, Testing Library setup
 - **Dev dependencies**: All commonly needed testing and linting packages bundled
@@ -316,30 +316,66 @@ When you add `@regardio/dev` as a dev dependency, you get access to:
 
 ## Releasing
 
-This package uses [Changesets](https://github.com/changesets/changesets) for versioning and npm publishing.
+This package uses [Changesets](https://github.com/changesets/changesets) for versioning and npm publishing, with a streamlined `flow-release` command that automates the entire process.
 
-### Adding a Changeset
+### Quick Release (Recommended)
 
-When making changes that should be released:
-
-```bash
-pnpm changeset
-```
-
-### Automated Release (GitHub Action)
-
-When changesets are merged to `main`:
-
-1. A "Version Packages" PR is created with updated version and CHANGELOG
-2. Merging that PR publishes to npm
-
-### Manual Release
+The `flow-release` command handles everything in one step:
 
 ```bash
-pnpm version    # Update version and CHANGELOG
-pnpm build      # Build the package
-pnpm release    # Publish to npm
+# From the package directory:
+pnpm release minor "Add new vitest configs"
+
+# Or use the bin directly after build:
+flow-release patch "Fix typo in config"
+flow-release minor "Add new feature"
+flow-release major "Breaking API change"
 ```
+
+This command:
+
+1. Creates a changeset file with the specified bump type and message
+2. Runs `changeset version` to update package.json and CHANGELOG
+3. Commits all changes with `chore(release): vX.Y.Z`
+4. Pushes to the current branch
+
+The GitHub Action then publishes to npm automatically.
+
+### Manual Release (Step by Step)
+
+If you prefer more control:
+
+```bash
+pnpm changeset              # Interactive: create changeset file
+git add . && git commit     # Commit the changeset
+git push                    # Push to trigger GitHub Action
+# GitHub Action creates "Version Packages" PR
+# Merge that PR → publishes to npm
+```
+
+### Reusing in Other Packages
+
+The `flow-release` bin is available to any package that depends on `@regardio/dev`:
+
+```json
+{
+  "scripts": {
+    "release": "flow-release"
+  }
+}
+```
+
+Then run:
+
+```bash
+pnpm release minor "Your release message"
+```
+
+**Requirements for other packages:**
+
+1. A `.changeset/config.json` file (copy from this package and update `repo`)
+2. A `.github/workflows/release.yml` (copy from this package)
+3. GitHub repo configured with NPM_TOKEN secret and Actions permissions
 
 ### GitHub Repository Setup
 

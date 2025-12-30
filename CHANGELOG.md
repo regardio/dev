@@ -1,5 +1,19 @@
 # @regardio/dev
 
+## 1.2.0
+
+### Minor Changes
+
+- Move devDependencies to dependencies, add flow-release command
+
+- Move devDependencies to dependencies, add flow-release command
+
+## 1.1.0
+
+### Minor Changes
+
+- Move devDependencies to dependencies, add flow-release command
+
 ## 1.0.0
 
 ### Major Changes
