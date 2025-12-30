@@ -2,16 +2,16 @@
   "$schema": "https://www.schemastore.org/package.json",
   "author": "Bernd Matzner <bernd.matzner@regard.io>",
   "bin": {
-    "exec-clean": "./dist/bin/exec-clean.js",
-    "exec-husky": "./dist/bin/exec-husky.js",
-    "exec-p": "./dist/bin/exec-p.js",
-    "exec-s": "./dist/bin/exec-s.js",
-    "exec-ts": "./dist/bin/exec-ts.js",
-    "exec-tsc": "./dist/bin/exec-tsc.js",
-    "flow-release": "./dist/bin/flow-release.js",
-    "lint-biome": "./dist/bin/lint-biome.js",
-    "lint-commit": "./dist/bin/lint-commit.js",
-    "lint-md": "./dist/bin/lint-md.js"
+    "exec-clean": "dist/bin/exec-clean.js",
+    "exec-husky": "dist/bin/exec-husky.js",
+    "exec-p": "dist/bin/exec-p.js",
+    "exec-s": "dist/bin/exec-s.js",
+    "exec-ts": "dist/bin/exec-ts.js",
+    "exec-tsc": "dist/bin/exec-tsc.js",
+    "flow-release": "dist/bin/flow-release.js",
+    "lint-biome": "dist/bin/lint-biome.js",
+    "lint-commit": "dist/bin/lint-commit.js",
+    "lint-md": "dist/bin/lint-md.js"
   },
   "bugs": {
     "url": "https://github.com/regardio/dev/issues"
@@ -94,7 +94,7 @@
   "repository": {
     "directory": "packages/dev",
     "type": "git",
-    "url": "https://github.com/regardio/dev.git"
+    "url": "git+https://github.com/regardio/dev.git"
   },
   "scripts": {
     "build": "pnpm exec tsc -p tsconfig.build.json",
