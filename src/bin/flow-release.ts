@@ -14,7 +14,7 @@
  * The GitHub Action will then publish to npm automatically.
  */
 import { execSync } from 'node:child_process';
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readdirSync, readFileSync, unlinkSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const args = process.argv.slice(2);
@@ -47,8 +47,19 @@ try {
   process.exit(1);
 }
 
-// Generate a unique changeset filename
+// Clean up existing changesets to ensure only our bump type is applied
 const changesetDir = join(process.cwd(), '.changeset');
+mkdirSync(changesetDir, { recursive: true });
+
+const existingChangesets = readdirSync(changesetDir).filter(
+  (f) => f.endsWith('.md') && f !== 'README.md',
+);
+for (const file of existingChangesets) {
+  unlinkSync(join(changesetDir, file));
+  console.log(`Removed existing changeset: ${file}`);
+}
+
+// Generate a unique changeset filename
 const changesetId = `release-${Date.now()}`;
 const changesetFile = join(changesetDir, `${changesetId}.md`);
 
@@ -60,7 +71,6 @@ const changesetContent = `---
 ${message}
 `;
 
-mkdirSync(changesetDir, { recursive: true });
 writeFileSync(changesetFile, changesetContent);
 console.log(`Created changeset: .changeset/${changesetId}.md`);
 
