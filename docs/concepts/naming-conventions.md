@@ -1,6 +1,6 @@
 # Naming Conventions
 
-**Consistent naming patterns across Regardio projects.**
+Consistent naming patterns across Regardio projects.
 
 ## General Principles
 
@@ -95,7 +95,7 @@ CREATE FUNCTION create_member(p_ensemble_id UUID, p_user_id UUID) ...
 CREATE FUNCTION update_participation_level(p_member_id UUID, p_level TEXT) ...
 ```
 
-### Parameters
+### Parameters and Variables
 
 Prefix with `p_` for parameters, `v_` for local variables:
 

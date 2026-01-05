@@ -1,6 +1,6 @@
-# Testing Philosophy
+# Testing Approach
 
-**Universal testing principles for Regardio projects.**
+Testing philosophy and patterns for Regardio projects.
 
 ## Core Principles
 
@@ -10,29 +10,19 @@
 - **Maintainable and readable** - Tests should clearly express requirements
 - **Comprehensive coverage** - Include success paths, edge cases, and error conditions
 
-## Testing Strategy
+## Testing Pyramid
 
 The testing pyramid guides our investment:
 
-- **Unit Tests (70%)** - Validate individual business rules and data transformations
-- **Integration Tests (20%)** - Verify component interactions and API contracts
-- **End-to-End Tests (10%)** - Confirm complete user workflows function correctly
-
-## Test Categories
-
-| Category | Purpose | Tools |
-|----------|---------|-------|
-| **Unit** | Individual functions, components, business logic | Vitest |
-| **Integration** | API endpoints, cross-component interactions | Vitest |
-| **End-to-End** | Complete user workflows | Playwright |
-| **Performance** | Load testing, query optimization | Playwright, custom |
-| **Security** | Authentication, authorization, input validation | Vitest, Playwright |
+| Level | Percentage | Purpose | Tools |
+|-------|------------|---------|-------|
+| **Unit** | 70% | Individual functions, components, business logic | Vitest |
+| **Integration** | 20% | API endpoints, cross-component interactions | Vitest |
+| **End-to-End** | 10% | Complete user workflows | Playwright |
 
 ## Writing Good Tests
 
-### Structure
-
-Follow the **Arrange-Act-Assert** pattern:
+### Structure: Arrange-Act-Assert
 
 ```typescript
 it('should calculate total with discount', () => {
@@ -52,10 +42,15 @@ it('should calculate total with discount', () => {
 
 Test names should describe the expected behavior:
 
-- ✅ `should return empty array when no items match filter`
-- ✅ `throws ValidationError when email is invalid`
-- ❌ `test1`
-- ❌ `works correctly`
+```typescript
+// Good
+it('should return empty array when no items match filter', () => {});
+it('throws ValidationError when email is invalid', () => {});
+
+// Bad
+it('test1', () => {});
+it('works correctly', () => {});
+```
 
 ### Independence
 
@@ -121,3 +116,9 @@ it('sets isError state to true', () => {
 - Update tests when requirements change
 - Refactor tests alongside production code
 - Keep test code as clean as production code
+
+## Resources
+
+- [Vitest Configuration](../toolchain/vitest.md)
+- [Playwright Configuration](../toolchain/playwright.md)
+- [Testing Library Best Practices](https://testing-library.com/docs/guiding-principles)

@@ -1,14 +1,10 @@
-# AI Coding Agent Guidelines
+# AI Agent Guidelines
 
-**Instructions for AI coding assistants working with Regardio projects.**
+Instructions for AI coding assistants working with Regardio projects.
 
-This document provides universal guidance for Claude, Codex, Cursor, Windsurf, Gemini, and other
-AI coding agents. Project-specific context should be documented separately.
+This document provides universal guidance for Claude, Codex, Cursor, Windsurf, Gemini, and other AI coding agents.
 
 ## Core Principles
-
-Follow the [Development Principles](./development-principles.md) and [Naming Conventions](./naming-conventions.md).
-Key points for AI agents:
 
 - **Write clean, explicit TypeScript** - Avoid `any`, use strict mode
 - **Avoid obvious comments** - Code should be self-documenting
@@ -29,7 +25,7 @@ Key points for AI agents:
 ### Code Structure
 
 - Group related functionality in modules
-- **Use explicit exports in package.json** rather than barrel files
+- Use explicit exports in package.json rather than barrel files
 - Keep modules focused on single responsibility
 - Extract common logic into utility functions
 
@@ -38,7 +34,7 @@ Key points for AI agents:
 - Write small, focused functions
 - Use proper parameter typing
 - Implement proper error handling
-- Return explicit types
+- Return explicit types when inference is unclear
 
 ## React Standards
 
@@ -81,23 +77,18 @@ Key points for AI agents:
 - Document function behavior with comments
 - Follow multi-tenancy patterns where applicable
 
-## Code Quality Commands
+## Commands
 
 ```bash
-pnpm lint          # Run all linting
-pnpm typecheck     # TypeScript type checking
+pnpm build         # Build all packages
+pnpm dev           # Start development
+pnpm fix           # Run all fixes and linting
+pnpm lint          # Run linting only
 pnpm test          # Run tests
+pnpm typecheck     # TypeScript type checking
 ```
 
 Run `typecheck` regularly. Run linting when task is complete.
-
-## Build & Development
-
-```bash
-pnpm dev           # Start development servers
-pnpm build         # Build all packages
-pnpm generate      # Code generation tasks
-```
 
 ## Security
 
@@ -108,6 +99,13 @@ pnpm generate      # Code generation tasks
 
 ## Documentation
 
-- Document complex logic with comments
+- Document complex logic with comments explaining *why*
 - Use JSDoc for TypeScript functions when helpful
 - Keep README files updated
+
+## Related Documentation
+
+- [Coding Standards](./coding-standards.md)
+- [Naming Conventions](./naming-conventions.md)
+- [Testing Approach](./testing.md)
+- [Commit Conventions](./commits.md)

@@ -17,11 +17,11 @@
     "url": "https://github.com/regardio/dev/issues"
   },
   "dependencies": {
-    "@biomejs/biome": "2.3.10",
+    "@biomejs/biome": "2.3.11",
     "@changesets/changelog-github": "0.5.2",
     "@changesets/cli": "2.29.8",
-    "@commitlint/cli": "20.2.0",
-    "@commitlint/config-conventional": "20.2.0",
+    "@commitlint/cli": "20.3.0",
+    "@commitlint/config-conventional": "20.3.0",
     "@playwright/test": "1.57.0",
     "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "16.3.1",
@@ -66,10 +66,7 @@
       "types": "./dist/vitest/react.d.ts"
     }
   },
-  "files": [
-    "dist",
-    "src"
-  ],
+  "files": ["dist", "src"],
   "homepage": "https://github.com/regardio/dev/blob/main/README.md",
   "keywords": [
     "biome",
@@ -105,7 +102,7 @@
     "lint": "run-p lint:*",
     "lint:biome": "biome check .",
     "lint:md": "markdownlint-cli2 \"**/*.md\" \"**/*.mdx\" \"!**/node_modules/**\" \"!**/dist/**\"",
-    "prepare": "pnpm run build && husky",
+    "prepare": "husky",
     "release": "pnpm exec tsx src/bin/flow-release.ts",
     "test": "run-p test:*",
     "test:unit": "vitest run",
@@ -113,5 +110,5 @@
   },
   "sideEffects": false,
   "type": "module",
-  "version": "1.6.1"
+  "version": "1.7.0"
 }

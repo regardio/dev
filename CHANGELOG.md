@@ -1,5 +1,11 @@
 # @regardio/dev
 
+## 1.7.0
+
+### Minor Changes
+
+- Add modular documentation structure and fix husky setup
+
 ## 1.6.1
 
 ### Patch Changes

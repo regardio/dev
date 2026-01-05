@@ -1,38 +1,71 @@
-# Developer Documentation
+# Documentation
 
-**Foundational development standards for Regardio projects.**
+Complete documentation for the @regardio/dev toolchain.
 
-This documentation covers universal principles, conventions, and practices that apply across all
-Regardio codebases. For project-specific implementation details, see the respective project
-documentation.
+## Concepts
 
-## Documents
+Foundational principles and standards that guide development:
 
 | Document | Description |
 |----------|-------------|
-| [Development Principles](./development-principles.md) | Universal coding standards: code quality, architecture, error handling, security |
-| [Testing Philosophy](./testing-philosophy.md) | Testing strategy, patterns, and best practices |
-| [Naming Conventions](./naming-conventions.md) | Consistent naming patterns for TypeScript, SQL, CSS, Git |
-| [AI Agent Guidelines](./ai-agents.md) | Instructions for Claude, Codex, Cursor, Windsurf, Gemini |
+| [Development Principles](./concepts/development-principles.md) | Code quality, architecture, maintainability |
+| [Coding Standards](./concepts/coding-standards.md) | TypeScript, React, and general patterns |
+| [Naming Conventions](./concepts/naming-conventions.md) | Consistent naming across languages |
+| [Commit Conventions](./concepts/commits.md) | Conventional commits and changelog generation |
+| [Testing Approach](./concepts/testing.md) | Testing philosophy and patterns |
+| [AI Agent Guidelines](./concepts/ai-agents.md) | Instructions for AI coding assistants |
+
+## Toolchain
+
+Configuration and usage for each tool in the stack:
+
+| Document | Description |
+|----------|-------------|
+| [TypeScript](./toolchain/typescript.md) | Strict TypeScript configuration |
+| [Biome](./toolchain/biome.md) | Linting and formatting |
+| [Vitest](./toolchain/vitest.md) | Unit and integration testing |
+| [Playwright](./toolchain/playwright.md) | End-to-end testing |
+| [Commitlint](./toolchain/commitlint.md) | Commit message validation |
+| [Markdownlint](./toolchain/markdownlint.md) | Markdown quality |
+| [Husky](./toolchain/husky.md) | Git hooks |
+| [Changesets](./toolchain/changesets.md) | Versioning and releases |
 
 ## Quick Reference
 
-### For New Developers
+### Commands
 
-1. Read [Development Principles](./development-principles.md) for foundational standards
-2. Review [Naming Conventions](./naming-conventions.md) for consistent code style
-3. Understand [Testing Philosophy](./testing-philosophy.md) for quality assurance approach
+```bash
+pnpm build         # Build all packages
+pnpm dev           # Start development
+pnpm fix           # Run all fixes and linting
+pnpm lint          # Run linting only
+pnpm test          # Run tests
+pnpm typecheck     # TypeScript type checking
+```
 
-### For AI Coding Agents
+### Config Files
 
-Read [AI Agent Guidelines](./ai-agents.md) for comprehensive instructions. Key points:
+| File | Purpose |
+|------|---------|
+| `tsconfig.json` | TypeScript configuration |
+| `biome.jsonc` | Linting and formatting |
+| `vitest.config.ts` | Unit test configuration |
+| `playwright.config.ts` | E2E test configuration |
+| `.commitlintrc.json` | Commit message rules |
+| `.markdownlint.json` | Markdown rules |
 
-- **TypeScript**: Strict mode, avoid `any`, functional patterns, camelCase
-- **SQL**: snake_case naming, `p_` parameter prefixes, `v_` local variables
-- **React**: Functional components, avoid `useEffect`, single state objects
-- **Testing**: Business logic validation, Arrange-Act-Assert, descriptive names
-- **Git**: Conventional commits, kebab-case branch names
+### Extending Presets
 
-## Tooling
+```jsonc
+// biome.jsonc
+{ "extends": ["@regardio/dev/biome"] }
 
-For configuration presets and CLI utilities, see the main [@regardio/dev README](../README.md).
+// tsconfig.json
+{ "extends": "@regardio/dev/typescript/base.json" }
+
+// .commitlintrc.json
+{ "extends": ["@regardio/dev/commitlint"] }
+
+// .markdownlint.json
+{ "extends": "@regardio/dev/markdownlint" }
+```

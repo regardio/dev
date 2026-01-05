@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+set -eu
+pnpm exec lint-biome check --no-errors-on-unmatched .
+pnpm exec lint-md "**/*.md" "**/*.mdx" "!**/node_modules/**" "!**/dist/**"

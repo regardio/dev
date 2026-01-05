@@ -1,20 +1,34 @@
 #!/usr/bin/env node
 /**
- * flow-release: Automate the release flow for @regardio/dev.
+ * flow-release: Automate the release flow for any @regardio package.
  *
  * Usage: flow-release <patch|minor|major> [message]
  *
  * This script:
- * 1. Creates a changeset file with the specified bump type
- * 2. Runs `changeset version` to apply the version bump
- * 3. Updates the lockfile (pnpm install --ignore-workspace)
- * 4. Commits all changes
- * 5. Pushes to the current branch
+ * 1. Reads the package name from package.json
+ * 2. Creates a changeset file with the specified bump type
+ * 3. Runs `changeset version` to apply the version bump
+ * 4. Updates the lockfile (pnpm install --ignore-workspace)
+ * 5. Commits all changes
+ * 6. Pushes to the current branch
  *
  * The GitHub Action will then publish to npm automatically.
+ *
+ * Prerequisites for adopting packages:
+ * - Add @regardio/dev as a devDependency
+ * - Create .changeset/config.json (see template in dev docs)
+ * - Add .github/workflows/release.yml (see template in dev docs)
+ * - Add "release": "flow-release" to package.json scripts
  */
 import { execSync } from 'node:child_process';
-import { mkdirSync, readdirSync, readFileSync, unlinkSync, writeFileSync } from 'node:fs';
+import {
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  unlinkSync,
+  writeFileSync,
+} from 'node:fs';
 import { join } from 'node:path';
 
 const args = process.argv.slice(2);
@@ -36,6 +50,25 @@ const runQuiet = (cmd: string): string => {
   return execSync(cmd, { encoding: 'utf-8' }).trim();
 };
 
+// Read package name from package.json
+const packageJsonPath = join(process.cwd(), 'package.json');
+if (!existsSync(packageJsonPath)) {
+  console.error('No package.json found in current directory');
+  process.exit(1);
+}
+const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8')) as {
+  name: string;
+  version: string;
+};
+const packageName = packageJson.name;
+
+if (!packageName) {
+  console.error('No "name" field found in package.json');
+  process.exit(1);
+}
+
+console.log(`Releasing ${packageName} with ${bumpType} bump...`);
+
 // Ensure we're in a clean git state
 try {
   const status = runQuiet('git status --porcelain');
@@ -47,8 +80,17 @@ try {
   process.exit(1);
 }
 
-// Clean up existing changesets to ensure only our bump type is applied
+// Verify .changeset/config.json exists
 const changesetDir = join(process.cwd(), '.changeset');
+const changesetConfigPath = join(changesetDir, 'config.json');
+if (!existsSync(changesetConfigPath)) {
+  console.error('No .changeset/config.json found.');
+  console.error('Run: pnpm changeset init');
+  console.error('Then configure .changeset/config.json for your package.');
+  process.exit(1);
+}
+
+// Clean up existing changesets to ensure only our bump type is applied
 mkdirSync(changesetDir, { recursive: true });
 
 const existingChangesets = readdirSync(changesetDir).filter(
@@ -63,9 +105,9 @@ for (const file of existingChangesets) {
 const changesetId = `release-${Date.now()}`;
 const changesetFile = join(changesetDir, `${changesetId}.md`);
 
-// Create the changeset file
+// Create the changeset file with dynamic package name
 const changesetContent = `---
-"@regardio/dev": ${bumpType}
+"${packageName}": ${bumpType}
 ---
 
 ${message}
@@ -85,10 +127,11 @@ run('pnpm install --ignore-workspace');
 // Stage all changes
 run('git add -A');
 
-// Get the new version
-const packageJsonPath = join(process.cwd(), 'package.json');
-const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8')) as { version: string };
-const { version } = packageJson;
+// Re-read package.json to get the new version after changeset version
+const updatedPackageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8')) as {
+  version: string;
+};
+const { version } = updatedPackageJson;
 
 // Commit
 run(`git commit -m "chore(release): v${version}"`);

@@ -1,14 +1,11 @@
 # Development Principles
 
-**Universal coding standards and principles for Regardio projects.**
-
-These principles apply across all projects and codebases. They are technology-agnostic foundations
-that guide how we write, review, and maintain code.
+Universal coding standards and principles for Regardio projects.
 
 ## Code Quality
 
 - **Clarity over brevity** - Write readable, self-documenting code
-- **Consistent naming** - Follow language conventions (camelCase for JavaScript/TypeScript, snake_case for SQL)
+- **Consistent naming** - Follow language conventions (camelCase for TypeScript, snake_case for SQL)
 - **Small functions** - Single responsibility, easy to test and maintain
 - **Explicit over implicit** - Be clear about intentions and dependencies
 
@@ -46,13 +43,6 @@ that guide how we write, review, and maintain code.
 - **Consistent patterns** - Follow established conventions across the codebase
 - **Version control hygiene** - Clear, atomic commits with descriptive messages
 - **Refactor regularly** - Keep code clean and up-to-date
-
-## Testing
-
-- **Test-driven development** - Write tests before implementation when appropriate
-- **Comprehensive coverage** - Test edge cases and error conditions
-- **Fast feedback loops** - Quick, reliable test execution
-- **Integration testing** - Verify component interactions
 
 ## Collaboration
 
