@@ -47,6 +47,7 @@
     "./biome": "./src/biome/preset.json",
     "./commitlint": "./src/commitlint/commitlint.cjs",
     "./markdownlint": "./src/markdownlint/markdownlint.json",
+    "./markdownlint-cli2": "./src/markdownlint/markdownlint-cli2.jsonc",
     "./playwright": {
       "default": "./dist/playwright/index.js",
       "types": "./dist/playwright/index.d.ts"
@@ -111,5 +112,5 @@
   },
   "sideEffects": false,
   "type": "module",
-  "version": "1.7.1"
+  "version": "1.9.1"
 }

@@ -1,5 +1,23 @@
 # @regardio/dev
 
+## 1.9.1
+
+### Patch Changes
+
+- add fix step to release flow
+
+## 1.9.0
+
+### Minor Changes
+
+- markdown lint config
+
+## 1.8.0
+
+### Minor Changes
+
+- markdown lint config
+
 ## 1.7.1
 
 ### Patch Changes

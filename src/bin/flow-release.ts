@@ -145,6 +145,14 @@ await new Promise<void>((resolve, reject) => {
 console.log('Updating lockfile...');
 run('pnpm install --ignore-workspace');
 
+// Run fix to ensure package.json formatting is correct after changeset version
+console.log('Fixing formatting...');
+try {
+  run('pnpm fix');
+} catch {
+  // fix may not exist in all packages, ignore errors
+}
+
 // Stage all changes
 run('git add -A');
 
