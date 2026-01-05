@@ -12,7 +12,8 @@
     "flow-release": "dist/bin/flow-release.js",
     "lint-biome": "dist/bin/lint-biome.js",
     "lint-commit": "dist/bin/lint-commit.js",
-    "lint-md": "dist/bin/lint-md.js"
+    "lint-md": "dist/bin/lint-md.js",
+    "post-build-exports": "dist/bin/post-build-exports.js"
   },
   "bugs": {
     "url": "https://github.com/regardio/dev/issues"
@@ -88,7 +89,7 @@
   "license": "MIT",
   "name": "@regardio/dev",
   "peerDependencies": {
-    "postcss": "^8.4"
+    "postcss": "8.4"
   },
   "peerDependenciesMeta": {
     "postcss": {
@@ -100,7 +101,6 @@
     "access": "public"
   },
   "repository": {
-    "directory": "packages/dev",
     "type": "git",
     "url": "git+https://github.com/regardio/dev.git"
   },
@@ -121,5 +121,5 @@
   },
   "sideEffects": false,
   "type": "module",
-  "version": "1.9.4"
+  "version": "1.10.0"
 }
