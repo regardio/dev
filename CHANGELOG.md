@@ -1,5 +1,11 @@
 # @regardio/dev
 
+## 1.10.1
+
+### Patch Changes
+
+- executable
+
 ## 1.10.0
 
 ### Minor Changes
