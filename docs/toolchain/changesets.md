@@ -64,6 +64,26 @@ Copy the template from `src/templates/release.yml` to `.github/workflows/release
 Initial release.
 ```
 
+### 6. First-Time Publish (Required)
+
+The GitHub Actions workflow uses npm OIDC provenance, which requires the package
+to already exist on npm. **You must publish the first version locally:**
+
+```bash
+# Ensure you're logged in to npm
+npm whoami
+
+# If not logged in:
+npm login
+
+# Build and publish
+pnpm build
+npm publish --access public
+```
+
+After the first publish, all subsequent releases are handled automatically by
+GitHub Actions with provenance.
+
 ## Usage
 
 ### Quick Release
