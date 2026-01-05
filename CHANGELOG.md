@@ -1,5 +1,11 @@
 # @regardio/dev
 
+## 1.9.2
+
+### Patch Changes
+
+- postcss dependency
+
 ## 1.9.1
 
 ### Patch Changes
