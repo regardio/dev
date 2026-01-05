@@ -20,7 +20,7 @@
  * - Add .github/workflows/release.yml (see template in dev docs)
  * - Add "release": "flow-release" to package.json scripts
  */
-import { execSync } from 'node:child_process';
+import { execSync, spawn } from 'node:child_process';
 import {
   existsSync,
   mkdirSync,
@@ -29,7 +29,8 @@ import {
   unlinkSync,
   writeFileSync,
 } from 'node:fs';
-import { join } from 'node:path';
+import { createRequire } from 'node:module';
+import path, { join } from 'node:path';
 
 const args = process.argv.slice(2);
 const bumpType = args[0];
@@ -117,7 +118,27 @@ writeFileSync(changesetFile, changesetContent);
 console.log(`Created changeset: .changeset/${changesetId}.md`);
 
 // Run changeset version to apply the bump
-run('pnpm changeset version');
+// Resolve changeset bin directly to avoid dependency on flow-changeset being in PATH
+const require = createRequire(import.meta.url);
+const changesetPkgPath = require.resolve('@changesets/cli/package.json');
+const changesetPkg = require(changesetPkgPath);
+let changesetBinRel =
+  typeof changesetPkg.bin === 'string' ? changesetPkg.bin : changesetPkg.bin?.changeset;
+if (!changesetBinRel) {
+  console.error('Unable to locate changeset binary');
+  process.exit(1);
+}
+if (changesetBinRel.startsWith('./')) changesetBinRel = changesetBinRel.slice(2);
+const changesetBin = path.join(path.dirname(changesetPkgPath), changesetBinRel);
+const changesetChild = spawn(process.execPath, [changesetBin, 'version'], {
+  stdio: 'inherit',
+});
+await new Promise<void>((resolve, reject) => {
+  changesetChild.on('exit', (code) => {
+    if (code === 0) resolve();
+    else reject(new Error(`changeset version failed with code ${code}`));
+  });
+});
 
 // Update lockfile to ensure it matches package.json
 // Use --ignore-workspace to update this package's lockfile independently

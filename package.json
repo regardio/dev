@@ -8,6 +8,7 @@
     "exec-s": "dist/bin/exec-s.js",
     "exec-ts": "dist/bin/exec-ts.js",
     "exec-tsc": "dist/bin/exec-tsc.js",
+    "flow-changeset": "dist/bin/flow-changeset.js",
     "flow-release": "dist/bin/flow-release.js",
     "lint-biome": "dist/bin/lint-biome.js",
     "lint-commit": "dist/bin/lint-commit.js",
@@ -106,9 +107,9 @@
     "release": "pnpm exec tsx src/bin/flow-release.ts",
     "test": "run-p test:*",
     "test:unit": "vitest run",
-    "version": "pnpm changeset version"
+    "version": "flow-changeset version"
   },
   "sideEffects": false,
   "type": "module",
-  "version": "1.7.0"
+  "version": "1.7.1"
 }

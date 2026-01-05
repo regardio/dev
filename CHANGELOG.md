@@ -1,5 +1,11 @@
 # @regardio/dev
 
+## 1.7.1
+
+### Patch Changes
+
+- add flow-changeset bin wrapper
+
 ## 1.7.0
 
 ### Minor Changes
