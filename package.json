@@ -87,6 +87,14 @@
   ],
   "license": "MIT",
   "name": "@regardio/dev",
+  "peerDependencies": {
+    "postcss": "^8.4"
+  },
+  "peerDependenciesMeta": {
+    "postcss": {
+      "optional": true
+    }
+  },
   "private": false,
   "publishConfig": {
     "access": "public"
@@ -113,5 +121,5 @@
   },
   "sideEffects": false,
   "type": "module",
-  "version": "1.9.2"
+  "version": "1.9.3"
 }

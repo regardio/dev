@@ -1,5 +1,11 @@
 # @regardio/dev
 
+## 1.9.3
+
+### Patch Changes
+
+- fix install issues
+
 ## 1.9.2
 
 ### Patch Changes
