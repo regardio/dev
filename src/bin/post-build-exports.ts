@@ -102,6 +102,11 @@ function generateExportName(jsPath: string, strip: string): string {
     }
   }
 
+  // Strip /index suffix for cleaner exports (e.g., ./carousel instead of ./carousel/index)
+  if (exportPath.endsWith('/index')) {
+    exportPath = exportPath.slice(0, -6);
+  }
+
   return `./${exportPath}`;
 }
 

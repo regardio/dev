@@ -1,5 +1,11 @@
 # @regardio/dev
 
+## 1.10.2
+
+### Patch Changes
+
+- strip /index from generated exports
+
 ## 1.10.1
 
 ### Patch Changes
