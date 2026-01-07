@@ -52,6 +52,12 @@ jobs:
       - name: Build
         run: pnpm build
 
+      - name: Type check
+        run: pnpm typecheck
+
+      - name: Test with coverage
+        run: pnpm report
+
       - name: Publish to npm
         id: publish
         run: |

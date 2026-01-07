@@ -43,6 +43,20 @@ lint-biome check --write .   # Fix auto-fixable issues
 lint-biome format .          # Format only
 ```
 
+## Package.json Handling
+
+The Biome preset excludes `package.json` files from processing. Instead, use `lint-package` which:
+
+1. Sorts package.json using the well-known field order
+2. Fixes exports condition order (`types` before `default` for TypeScript)
+
+```bash
+lint-package              # Sort package.json in current directory
+lint-package path/to/pkg  # Sort specific package.json
+```
+
+This is automatically run as part of `pnpm fix` and after `post-build-exports`.
+
 ## Rule Categories
 
 The preset enables rules across categories:

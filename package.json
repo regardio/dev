@@ -1,77 +1,9 @@
 {
   "$schema": "https://www.schemastore.org/package.json",
-  "author": "Bernd Matzner <bernd.matzner@regard.io>",
-  "bin": {
-    "exec-clean": "dist/bin/exec-clean.js",
-    "exec-husky": "dist/bin/exec-husky.js",
-    "exec-p": "dist/bin/exec-p.js",
-    "exec-s": "dist/bin/exec-s.js",
-    "exec-ts": "dist/bin/exec-ts.js",
-    "exec-tsc": "dist/bin/exec-tsc.js",
-    "flow-changeset": "dist/bin/flow-changeset.js",
-    "flow-release": "dist/bin/flow-release.js",
-    "lint-biome": "dist/bin/lint-biome.js",
-    "lint-commit": "dist/bin/lint-commit.js",
-    "lint-md": "dist/bin/lint-md.js",
-    "post-build-exports": "dist/bin/post-build-exports.js"
-  },
-  "bugs": {
-    "url": "https://github.com/regardio/dev/issues"
-  },
-  "dependencies": {
-    "@biomejs/biome": "2.3.11",
-    "@changesets/changelog-github": "0.5.2",
-    "@changesets/cli": "2.29.8",
-    "@commitlint/cli": "20.3.0",
-    "@commitlint/config-conventional": "20.3.0",
-    "@playwright/test": "1.57.0",
-    "@testing-library/jest-dom": "6.9.1",
-    "@testing-library/react": "16.3.1",
-    "@total-typescript/ts-reset": "0.6.1",
-    "@types/node": "25.0.3",
-    "@vitest/ui": "4.0.16",
-    "husky": "9.1.7",
-    "jsdom": "27.4.0",
-    "markdownlint-cli2": "0.20.0",
-    "npm-run-all": "4.1.5",
-    "postcss": "8.5.6",
-    "rimraf": "6.1.2",
-    "tsx": "4.21.0",
-    "typescript": "5.9.3",
-    "vite": "7.3.1",
-    "vitest": "4.0.16"
-  },
+  "name": "@regardio/dev",
+  "version": "1.11.0",
+  "private": false,
   "description": "Regardio developer tooling for testing, linting, and build workflows",
-  "engines": {
-    "node": ">=18"
-  },
-  "exports": {
-    "./biome": "./src/biome/preset.json",
-    "./commitlint": "./src/commitlint/commitlint.cjs",
-    "./markdownlint": "./src/markdownlint/markdownlint.json",
-    "./markdownlint-cli2": "./src/markdownlint/markdownlint-cli2.jsonc",
-    "./playwright": {
-      "default": "./dist/playwright/index.js",
-      "types": "./dist/playwright/index.d.ts"
-    },
-    "./testing/setup-react": {
-      "default": "./dist/testing/setup-react.js",
-      "types": "./dist/testing/setup-react.d.ts"
-    },
-    "./typescript/base.json": "./src/typescript/base.json",
-    "./typescript/build.json": "./src/typescript/build.json",
-    "./typescript/react.json": "./src/typescript/react.json",
-    "./vitest/node": {
-      "default": "./dist/vitest/node.js",
-      "types": "./dist/vitest/node.d.ts"
-    },
-    "./vitest/react": {
-      "default": "./dist/vitest/react.js",
-      "types": "./dist/vitest/react.d.ts"
-    }
-  },
-  "files": ["dist", "src"],
-  "homepage": "https://github.com/regardio/dev/blob/main/README.md",
   "keywords": [
     "biome",
     "changesets",
@@ -86,8 +18,105 @@
     "typescript",
     "vitest"
   ],
+  "homepage": "https://github.com/regardio/dev/blob/main/README.md",
+  "bugs": {
+    "url": "https://github.com/regardio/dev/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/regardio/dev.git"
+  },
   "license": "MIT",
-  "name": "@regardio/dev",
+  "author": "Bernd Matzner <bernd.matzner@regard.io>",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    "./biome": "./src/biome/preset.json",
+    "./commitlint": "./src/commitlint/commitlint.cjs",
+    "./markdownlint": "./src/markdownlint/markdownlint.json",
+    "./markdownlint-cli2": "./src/markdownlint/markdownlint-cli2.jsonc",
+    "./playwright": {
+      "types": "./dist/playwright/index.d.ts",
+      "default": "./dist/playwright/index.js"
+    },
+    "./testing/setup-react": {
+      "types": "./dist/testing/setup-react.d.ts",
+      "default": "./dist/testing/setup-react.js"
+    },
+    "./typescript/base.json": "./src/typescript/base.json",
+    "./typescript/build.json": "./src/typescript/build.json",
+    "./typescript/react.json": "./src/typescript/react.json",
+    "./vitest/node": {
+      "types": "./dist/vitest/node.d.ts",
+      "default": "./dist/vitest/node.js"
+    },
+    "./vitest/react": {
+      "types": "./dist/vitest/react.d.ts",
+      "default": "./dist/vitest/react.js"
+    }
+  },
+  "bin": {
+    "exec-clean": "dist/bin/exec-clean.js",
+    "exec-husky": "dist/bin/exec-husky.js",
+    "exec-p": "dist/bin/exec-p.js",
+    "exec-s": "dist/bin/exec-s.js",
+    "exec-ts": "dist/bin/exec-ts.js",
+    "exec-tsc": "dist/bin/exec-tsc.js",
+    "flow-changeset": "dist/bin/flow-changeset.js",
+    "flow-release": "dist/bin/flow-release.js",
+    "lint-biome": "dist/bin/lint-biome.js",
+    "lint-commit": "dist/bin/lint-commit.js",
+    "lint-md": "dist/bin/lint-md.js",
+    "lint-package": "dist/bin/lint-package.js",
+    "post-build-exports": "dist/bin/post-build-exports.js"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "clean": "tsx src/bin/exec-clean.ts .turbo dist",
+    "fix": "run-p fix:*",
+    "fix:biome": "biome check --write --unsafe .",
+    "fix:md": "markdownlint-cli2 --fix \"**/*.md\" \"**/*.mdx\" \"!**/node_modules/**\" \"!**/dist/**\"",
+    "fix:pkg": "tsx src/bin/lint-package.ts",
+    "lint": "run-p lint:*",
+    "lint:biome": "biome check .",
+    "lint:md": "markdownlint-cli2 \"**/*.md\" \"**/*.mdx\" \"!**/node_modules/**\" \"!**/dist/**\"",
+    "prepare": "husky",
+    "release": "tsx src/bin/flow-release.ts",
+    "report": "vitest run --coverage",
+    "test": "run-p test:*",
+    "test:unit": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "version": "tsx src/bin/flow-changeset.ts version"
+  },
+  "dependencies": {
+    "@biomejs/biome": "2.3.11",
+    "@changesets/changelog-github": "0.5.2",
+    "@changesets/cli": "2.29.8",
+    "@commitlint/cli": "20.3.0",
+    "@commitlint/config-conventional": "20.3.0",
+    "@playwright/test": "1.57.0",
+    "@testing-library/jest-dom": "6.9.1",
+    "@testing-library/react": "16.3.1",
+    "@total-typescript/ts-reset": "0.6.1",
+    "@types/node": "25.0.3",
+    "@vitest/coverage-v8": "4.0.16",
+    "@vitest/ui": "4.0.16",
+    "husky": "9.1.7",
+    "jsdom": "27.4.0",
+    "markdownlint-cli2": "0.20.0",
+    "npm-run-all": "4.1.5",
+    "postcss": "8.5.6",
+    "rimraf": "6.1.2",
+    "sort-package-json": "3.1.0",
+    "tsx": "4.21.0",
+    "typescript": "5.9.3",
+    "vite": "7.3.1",
+    "vitest": "4.0.16"
+  },
   "peerDependencies": {
     "postcss": "8.4"
   },
@@ -96,30 +125,10 @@
       "optional": true
     }
   },
-  "private": false,
+  "engines": {
+    "node": ">=18"
+  },
   "publishConfig": {
     "access": "public"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/regardio/dev.git"
-  },
-  "scripts": {
-    "build": "pnpm exec tsc -p tsconfig.build.json",
-    "clean": "pnpm exec tsx src/bin/exec-clean.ts .turbo dist",
-    "fix": "exec-p fix:*",
-    "fix:biome": "biome check --write --unsafe .",
-    "fix:md": "markdownlint-cli2 --fix \"**/*.md\" \"**/*.mdx\" \"!**/node_modules/**\" \"!**/dist/**\"",
-    "lint": "run-p lint:*",
-    "lint:biome": "biome check .",
-    "lint:md": "markdownlint-cli2 \"**/*.md\" \"**/*.mdx\" \"!**/node_modules/**\" \"!**/dist/**\"",
-    "prepare": "husky",
-    "release": "pnpm exec tsx src/bin/flow-release.ts",
-    "test": "run-p test:*",
-    "test:unit": "vitest run",
-    "version": "flow-changeset version"
-  },
-  "sideEffects": false,
-  "type": "module",
-  "version": "1.10.3"
+  }
 }

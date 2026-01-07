@@ -103,12 +103,37 @@ it('sets isError state to true', () => {
 - Verify index effectiveness
 - Test under realistic load
 
+## Coverage Requirements
+
+Library packages must meet minimum coverage thresholds:
+
+| Metric | Minimum |
+|--------|---------|
+| **Statements** | 80% |
+| **Branches** | 80% |
+| **Functions** | 80% |
+| **Lines** | 80% |
+
+These are enforced at multiple stages:
+
+- **Local development** - `pnpm report` fails if below thresholds
+- **Release script** - `flow-release` runs coverage before bumping version
+- **CI/CD** - GitHub Actions runs coverage before publishing to npm
+
+## Quality Gates
+
+Before code can be published to npm, it must pass:
+
+1. **Build** - `pnpm build` must succeed
+2. **Type check** - `pnpm typecheck` must pass
+3. **Coverage** - `pnpm report` must meet thresholds
+
 ## Continuous Integration
 
-- **Pre-commit hooks** run linting and type checking
-- **CI pipeline** runs full test suite on every PR
-- **Coverage reports** track test coverage trends
-- **Performance tests** run on significant changes
+- **Pre-commit hooks** run linting via Biome
+- **CI pipeline** runs build, typecheck, and coverage on every push
+- **Coverage reports** enforce minimum thresholds
+- **Release workflow** blocks publishing if quality gates fail
 
 ## Test Maintenance
 

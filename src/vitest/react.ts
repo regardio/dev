@@ -1,4 +1,5 @@
 import type { TestUserConfig } from 'vitest/node';
+import { coverageThresholds } from './node';
 
 /**
  * Vitest configuration for React packages with jsdom environment.
@@ -7,6 +8,10 @@ import type { TestUserConfig } from 'vitest/node';
  * Requires a setup file that imports '@testing-library/jest-dom/vitest'
  */
 export const vitestReactConfig: TestUserConfig = {
+  coverage: {
+    provider: 'v8',
+    thresholds: coverageThresholds,
+  },
   environment: 'jsdom',
   exclude: ['node_modules', 'dist', 'build', '.turbo', '.react-router'],
   globals: true,

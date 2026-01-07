@@ -70,6 +70,18 @@ if (!packageName) {
 
 console.log(`Releasing ${packageName} with ${bumpType} bump...`);
 
+// Run quality checks before release
+console.log('Running quality checks...');
+try {
+  run('pnpm build');
+  run('pnpm typecheck');
+  run('pnpm report');
+} catch {
+  console.error('Quality checks failed. Fix issues before releasing.');
+  process.exit(1);
+}
+console.log('✅ Quality checks passed');
+
 // Ensure we're in a clean git state
 try {
   const status = runQuiet('git status --porcelain');

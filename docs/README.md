@@ -40,6 +40,7 @@ pnpm dev           # Start development
 pnpm fix           # Run all fixes and linting
 pnpm lint          # Run linting only
 pnpm test          # Run tests
+pnpm report        # Run tests with coverage
 pnpm typecheck     # TypeScript type checking
 ```
 

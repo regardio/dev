@@ -1,5 +1,11 @@
 # @regardio/dev
 
+## 1.11.0
+
+### Minor Changes
+
+- coverage reports, revised sort order in package.json files, documentation
+
 ## 1.10.3
 
 ### Patch Changes

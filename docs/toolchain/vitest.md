@@ -9,6 +9,29 @@ Fast unit testing powered by Vite.
 - **Jest-compatible** - Familiar API, easy migration
 - **TypeScript-first** - No additional setup needed
 
+## Coverage Thresholds
+
+Library packages must meet minimum coverage thresholds before publishing:
+
+| Metric | Minimum |
+|--------|---------|
+| **Statements** | 80% |
+| **Branches** | 80% |
+| **Functions** | 80% |
+| **Lines** | 80% |
+
+These thresholds are enforced by:
+
+1. **`pnpm report`** - Fails if coverage is below thresholds
+2. **`flow-release`** - Runs coverage check before releasing
+3. **GitHub Actions** - Runs coverage check before publishing to npm
+
+To check coverage locally:
+
+```bash
+pnpm report
+```
+
 ## Configuration
 
 ### Node.js Packages
@@ -46,8 +69,21 @@ This sets up Testing Library matchers and cleanup.
 ```json
 {
   "scripts": {
-    "test": "exec-p test:*",
-    "test:unit": "vitest run"
+    "test": "exec-s test:*",
+    "test:unit": "vitest run",
+    "report": "vitest run --coverage"
+  }
+}
+```
+
+Required devDependencies:
+
+```json
+{
+  "devDependencies": {
+    "@regardio/dev": "^1.11.0",
+    "@vitest/coverage-v8": "^4.0.0",
+    "vitest": "^4.0.0"
   }
 }
 ```
