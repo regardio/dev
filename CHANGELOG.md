@@ -1,5 +1,11 @@
 # @regardio/dev
 
+## 1.10.3
+
+### Patch Changes
+
+- release workflow
+
 ## 1.10.2
 
 ### Patch Changes
