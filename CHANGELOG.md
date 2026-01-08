@@ -1,5 +1,11 @@
 # @regardio/dev
 
+## 1.11.1
+
+### Patch Changes
+
+- fix option for lint-package
+
 ## 1.11.0
 
 ### Minor Changes
