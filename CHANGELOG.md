@@ -1,5 +1,11 @@
 # @regardio/dev
 
+## 1.11.4
+
+### Patch Changes
+
+- fix: vitest config as const
+
 ## 1.11.3
 
 ### Patch Changes

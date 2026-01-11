@@ -8,7 +8,7 @@ import { coverageThresholds } from './node';
  */
 export const vitestReactConfig = {
   coverage: {
-    provider: 'v8',
+    provider: 'v8' as const,
     thresholds: coverageThresholds,
   },
   environment: 'jsdom',
@@ -16,4 +16,4 @@ export const vitestReactConfig = {
   globals: true,
   include: ['**/*.test.ts', '**/*.test.tsx'],
   setupFiles: ['./src/test-setup.ts'],
-} as const;
+};

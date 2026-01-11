@@ -15,11 +15,11 @@ export const coverageThresholds = {
  */
 export const vitestNodeConfig = {
   coverage: {
-    provider: 'v8',
+    provider: 'v8' as const,
     thresholds: coverageThresholds,
   },
   environment: 'node',
   exclude: ['node_modules', 'dist', 'build', '.turbo', '.react-router'],
   globals: true,
   include: ['**/*.test.ts', '**/*.test.tsx'],
-} as const;
+};
