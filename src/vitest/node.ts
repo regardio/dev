@@ -1,5 +1,3 @@
-import type { TestUserConfig } from 'vitest/node';
-
 /**
  * Coverage thresholds for library packages.
  * These ensure adequate test coverage before publishing.
@@ -15,7 +13,7 @@ export const coverageThresholds = {
  * Base Vitest configuration for Node.js packages.
  * Use with defineConfig() in your vitest.config.ts
  */
-export const vitestNodeConfig: TestUserConfig = {
+export const vitestNodeConfig = {
   coverage: {
     provider: 'v8',
     thresholds: coverageThresholds,

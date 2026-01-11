@@ -1,5 +1,11 @@
 # @regardio/dev
 
+## 1.11.2
+
+### Patch Changes
+
+- fix: remove vitest type annotations to avoid cross-package type conflicts
+
 ## 1.11.1
 
 ### Patch Changes

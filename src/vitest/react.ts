@@ -1,4 +1,3 @@
-import type { TestUserConfig } from 'vitest/node';
 import { coverageThresholds } from './node';
 
 /**
@@ -7,7 +6,7 @@ import { coverageThresholds } from './node';
  *
  * Requires a setup file that imports '@testing-library/jest-dom/vitest'
  */
-export const vitestReactConfig: TestUserConfig = {
+export const vitestReactConfig = {
   coverage: {
     provider: 'v8',
     thresholds: coverageThresholds,
