@@ -22,4 +22,4 @@ export const vitestNodeConfig = {
   exclude: ['node_modules', 'dist', 'build', '.turbo', '.react-router'],
   globals: true,
   include: ['**/*.test.ts', '**/*.test.tsx'],
-};
+} as const;

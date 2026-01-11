@@ -16,4 +16,4 @@ export const vitestReactConfig = {
   globals: true,
   include: ['**/*.test.ts', '**/*.test.tsx'],
   setupFiles: ['./src/test-setup.ts'],
-};
+} as const;
