@@ -1,5 +1,11 @@
 # @regardio/dev
 
+## 1.12.0
+
+### Minor Changes
+
+- refactor: remove post-build script
+
 ## 1.11.4
 
 ### Patch Changes

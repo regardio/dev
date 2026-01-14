@@ -55,7 +55,7 @@ lint-package              # Sort package.json in current directory
 lint-package path/to/pkg  # Sort specific package.json
 ```
 
-This is automatically run as part of `pnpm fix` and after `post-build-exports`.
+This is automatically run as part of `pnpm fix`.
 
 ## Rule Categories
 
