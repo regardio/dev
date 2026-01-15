@@ -1,5 +1,11 @@
 # @regardio/dev
 
+## 1.12.1
+
+### Patch Changes
+
+- fix: remove lock file
+
 ## 1.12.0
 
 ### Minor Changes
