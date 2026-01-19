@@ -1,5 +1,11 @@
 # @regardio/dev
 
+## 1.13.1
+
+### Patch Changes
+
+- fix: md036 is too strict for our users
+
 ## 1.13.0
 
 ### Minor Changes
