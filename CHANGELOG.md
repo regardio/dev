@@ -1,5 +1,11 @@
 # @regardio/dev
 
+## 1.13.0
+
+### Minor Changes
+
+- consistent markdownlint defaults
+
 ## 1.12.1
 
 ### Patch Changes
