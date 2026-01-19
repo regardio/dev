@@ -1,6 +1,9 @@
 {
+  "$schema": "https://raw.githubusercontent.com/DavidAnson/markdownlint-cli2/main/schema/markdownlint-cli2-config-schema.json",
   "config": {
     "extends": "./src/markdownlint/markdownlint.json"
   },
+  "frontMatter": "(^---\\s*$[^]*?^---\\s*$)(\\r\\n|\\r|\\n|$)",
+  "globs": ["**/*.md", "**/*.mdoc", "**/*.mdx"],
   "ignores": [".changeset/**", "**/node_modules/**", "**/dist/**"]
 }
