@@ -13,6 +13,9 @@ Foundational principles and standards that guide development:
 | [Naming Conventions](./concepts/naming-conventions.md) | Consistent naming across languages |
 | [Commit Conventions](./concepts/commits.md) | Conventional commits and changelog generation |
 | [Testing Approach](./concepts/testing.md) | Testing philosophy and patterns |
+| [SQL Schema Standards](./concepts/sql-schema-standards.md) | PostgreSQL/Supabase schema styling and structure |
+| [React Standards](./concepts/react-standards.md) | React and TypeScript development patterns |
+| [API Standards](./concepts/api-standards.md) | API design and implementation guidelines |
 | [AI Agent Guidelines](./concepts/ai-agents.md) | Instructions for AI coding assistants |
 
 ## Toolchain
