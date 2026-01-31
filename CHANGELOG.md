@@ -1,5 +1,11 @@
 # @regardio/dev
 
+## 1.13.3
+
+### Patch Changes
+
+- extended documentation
+
 ## 1.13.2
 
 ### Patch Changes
