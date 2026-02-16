@@ -1,10 +1,10 @@
 import type { PlaywrightTestConfig } from '@playwright/test';
 
 export interface BuildPlaywrightBaseConfigParams {
-  appUrl: string;
   appPort: number;
-  devices: typeof import('@playwright/test').devices;
+  appUrl: string;
   ci?: boolean;
+  devices: typeof import('@playwright/test').devices;
   webServerCommand: string;
 }
 
