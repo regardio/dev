@@ -2,13 +2,18 @@
   "$schema": "https://biomejs.dev/schemas/latest/schema.json",
   "assist": {
     "actions": {
+      "recommended": true,
       "source": {
+        "noDuplicateClasses": "on",
         "organizeImports": "on",
+        "recommended": true,
         "useSortedAttributes": "on",
+        "useSortedInterfaceMembers": "on",
         "useSortedKeys": "on",
         "useSortedProperties": "on"
       }
-    }
+    },
+    "enabled": true
   },
   "css": {
     "assist": {
@@ -20,12 +25,15 @@
       "indentWidth": 2,
       "lineEnding": "lf",
       "lineWidth": 100,
-      "quoteStyle": "double"
+      "quoteStyle": "double",
+      "trailingNewline": true
     },
+    "globals": [],
     "linter": {
       "enabled": true
     },
     "parser": {
+      "allowWrongLineComments": false,
       "cssModules": true,
       "tailwindDirectives": true
     }
@@ -37,6 +45,7 @@
   },
   "formatter": {
     "attributePosition": "multiline",
+    "bracketSameLine": false,
     "bracketSpacing": true,
     "enabled": true,
     "expand": "auto",
@@ -45,6 +54,7 @@
     "indentWidth": 2,
     "lineEnding": "lf",
     "lineWidth": 100,
+    "trailingNewline": true,
     "useEditorconfig": true
   },
   "graphql": {
@@ -52,12 +62,30 @@
       "enabled": true
     },
     "formatter": {
+      "bracketSpacing": true,
       "enabled": false,
       "indentStyle": "space",
       "indentWidth": 2,
       "lineEnding": "lf",
       "lineWidth": 100,
-      "quoteStyle": "double"
+      "quoteStyle": "double",
+      "trailingNewline": true
+    },
+    "linter": {
+      "enabled": true
+    }
+  },
+  "grit": {
+    "assist": {
+      "enabled": true
+    },
+    "formatter": {
+      "enabled": true,
+      "indentStyle": "space",
+      "indentWidth": 2,
+      "lineEnding": "lf",
+      "lineWidth": 100,
+      "trailingNewline": true
     },
     "linter": {
       "enabled": true
@@ -76,10 +104,16 @@
       "indentStyle": "space",
       "indentWidth": 2,
       "lineEnding": "lf",
-      "lineWidth": 100
+      "lineWidth": 100,
+      "selfCloseVoidElements": "never",
+      "trailingNewline": true,
+      "whitespaceSensitivity": "css"
     },
     "linter": {
       "enabled": true
+    },
+    "parser": {
+      "interpolation": false
     }
   },
   "javascript": {
@@ -98,10 +132,12 @@
       "jsxQuoteStyle": "double",
       "lineEnding": "lf",
       "lineWidth": 100,
+      "operatorLinebreak": "before",
       "quoteProperties": "asNeeded",
       "quoteStyle": "single",
       "semicolons": "always",
-      "trailingCommas": "all"
+      "trailingCommas": "all",
+      "trailingNewline": true
     },
     "globals": [],
     "jsxRuntime": "transparent",
@@ -109,6 +145,7 @@
       "enabled": true
     },
     "parser": {
+      "gritMetavariables": false,
       "jsxEverywhere": true,
       "unsafeParameterDecoratorsEnabled": false
     }
@@ -125,7 +162,8 @@
       "indentWidth": 2,
       "lineEnding": "lf",
       "lineWidth": 100,
-      "trailingCommas": "none"
+      "trailingCommas": "none",
+      "trailingNewline": true
     },
     "linter": {
       "enabled": true
@@ -152,6 +190,7 @@
       "correctness": {
         "noInvalidPositionAtImportRule": "off",
         "noUnknownFunction": "off",
+        "noUnknownPseudoElement": "off",
         "noUnknownTypeSelector": "off",
         "recommended": true,
         "useUniqueElementIds": {

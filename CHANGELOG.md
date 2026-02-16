@@ -1,5 +1,11 @@
 # @regardio/dev
 
+## 1.13.5
+
+### Patch Changes
+
+- feat: biome 2.4 config
+
 ## 1.13.4
 
 ### Patch Changes
