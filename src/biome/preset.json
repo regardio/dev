@@ -327,6 +327,18 @@
       }
     }
   },
+  "overrides": [
+    {
+      "assist": {
+        "actions": {
+          "source": {
+            "useSortedKeys": "off"
+          }
+        }
+      },
+      "includes": ["**/package.json"]
+    }
+  ],
   "root": true,
   "vcs": {
     "clientKind": "git",

@@ -25,9 +25,9 @@ Create `biome.jsonc` in your package root:
 ```json
 {
   "scripts": {
-    "fix": "exec-p fix:*",
+    "fix": "exec-s fix:pkg fix:md fix:biome",
     "fix:biome": "lint-biome check --write --unsafe .",
-    "lint": "exec-p lint:*",
+    "lint": "exec-s lint:md lint:biome",
     "lint:biome": "lint-biome check ."
   }
 }

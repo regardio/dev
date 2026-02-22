@@ -1,6 +1,60 @@
 {
   "$schema": "https://www.schemastore.org/package.json",
+  "name": "@regardio/dev",
+  "version": "1.13.8",
+  "private": false,
+  "description": "Regardio developer tooling for testing, linting, and build workflows",
+  "keywords": [
+    "biome",
+    "changesets",
+    "commitlint",
+    "dev",
+    "husky",
+    "linting",
+    "markdownlint",
+    "playwright",
+    "testing",
+    "tooling",
+    "typescript",
+    "vitest"
+  ],
+  "homepage": "https://github.com/regardio/dev/blob/main/README.md",
+  "bugs": {
+    "url": "https://github.com/regardio/dev/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/regardio/dev.git"
+  },
+  "license": "MIT",
   "author": "Bernd Matzner <bernd.matzner@regard.io>",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    "./biome": "./src/biome/preset.json",
+    "./commitlint": "./src/commitlint/commitlint.cjs",
+    "./markdownlint": "./src/markdownlint/markdownlint.json",
+    "./markdownlint-cli2": "./src/markdownlint/markdownlint-cli2.jsonc",
+    "./playwright": {
+      "types": "./dist/playwright/index.d.ts",
+      "default": "./dist/playwright/index.js"
+    },
+    "./testing/setup-react": {
+      "types": "./dist/testing/setup-react.d.ts",
+      "default": "./dist/testing/setup-react.js"
+    },
+    "./typescript/base.json": "./src/typescript/base.json",
+    "./typescript/build.json": "./src/typescript/build.json",
+    "./typescript/react.json": "./src/typescript/react.json",
+    "./vitest/node": {
+      "types": "./dist/vitest/node.d.ts",
+      "default": "./dist/vitest/node.js"
+    },
+    "./vitest/react": {
+      "types": "./dist/vitest/react.d.ts",
+      "default": "./dist/vitest/react.js"
+    }
+  },
   "bin": {
     "exec-clean": "dist/bin/exec-clean.js",
     "exec-husky": "dist/bin/exec-husky.js",
@@ -15,8 +69,25 @@
     "lint-md": "dist/bin/lint-md.js",
     "lint-package": "dist/bin/lint-package.js"
   },
-  "bugs": {
-    "url": "https://github.com/regardio/dev/issues"
+  "files": ["dist", "src"],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "clean": "tsx src/bin/exec-clean.ts .turbo dist",
+    "fix": "run-s fix:pkg fix:md fix:biome",
+    "fix:biome": "biome check --write --unsafe .",
+    "fix:md": "markdownlint-cli2 --fix",
+    "fix:pkg": "tsx src/bin/lint-package.ts --fix",
+    "lint": "run-s lint:md lint:biome",
+    "lint:biome": "biome check .",
+    "lint:md": "markdownlint-cli2",
+    "lint:pkg": "tsx src/bin/lint-package.ts",
+    "prepare": "husky",
+    "release": "tsx src/bin/flow-release.ts",
+    "report": "vitest run --coverage",
+    "test": "run-p test:*",
+    "test:unit": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "version": "tsx src/bin/flow-changeset.ts version"
   },
   "dependencies": {
     "@biomejs/biome": "2.4.4",
@@ -43,53 +114,6 @@
     "vite": "7.3.1",
     "vitest": "4.0.18"
   },
-  "description": "Regardio developer tooling for testing, linting, and build workflows",
-  "engines": {
-    "node": ">=18"
-  },
-  "exports": {
-    "./biome": "./src/biome/preset.json",
-    "./commitlint": "./src/commitlint/commitlint.cjs",
-    "./markdownlint": "./src/markdownlint/markdownlint.json",
-    "./markdownlint-cli2": "./src/markdownlint/markdownlint-cli2.jsonc",
-    "./playwright": {
-      "default": "./dist/playwright/index.js",
-      "types": "./dist/playwright/index.d.ts"
-    },
-    "./testing/setup-react": {
-      "default": "./dist/testing/setup-react.js",
-      "types": "./dist/testing/setup-react.d.ts"
-    },
-    "./typescript/base.json": "./src/typescript/base.json",
-    "./typescript/build.json": "./src/typescript/build.json",
-    "./typescript/react.json": "./src/typescript/react.json",
-    "./vitest/node": {
-      "default": "./dist/vitest/node.js",
-      "types": "./dist/vitest/node.d.ts"
-    },
-    "./vitest/react": {
-      "default": "./dist/vitest/react.js",
-      "types": "./dist/vitest/react.d.ts"
-    }
-  },
-  "files": ["dist", "src"],
-  "homepage": "https://github.com/regardio/dev/blob/main/README.md",
-  "keywords": [
-    "biome",
-    "changesets",
-    "commitlint",
-    "dev",
-    "husky",
-    "linting",
-    "markdownlint",
-    "playwright",
-    "testing",
-    "tooling",
-    "typescript",
-    "vitest"
-  ],
-  "license": "MIT",
-  "name": "@regardio/dev",
   "peerDependencies": {
     "postcss": "8.4"
   },
@@ -98,33 +122,10 @@
       "optional": true
     }
   },
-  "private": false,
+  "engines": {
+    "node": ">=18"
+  },
   "publishConfig": {
     "access": "public"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/regardio/dev.git"
-  },
-  "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "clean": "tsx src/bin/exec-clean.ts .turbo dist",
-    "fix": "run-p fix:*",
-    "fix:biome": "biome check --write --unsafe .",
-    "fix:md": "markdownlint-cli2 --fix",
-    "fix:pkg": "tsx src/bin/lint-package.ts",
-    "lint": "run-p lint:*",
-    "lint:biome": "biome check .",
-    "lint:md": "markdownlint-cli2",
-    "prepare": "husky",
-    "release": "tsx src/bin/flow-release.ts",
-    "report": "vitest run --coverage",
-    "test": "run-p test:*",
-    "test:unit": "vitest run",
-    "typecheck": "tsc --noEmit",
-    "version": "tsx src/bin/flow-changeset.ts version"
-  },
-  "sideEffects": false,
-  "type": "module",
-  "version": "1.13.6"
+  }
 }
