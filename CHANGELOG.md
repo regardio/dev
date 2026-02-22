@@ -1,5 +1,11 @@
 # @regardio/dev
 
+## 1.13.6
+
+### Patch Changes
+
+- fix: biome can also check package.json
+
 ## 1.13.5
 
 ### Patch Changes
