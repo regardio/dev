@@ -140,7 +140,8 @@ This will:
 9. Commit with `chore(release): <package>@<version>`
 10. Fast-forward merge `staging` into `production` and push
 11. Fast-forward merge `production` back into `main` and push
-12. Return to `main`
+12. Sync `staging` with `main` so the next `flow-release` can ff-merge cleanly
+13. Return to `main`
 
 ## Hotfix Flow
 

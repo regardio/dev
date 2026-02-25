@@ -20,7 +20,8 @@
  * 7. Commits the version bump on staging
  * 8. Merges staging into production (fast-forward) and pushes
  * 9. Merges production back into main to carry the version commit forward
- * 10. Returns to main
+ * 10. Syncs staging with main so the next flow-release can ff-merge cleanly
+ * 11. Returns to main
  */
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -199,6 +200,14 @@ git('checkout', 'main');
 git('pull', '--ff-only', 'origin', 'main');
 git('merge', '--ff-only', 'production');
 git('push', 'origin', 'main');
+
+// ---------------------------------------------------------------------------
+// Sync staging with main so the next flow-release can ff-merge cleanly
+// ---------------------------------------------------------------------------
+git('checkout', 'staging');
+git('merge', '--ff-only', 'main');
+git('push', 'origin', 'staging');
+git('checkout', 'main');
 
 console.log(`\n✅ Shipped ${packageName}@${newVersion} to production`);
 console.log('You are on main and ready to keep working.');
