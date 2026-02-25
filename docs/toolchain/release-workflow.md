@@ -106,7 +106,7 @@ CI is intentionally minimal. It does not re-run tests. It:
 From `main`, with a clean working tree:
 
 ```bash
-pnpm release "Add new vitest configs"
+pnpm flow:release "Add new vitest configs"
 ```
 
 This will:
@@ -124,7 +124,7 @@ You can do this multiple times. Each commit accumulates in `staging`.
 When staging has been validated and you are ready to release:
 
 ```bash
-pnpm ship minor
+pnpm flow:ship minor
 ```
 
 This will:
@@ -149,10 +149,10 @@ For urgent fixes that must go directly to production:
 
 ```bash
 # 1. Create hotfix branch from production
-flow-hotfix start fix-auth-bug
+pnpm flow:hotfix start fix-auth-bug
 
 # 2. Make your changes, then finish
-flow-hotfix finish patch "Fix critical auth token expiry bug"
+pnpm flow:hotfix finish patch "Fix critical auth token expiry bug"
 ```
 
 `finish` will:
@@ -194,9 +194,9 @@ Add the convenience scripts to `package.json`:
 ```json
 {
   "scripts": {
-    "release": "flow-release",
-    "ship": "flow-ship",
-    "hotfix": "flow-hotfix"
+    "flow:release": "flow-release",
+    "flow:ship": "flow-ship",
+    "flow:hotfix": "flow-hotfix"
   }
 }
 ```
