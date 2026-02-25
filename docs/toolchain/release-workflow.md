@@ -194,9 +194,9 @@ Add the convenience scripts to `package.json`:
 ```json
 {
   "scripts": {
+    "flow:hotfix": "flow-hotfix",
     "flow:release": "flow-release",
-    "flow:ship": "flow-ship",
-    "flow:hotfix": "flow-hotfix"
+    "flow:ship": "flow-ship"
   }
 }
 ```
