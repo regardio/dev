@@ -4,6 +4,7 @@ import { coverageThresholds } from './src/vitest/node';
 export default defineConfig({
   test: {
     coverage: {
+      exclude: ['src/bin/**'],
       provider: 'v8',
       thresholds: coverageThresholds,
     },
