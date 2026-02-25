@@ -7,7 +7,7 @@
  * developer-controlled and pnpm itself is resolved through PATH.
  */
 import { execFileSync, execSync } from 'node:child_process';
-import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { closeSync, existsSync, openSync, readFileSync, readSync, writeFileSync } from 'node:fs';
 
 /**
  * Run a git command with the given arguments.
@@ -85,3 +85,18 @@ export const runQualityChecks = (): void => {
 export const branchExists = (name: string): boolean =>
   gitRead('branch', '--list', name) !== ''
   || gitRead('branch', '--list', '--remotes', `origin/${name}`) !== '';
+
+/**
+ * Prompt the user for confirmation and return true only if they type "y" or "Y".
+ * Defaults to "no" on empty input, so pressing Enter alone aborts.
+ * The ttyPath parameter is injectable for testing.
+ */
+export const confirm = (prompt: string, ttyPath = '/dev/tty'): boolean => {
+  process.stdout.write(`${prompt} (y/N) `);
+  const buf = Buffer.alloc(1024);
+  const fd = openSync(ttyPath, 'r');
+  const bytesRead = readSync(fd, buf, 0, buf.length, null);
+  closeSync(fd);
+  const answer = buf.slice(0, bytesRead).toString().trim();
+  return answer === 'y' || answer === 'Y';
+};

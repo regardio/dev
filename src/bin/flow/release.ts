@@ -14,9 +14,9 @@
  * 1. Ensures the current branch is main and the working tree is clean
  * 2. Pulls latest main from origin
  * 3. Runs quality checks locally (build, typecheck, tests)
- * 4. Commits all changes with a commitlint-compliant message
+ * 4. Runs fix — commits formatting output (if any) with a commitlint-compliant message
  * 5. Merges main into staging (fast-forward) and pushes
- * 6. Checks out main so work can continue
+ * 6. Pushes main and returns so work can continue
  */
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -103,10 +103,13 @@ try {
 }
 
 // ---------------------------------------------------------------------------
-// Commit
+// Commit formatting fixes (if any)
 // ---------------------------------------------------------------------------
 git('add', '-A');
-git('commit', '-m', `chore(staging): ${message}`);
+const hasStagedChanges = gitRead('diff', '--cached', '--name-only') !== '';
+if (hasStagedChanges) {
+  git('commit', '-m', `chore(staging): ${message}`);
+}
 
 // ---------------------------------------------------------------------------
 // Merge into staging
@@ -117,9 +120,10 @@ git('merge', '--ff-only', 'main');
 git('push', 'origin', 'staging');
 
 // ---------------------------------------------------------------------------
-// Return to main
+// Return to main and sync
 // ---------------------------------------------------------------------------
 git('checkout', 'main');
+git('push', 'origin', 'main');
 
 console.log('\n✅ Changes deployed to staging');
 console.log(`   "${message}"`);

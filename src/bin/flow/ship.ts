@@ -28,6 +28,7 @@ import { join } from 'node:path';
 import {
   branchExists,
   bumpVersion,
+  confirm,
   git,
   gitRead,
   insertChangelog,
@@ -95,6 +96,23 @@ console.log('\nCommits to be shipped to production:');
 console.log(ahead);
 
 // ---------------------------------------------------------------------------
+// Read package name for the confirmation prompt
+// ---------------------------------------------------------------------------
+const packageJsonPath = join(process.cwd(), 'package.json');
+if (!existsSync(packageJsonPath)) {
+  console.error('No package.json found in current directory.');
+  process.exit(1);
+}
+const { name: packageName } = JSON.parse(readFileSync(packageJsonPath, 'utf-8')) as {
+  name: string;
+};
+
+if (!confirm(`\nShip ${packageName} as a ${bumpType} release?`)) {
+  console.log('Aborted.');
+  process.exit(0);
+}
+
+// ---------------------------------------------------------------------------
 // Quality checks on staging
 // ---------------------------------------------------------------------------
 console.log('\nChecking out staging for quality checks...');
@@ -112,20 +130,12 @@ try {
 console.log('✅ Quality checks passed');
 
 // ---------------------------------------------------------------------------
-// Read package.json (from staging)
+// Read version from staging package.json and bump
 // ---------------------------------------------------------------------------
-const packageJsonPath = join(process.cwd(), 'package.json');
-if (!existsSync(packageJsonPath)) {
-  console.error('No package.json found in current directory.');
-  git('checkout', 'main');
-  process.exit(1);
-}
-
 const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8')) as {
   name: string;
   version: string;
 };
-const packageName = packageJson.name;
 const oldVersion = packageJson.version;
 const newVersion = bumpVersion(oldVersion, bumpType);
 

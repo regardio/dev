@@ -33,24 +33,24 @@ code that has passed staging validation.
 
 ```text
                     flow-release "msg"
-                    ┌─────────────────────────┐
+                    ┌─────────────────────-────┐
                     │ tests pass               │
-                    │ chore(staging): msg      │
-main ───────────────┤                          ├──► main
-                    │ ff-merge main → staging  │
-                    └─────────────────────────┘
+                    │ fix → commit (if needed) │
+main ───────────────┤ ff-merge main → staging  ├──► main (pushed)
+                    │ push staging + main      │
+                    └────────────────────-─────┘
                                 │
                            (validated in staging)
                                 │
                     flow-ship minor
-                    ┌─────────────────────────┐
+                    ┌─────────────────-────────┐
                     │ tests pass on staging    │
                     │ bump version             │
 staging ────────────┤ update CHANGELOG.md      ├──► staging
                     │ chore(release): pkg@ver  │
                     │ ff-merge staging → prod  │
                     │ ff-merge prod → main     │
-                    └─────────────────────────┘
+                    └─────────────────-────────┘
                                 │
                            (npm publish + GitHub Release triggered by CI)
                                 ▼
@@ -58,19 +58,19 @@ staging ────────────┤ update CHANGELOG.md      ├─�
 
 
                     flow-hotfix start fix-name
-                    ┌─────────────────────────┐
+                    ┌────────────────────────-─┐
 production ─────────┤ create hotfix/fix-name   ├──► hotfix/fix-name
-                    └─────────────────────────┘
+                    └───────────────────────-──┘
                                 │
                     flow-hotfix finish patch "msg"
-                    ┌─────────────────────────┐
+                    ┌─────────────────────-────┐
                     │ tests pass               │
                     │ bump version             │
 hotfix/fix-name ────┤ update CHANGELOG.md      ├──► production → staging → main
                     │ merge to production      │
                     │ propagate to staging     │
                     │ propagate to main        │
-                    └─────────────────────────┘
+                    └───────────────────-──────┘
 ```
 
 ### What each branch represents at any point in time
@@ -78,7 +78,7 @@ hotfix/fix-name ────┤ update CHANGELOG.md      ├──► production
 | Branch | Contains | Version bumped? |
 |--------|----------|-----------------|
 | `main` | All committed, tested work | Only after a ship or hotfix |
-| `staging` | Everything in `main`, plus the version commit when shipping | After `flow-ship` commits it |
+| `staging` | Everything in `main` at last `flow-release`, plus the version commit when shipping | After `flow-ship` commits it |
 | `production` | Only shipped, versioned releases | Yes — always |
 
 ### GitHub Actions role
@@ -113,10 +113,9 @@ This will:
 
 1. Guard: must be on `main`, working tree clean
 2. Run `pnpm build`, `pnpm typecheck`, `pnpm report` — aborts on failure
-3. Run `pnpm fix`
-4. Commit with `chore(staging): <message>`
-5. Fast-forward merge `main` into `staging` and push
-6. Return to `main`
+3. Run `pnpm fix` — if it produces changes, commits them as `chore(staging): <message>`
+4. Fast-forward merge `main` into `staging` and push
+5. Push `main` and return
 
 You can do this multiple times. Each commit accumulates in `staging`.
 
@@ -132,7 +131,7 @@ This will:
 
 1. Guard: must be on `main`, working tree clean
 2. Fetch and verify `staging` and `production` branches exist
-3. Confirm `staging` is ahead of `production` — aborts if nothing to ship
+3. Show all commits to be shipped and ask for confirmation — aborts if declined
 4. Check out `staging`, run full quality suite — aborts on failure
 5. Bump version in `package.json` (patch / minor / major)
 6. Collect all `git log` subjects since last production tip as changelog entries

@@ -1,9 +1,9 @@
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { bumpVersion, insertChangelog } from './utils.js';
+import { bumpVersion, confirm, insertChangelog } from './utils.js';
 
 // ---------------------------------------------------------------------------
 // bumpVersion
@@ -122,5 +122,57 @@ describe('insertChangelog', () => {
     const idx100 = content.indexOf('## [1.0.0]');
     expect(idx120).toBeLessThan(idx110);
     expect(idx110).toBeLessThan(idx100);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// confirm
+// ---------------------------------------------------------------------------
+
+describe('confirm', () => {
+  let tmpDir: string;
+  let inputFile: string;
+
+  beforeEach(() => {
+    tmpDir = join(tmpdir(), `confirm-test-${Date.now()}-${Math.random().toString(36).slice(2)}`);
+    mkdirSync(tmpDir, { recursive: true });
+    inputFile = join(tmpDir, 'input');
+    vi.spyOn(process.stdout, 'write').mockImplementation(() => true);
+  });
+
+  afterEach(() => {
+    rmSync(tmpDir, { force: true, recursive: true });
+    vi.restoreAllMocks();
+  });
+
+  it('returns true for "y"', () => {
+    writeFileSync(inputFile, 'y\n');
+    expect(confirm('Continue?', inputFile)).toBe(true);
+  });
+
+  it('returns true for "Y"', () => {
+    writeFileSync(inputFile, 'Y\n');
+    expect(confirm('Continue?', inputFile)).toBe(true);
+  });
+
+  it('returns false for "n"', () => {
+    writeFileSync(inputFile, 'n\n');
+    expect(confirm('Continue?', inputFile)).toBe(false);
+  });
+
+  it('returns false for empty input', () => {
+    writeFileSync(inputFile, '\n');
+    expect(confirm('Continue?', inputFile)).toBe(false);
+  });
+
+  it('returns false for any other input', () => {
+    writeFileSync(inputFile, 'yes\n');
+    expect(confirm('Continue?', inputFile)).toBe(false);
+  });
+
+  it('writes the prompt to stdout', () => {
+    writeFileSync(inputFile, 'y\n');
+    confirm('Ship it?', inputFile);
+    expect(process.stdout.write).toHaveBeenCalledWith('Ship it? (y/N) ');
   });
 });
