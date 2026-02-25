@@ -1,5 +1,9 @@
 # @regardio/dev
 
+## [1.14.2] - 2026-02-25
+
+- fix: add NODE_AUTH_TOKEN to npm publish step in all release workflows
+
 ## [1.14.1] - 2026-02-25
 
 - fix: fall back to stdin when /dev/tty unavailable in confirm()
