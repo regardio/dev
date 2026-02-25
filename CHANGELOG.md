@@ -1,5 +1,9 @@
 # @regardio/dev
 
+## [1.14.3] - 2026-02-25
+
+- fix: guard clean.ts spawn behind main-module check to prevent process.exit leaking into tests
+
 ## [1.14.2] - 2026-02-25
 
 - fix: add NODE_AUTH_TOKEN to npm publish step in all release workflows
