@@ -1,5 +1,15 @@
 # @regardio/dev
 
+## [1.14.0] - 2026-02-25
+
+- fix: exclude bin/ from coverage, rename scripts to flow:release/ship/hotfix
+- chore: rename pnpm scripts to flow:release, flow:ship, flow:hotfix
+- fix: sync staging after shipping to production
+- feat: add flow scripts with confirmation prompt and fix release bugs
+- refactor: structure and test
+- feat: enhance workflows, breaking changes
+- fix: properly run fix after build
+
 ## 1.13.8
 
 ### Patch Changes
