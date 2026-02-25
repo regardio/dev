@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     branches:
-      - main
+      - production
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
@@ -13,7 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      pull-requests: write
       id-token: write
     steps:
       - name: Checkout
@@ -42,11 +41,17 @@ jobs:
       - name: Publish to npm
         id: publish
         run: |
+          PACKAGE_NAME=$(node -p "require('./package.json').name")
           CURRENT_VERSION=$(node -p "require('./package.json').version")
-          PUBLISHED_VERSION=$(npm view @regardio/dev version 2>/dev/null || echo '0.0.0')
+          PUBLISHED_VERSION=$(npm view "$PACKAGE_NAME" version 2>/dev/null || echo 'NOT_FOUND')
+          echo "package_name=$PACKAGE_NAME" >> $GITHUB_OUTPUT
           echo "current_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
-          if [ "$PUBLISHED_VERSION" != "$CURRENT_VERSION" ]; then
-            echo "Publishing v$CURRENT_VERSION (npm has v$PUBLISHED_VERSION)"
+          if [ "$PUBLISHED_VERSION" = "NOT_FOUND" ]; then
+            echo "::error::Package $PACKAGE_NAME not found on npm. First publish must be done locally."
+            echo "::error::Run: pnpm build && npm publish --access public"
+            exit 1
+          elif [ "$PUBLISHED_VERSION" != "$CURRENT_VERSION" ]; then
+            echo "Publishing $PACKAGE_NAME@$CURRENT_VERSION (npm has $PUBLISHED_VERSION)"
             npm publish --access public --provenance
             echo "published=true" >> $GITHUB_OUTPUT
           else
@@ -54,13 +59,22 @@ jobs:
             echo "published=false" >> $GITHUB_OUTPUT
           fi
 
+      - name: Extract changelog entry
+        if: steps.publish.outputs.published == 'true'
+        id: changelog
+        run: |
+          # Extract the top section of CHANGELOG.md (from first ## heading to the next one)
+          ENTRY=$(awk '/^## /{found++} found==1{print} found==2{exit}' CHANGELOG.md)
+          echo "entry<<EOF" >> $GITHUB_OUTPUT
+          echo "$ENTRY" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
       - name: Create GitHub Release
         if: steps.publish.outputs.published == 'true'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ steps.publish.outputs.current_version }}
           name: v${{ steps.publish.outputs.current_version }}
-          body_path: CHANGELOG.md
-          generate_release_notes: true
+          body: ${{ steps.changelog.outputs.entry }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

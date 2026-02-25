@@ -115,13 +115,11 @@ Commit messages are validated by [Commitlint](../toolchain/commitlint.md) via Gi
 
 ## Changelog Generation
 
-Changesets uses commit types to generate changelogs:
+Changelogs are updated automatically by `flow-ship` at release time. The commit
+subjects between the previous production tip and the current staging HEAD are
+collected and written as bullet points into `CHANGELOG.md`.
 
-- `feat` commits appear under "Features"
-- `fix` commits appear under "Bug Fixes"
-- `BREAKING CHANGE` commits appear under "Breaking Changes"
-
-Other types are typically excluded from public changelogs but remain in git history.
+Write informative commit subjects — they become the public changelog entries.
 
 ## Resources
 

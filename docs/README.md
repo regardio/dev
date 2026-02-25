@@ -31,7 +31,7 @@ Configuration and usage for each tool in the stack:
 | [Commitlint](./toolchain/commitlint.md) | Commit message validation |
 | [Markdownlint](./toolchain/markdownlint.md) | Markdown quality |
 | [Husky](./toolchain/husky.md) | Git hooks |
-| [Changesets](./toolchain/changesets.md) | Versioning and releases |
+| [Release Workflow](./toolchain/release-workflow.md) | GitLab-flow-based versioning and releases |
 
 ## Quick Reference
 
@@ -45,6 +45,8 @@ pnpm lint          # Run linting only
 pnpm test          # Run tests
 pnpm report        # Run tests with coverage
 pnpm typecheck     # TypeScript type checking
+pnpm release "…"   # Deploy changes to staging
+pnpm ship <patch|minor|major>  # Version and promote to production
 ```
 
 ### Config Files

@@ -2,21 +2,23 @@
 # Copy this file to .github/workflows/release.yml in your package
 #
 # Required setup:
-# 1. Create .changeset/config.json (see changeset-config.json template)
-# 2. Add "release": "flow-release" to package.json scripts
-# 3. First publish must be done locally (see docs/toolchain/changesets.md)
+# 1. Add "release": "flow-release", "ship": "flow-ship" to package.json scripts
+# 2. Create staging and production branches:
+#    git checkout -b staging && git push -u origin staging
+#    git checkout -b production && git push -u origin production
+# 3. First npm publish must be done locally:
+#    pnpm build && npm publish --access public
 #
 # Usage:
-# - Run `pnpm release patch|minor|major "message"` locally
-# - Push to main branch
-# - This workflow publishes to npm and creates a GitHub release
+# - Run `pnpm release "message"` to deploy changes to staging
+# - Run `pnpm ship patch|minor|major` to version, promote to production, and trigger this workflow
 
 name: Release
 
 on:
   push:
     branches:
-      - main
+      - production
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
@@ -26,7 +28,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      pull-requests: write
       id-token: write
     steps:
       - name: Checkout
@@ -52,12 +53,6 @@ jobs:
       - name: Build
         run: pnpm build
 
-      - name: Type check
-        run: pnpm typecheck
-
-      - name: Test with coverage
-        run: pnpm report
-
       - name: Publish to npm
         id: publish
         run: |
@@ -71,7 +66,7 @@ jobs:
             echo "::error::Run: pnpm build && npm publish --access public"
             exit 1
           elif [ "$PUBLISHED_VERSION" != "$CURRENT_VERSION" ]; then
-            echo "Publishing $PACKAGE_NAME@$CURRENT_VERSION (npm has v$PUBLISHED_VERSION)"
+            echo "Publishing $PACKAGE_NAME@$CURRENT_VERSION (npm has $PUBLISHED_VERSION)"
             npm publish --access public --provenance
             echo "published=true" >> $GITHUB_OUTPUT
           else
@@ -79,13 +74,22 @@ jobs:
             echo "published=false" >> $GITHUB_OUTPUT
           fi
 
+      - name: Extract changelog entry
+        if: steps.publish.outputs.published == 'true'
+        id: changelog
+        run: |
+          # Extract the top section of CHANGELOG.md (from first ## heading to the next one)
+          ENTRY=$(awk '/^## /{found++} found==1{print} found==2{exit}' CHANGELOG.md)
+          echo "entry<<EOF" >> $GITHUB_OUTPUT
+          echo "$ENTRY" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
       - name: Create GitHub Release
         if: steps.publish.outputs.published == 'true'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ steps.publish.outputs.current_version }}
           name: v${{ steps.publish.outputs.current_version }}
-          body_path: CHANGELOG.md
-          generate_release_notes: true
+          body: ${{ steps.changelog.outputs.entry }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

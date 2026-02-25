@@ -1,185 +1,126 @@
 #!/usr/bin/env node
 /**
- * flow-release: Automate the release flow for any @regardio package.
+ * flow-release: Deploy changes to staging following the GitLab workflow.
  *
- * Usage: flow-release <patch|minor|major> [message]
+ * Usage: flow-release "message"
+ *
+ * GitLab workflow:
+ *   main → staging  (staging deploy, no version bump yet)
+ *
+ * Versioning happens at ship time (flow-ship), not here.
+ * This keeps version numbers reserved for production-verified code.
  *
  * This script:
- * 1. Reads the package name from package.json
- * 2. Creates a changeset file with the specified bump type
- * 3. Runs `changeset version` to apply the version bump
- * 4. Updates the lockfile (pnpm install --ignore-workspace)
- * 5. Commits all changes
- * 6. Pushes to the current branch
- *
- * The GitHub Action will then publish to npm automatically.
- *
- * Prerequisites for adopting packages:
- * - Add @regardio/dev as a devDependency
- * - Create .changeset/config.json (see template in dev docs)
- * - Add .github/workflows/release.yml (see template in dev docs)
- * - Add "release": "flow-release" to package.json scripts
+ * 1. Ensures the current branch is main and the working tree is clean
+ * 2. Pulls latest main from origin
+ * 3. Runs quality checks locally (build, typecheck, tests)
+ * 4. Commits all changes with a commitlint-compliant message
+ * 5. Merges main into staging (fast-forward) and pushes
+ * 6. Checks out main so work can continue
  */
-import { execSync, spawn } from 'node:child_process';
-import {
-  existsSync,
-  mkdirSync,
-  readdirSync,
-  readFileSync,
-  unlinkSync,
-  writeFileSync,
-} from 'node:fs';
-import { createRequire } from 'node:module';
-import path, { join } from 'node:path';
+import { existsSync, readFileSync } from 'node:fs';
+import { join } from 'node:path';
+
+import { branchExists, git, gitRead, runQualityChecks, runScript } from './flow-utils.js';
 
 const args = process.argv.slice(2);
-const bumpType = args[0];
-const message = args.slice(1).join(' ') || 'Release update';
+const message = args.join(' ');
 
-if (!bumpType || !['patch', 'minor', 'major'].includes(bumpType)) {
-  console.error('Usage: flow-release <patch|minor|major> [message]');
-  console.error('Example: flow-release minor "Add new vitest configs"');
+if (!message) {
+  console.error('Usage: flow-release "message"');
+  console.error('Example: flow-release "Add new vitest configs"');
   process.exit(1);
 }
 
-const run = (cmd: string) => {
-  console.log(`$ ${cmd}`);
-  execSync(cmd, { stdio: 'inherit' });
-};
+// ---------------------------------------------------------------------------
+// Guard: must be on main
+// ---------------------------------------------------------------------------
+const currentBranch = gitRead('branch', '--show-current');
+if (currentBranch !== 'main') {
+  console.error(`Must be on the main branch to release. Currently on: ${currentBranch}`);
+  process.exit(1);
+}
 
-const runQuiet = (cmd: string): string => {
-  return execSync(cmd, { encoding: 'utf-8' }).trim();
-};
+// Guard: working tree must be clean
+const status = gitRead('status', '--porcelain');
+if (status) {
+  console.error('Working directory has uncommitted changes. Commit or stash them first.');
+  process.exit(1);
+}
 
-// Read package name from package.json
+// ---------------------------------------------------------------------------
+// Sync with origin before doing anything
+// ---------------------------------------------------------------------------
+console.log('\nFetching latest state from origin...');
+git('fetch', 'origin');
+git('pull', '--ff-only', 'origin', 'main');
+
+// ---------------------------------------------------------------------------
+// Read package.json
+// ---------------------------------------------------------------------------
 const packageJsonPath = join(process.cwd(), 'package.json');
 if (!existsSync(packageJsonPath)) {
-  console.error('No package.json found in current directory');
+  console.error('No package.json found in current directory.');
   process.exit(1);
 }
-const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8')) as {
-  name: string;
-  version: string;
-};
+
+const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8')) as { name: string };
 const packageName = packageJson.name;
 
 if (!packageName) {
-  console.error('No "name" field found in package.json');
+  console.error('No "name" field found in package.json.');
   process.exit(1);
 }
 
-console.log(`Releasing ${packageName} with ${bumpType} bump...`);
+// Guard: staging branch must exist
+if (!branchExists('staging')) {
+  console.error(
+    'Branch "staging" does not exist locally or on origin. Create it first:\n'
+      + '  git checkout -b staging && git push -u origin staging',
+  );
+  process.exit(1);
+}
 
-// Run quality checks before release
-console.log('Running quality checks...');
+// ---------------------------------------------------------------------------
+// Quality checks — no broken code may be committed
+// ---------------------------------------------------------------------------
+console.log('\nRunning quality checks...');
 try {
-  run('pnpm build');
-  run('pnpm typecheck');
-  run('pnpm report');
+  runQualityChecks();
 } catch {
-  console.error('Quality checks failed. Fix issues before releasing.');
+  console.error('\nQuality checks failed. Fix all issues before releasing.');
   process.exit(1);
 }
 console.log('✅ Quality checks passed');
 
-// Ensure we're in a clean git state
+// ---------------------------------------------------------------------------
+// Fix formatting if available
+// ---------------------------------------------------------------------------
 try {
-  const status = runQuiet('git status --porcelain');
-  if (status) {
-    console.log('Working directory has uncommitted changes. Staging all changes...');
-  }
+  runScript('fix');
 } catch {
-  console.error('Not in a git repository');
-  process.exit(1);
+  // fix may not exist in all packages
 }
 
-// Verify .changeset/config.json exists
-const changesetDir = join(process.cwd(), '.changeset');
-const changesetConfigPath = join(changesetDir, 'config.json');
-if (!existsSync(changesetConfigPath)) {
-  console.error('No .changeset/config.json found.');
-  console.error('Run: pnpm changeset init');
-  console.error('Then configure .changeset/config.json for your package.');
-  process.exit(1);
-}
-
-// Clean up existing changesets to ensure only our bump type is applied
-mkdirSync(changesetDir, { recursive: true });
-
-const existingChangesets = readdirSync(changesetDir).filter(
-  (f) => f.endsWith('.md') && f !== 'README.md',
-);
-for (const file of existingChangesets) {
-  unlinkSync(join(changesetDir, file));
-  console.log(`Removed existing changeset: ${file}`);
-}
-
-// Generate a unique changeset filename
-const changesetId = `release-${Date.now()}`;
-const changesetFile = join(changesetDir, `${changesetId}.md`);
-
-// Create the changeset file with dynamic package name
-const changesetContent = `---
-"${packageName}": ${bumpType}
----
-
-${message}
-`;
-
-writeFileSync(changesetFile, changesetContent);
-console.log(`Created changeset: .changeset/${changesetId}.md`);
-
-// Run changeset version to apply the bump
-// Resolve changeset bin directly to avoid dependency on flow-changeset being in PATH
-const require = createRequire(import.meta.url);
-const changesetPkgPath = require.resolve('@changesets/cli/package.json');
-const changesetPkg = require(changesetPkgPath);
-let changesetBinRel =
-  typeof changesetPkg.bin === 'string' ? changesetPkg.bin : changesetPkg.bin?.changeset;
-if (!changesetBinRel) {
-  console.error('Unable to locate changeset binary');
-  process.exit(1);
-}
-if (changesetBinRel.startsWith('./')) changesetBinRel = changesetBinRel.slice(2);
-const changesetBin = path.join(path.dirname(changesetPkgPath), changesetBinRel);
-const changesetChild = spawn(process.execPath, [changesetBin, 'version'], {
-  stdio: 'inherit',
-});
-await new Promise<void>((resolve, reject) => {
-  changesetChild.on('exit', (code) => {
-    if (code === 0) resolve();
-    else reject(new Error(`changeset version failed with code ${code}`));
-  });
-});
-
-// Update lockfile to ensure it matches package.json
-// Use --ignore-workspace to update this package's lockfile independently
-console.log('Updating lockfile...');
-run('pnpm install --ignore-workspace');
-
-// Run fix to ensure package.json formatting is correct after changeset version
-console.log('Fixing formatting...');
-try {
-  run('pnpm fix');
-} catch {
-  // fix may not exist in all packages, ignore errors
-}
-
-// Stage all changes
-run('git add -A');
-
-// Re-read package.json to get the new version after changeset version
-const updatedPackageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8')) as {
-  version: string;
-};
-const { version } = updatedPackageJson;
-
+// ---------------------------------------------------------------------------
 // Commit
-run(`git commit -m "chore(release): v${version}"`);
+// ---------------------------------------------------------------------------
+git('add', '-A');
+git('commit', '-m', `chore(staging): ${message}`);
 
-// Push
-const branch = runQuiet('git branch --show-current');
-run(`git push origin ${branch}`);
+// ---------------------------------------------------------------------------
+// Merge into staging
+// ---------------------------------------------------------------------------
+console.log('\nMerging main into staging...');
+git('checkout', 'staging');
+git('merge', '--ff-only', 'main');
+git('push', 'origin', 'staging');
 
-console.log(`\n✅ Released v${version}`);
-console.log('The GitHub Action will now publish to npm.');
+// ---------------------------------------------------------------------------
+// Return to main
+// ---------------------------------------------------------------------------
+git('checkout', 'main');
+
+console.log('\n✅ Changes deployed to staging');
+console.log(`   "${message}"`);
+console.log('Run flow-ship <patch|minor|major> when ready to promote to production.');

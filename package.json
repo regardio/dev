@@ -6,7 +6,6 @@
   "description": "Regardio developer tooling for testing, linting, and build workflows",
   "keywords": [
     "biome",
-    "changesets",
     "commitlint",
     "dev",
     "husky",
@@ -62,8 +61,9 @@
     "exec-s": "dist/bin/exec-s.js",
     "exec-ts": "dist/bin/exec-ts.js",
     "exec-tsc": "dist/bin/exec-tsc.js",
-    "flow-changeset": "dist/bin/flow-changeset.js",
+    "flow-hotfix": "dist/bin/flow-hotfix.js",
     "flow-release": "dist/bin/flow-release.js",
+    "flow-ship": "dist/bin/flow-ship.js",
     "lint-biome": "dist/bin/lint-biome.js",
     "lint-commit": "dist/bin/lint-commit.js",
     "lint-md": "dist/bin/lint-md.js",
@@ -77,6 +77,7 @@
     "fix:biome": "biome check --write --unsafe .",
     "fix:md": "markdownlint-cli2 --fix",
     "fix:pkg": "tsx src/bin/lint-package.ts --fix",
+    "hotfix": "tsx src/bin/flow-hotfix.ts",
     "lint": "run-s lint:md lint:biome",
     "lint:biome": "biome check .",
     "lint:md": "markdownlint-cli2",
@@ -84,10 +85,10 @@
     "prepare": "husky",
     "release": "tsx src/bin/flow-release.ts",
     "report": "vitest run --coverage",
+    "ship": "tsx src/bin/flow-ship.ts",
     "test": "run-p test:*",
     "test:unit": "vitest run",
-    "typecheck": "tsc --noEmit",
-    "version": "tsx src/bin/flow-changeset.ts version"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@biomejs/biome": "2.4.4",

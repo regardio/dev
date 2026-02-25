@@ -26,8 +26,8 @@ The goal is code that's correct, consistent, and a pleasure to work with.
 | **Linting** | Biome, Markdownlint, Commitlint |
 | **Testing** | Vitest, Playwright, Testing Library |
 | **Build** | TypeScript, tsx, Vite |
-| **Workflow** | Husky, Changesets |
-| **CLI utilities** | exec-clean, exec-p, exec-s, exec-ts, flow-release, lint-biome, lint-md, lint-package |
+| **Workflow** | Husky, GitLab Flow |
+| **CLI utilities** | exec-clean, exec-p, exec-s, exec-ts, flow-release, flow-ship, flow-hotfix, lint-biome, lint-md, lint-package |
 
 ## Quick Start
 
@@ -67,7 +67,7 @@ Detailed documentation is organized by topic:
 - [Commitlint](./docs/toolchain/commitlint.md) - Commit message validation
 - [Markdownlint](./docs/toolchain/markdownlint.md) - Markdown quality
 - [Husky](./docs/toolchain/husky.md) - Git hooks
-- [Changesets](./docs/toolchain/changesets.md) - Versioning and releases
+- [Release Workflow](./docs/toolchain/release-workflow.md) - GitLab-flow-based versioning and releases
 
 ## Portability
 
