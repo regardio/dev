@@ -159,7 +159,9 @@ const changeLines = logOutput
   : [];
 
 const changeBody =
-  changeLines.length > 0 ? changeLines.map((c) => `- ${c}`).join('\n') : `${bumpType} release`;
+  changeLines.length > 0
+    ? changeLines.map((c) => `- ${c.length > 98 ? `${c.slice(0, 95)}...` : c}`).join('\n')
+    : `${bumpType} release`;
 
 // ---------------------------------------------------------------------------
 // Update CHANGELOG.md
