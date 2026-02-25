@@ -6,6 +6,7 @@
 import { spawn } from 'node:child_process';
 import { createRequire } from 'node:module';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 /**
  * Resolve the absolute path to the rimraf binary from its package.json bin field.
@@ -21,13 +22,15 @@ export function resolveRimrafBin(require: NodeRequire): string | null {
   return path.join(path.dirname(pkgPath), normalized);
 }
 
-const require = createRequire(import.meta.url);
-const bin = resolveRimrafBin(require);
-if (!bin) {
-  console.error('Unable to locate rimraf binary from package.json bin field');
-  process.exit(1);
-}
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  const require = createRequire(import.meta.url);
+  const bin = resolveRimrafBin(require);
+  if (!bin) {
+    console.error('Unable to locate rimraf binary from package.json bin field');
+    process.exit(1);
+  }
 
-const args = process.argv.slice(2);
-const child = spawn(process.execPath, [bin, ...args], { stdio: 'inherit' });
-child.on('exit', (code) => process.exit(code ?? 0));
+  const args = process.argv.slice(2);
+  const child = spawn(process.execPath, [bin, ...args], { stdio: 'inherit' });
+  child.on('exit', (code) => process.exit(code ?? 0));
+}
