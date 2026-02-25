@@ -94,9 +94,16 @@ export const branchExists = (name: string): boolean =>
 export const confirm = (prompt: string, ttyPath = '/dev/tty'): boolean => {
   process.stdout.write(`${prompt} (y/N) `);
   const buf = Buffer.alloc(1024);
-  const fd = openSync(ttyPath, 'r');
+  let fd: number;
+  let shouldClose = false;
+  try {
+    fd = openSync(ttyPath, 'r');
+    shouldClose = true;
+  } catch {
+    fd = process.stdin.fd;
+  }
   const bytesRead = readSync(fd, buf, 0, buf.length, null);
-  closeSync(fd);
+  if (shouldClose) closeSync(fd);
   const answer = buf.slice(0, bytesRead).toString().trim();
   return answer === 'y' || answer === 'Y';
 };
