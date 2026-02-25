@@ -71,7 +71,7 @@
   },
   "files": ["dist", "src"],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json && exec-s fix",
+    "build": "tsc -p tsconfig.build.json",
     "clean": "tsx src/bin/exec/clean.ts .turbo dist",
     "fix": "run-s fix:pkg fix:md fix:biome",
     "fix:biome": "biome check --write --unsafe .",
