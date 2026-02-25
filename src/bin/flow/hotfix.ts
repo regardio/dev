@@ -33,7 +33,7 @@ import {
   insertChangelog,
   runQualityChecks,
   runScript,
-} from './flow-utils.js';
+} from './utils.js';
 
 const subcommand = process.argv[2];
 const subArgs = process.argv.slice(3);

@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
-import { bumpVersion, insertChangelog } from './flow-utils.js';
+import { bumpVersion, insertChangelog } from './utils.js';
 
 // ---------------------------------------------------------------------------
 // bumpVersion
@@ -96,6 +96,16 @@ describe('insertChangelog', () => {
     expect(content).toContain('- old entry');
     expect(content).toContain('## [1.1.0]');
     expect(content).toContain('- new entry');
+  });
+
+  it('appends when file exists but has no title line', () => {
+    writeFileSync(changelogPath, '## [1.0.0] - 2025-01-01\n\n- old entry\n');
+
+    insertChangelog(changelogPath, '## [1.1.0] - 2025-02-01\n\n- new entry\n');
+
+    const content = readFileSync(changelogPath, 'utf-8');
+    expect(content).toContain('## [1.0.0]');
+    expect(content).toContain('## [1.1.0]');
   });
 
   it('handles multiple existing entries in the correct order', () => {

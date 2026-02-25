@@ -33,7 +33,7 @@ import {
   insertChangelog,
   runQualityChecks,
   runScript,
-} from './flow-utils.js';
+} from './utils.js';
 
 const args = process.argv.slice(2);
 const bumpType = args[0];

@@ -21,7 +21,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-import { branchExists, git, gitRead, runQualityChecks, runScript } from './flow-utils.js';
+import { branchExists, git, gitRead, runQualityChecks, runScript } from './utils.js';
 
 const args = process.argv.slice(2);
 const message = args.join(' ');
