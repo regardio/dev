@@ -1,5 +1,12 @@
 # @regardio/dev
 
+## [1.14.1] - 2026-02-25
+
+- fix: fall back to stdin when /dev/tty unavailable in confirm()
+- fix: truncate long commit body lines to satisfy commitlint 100 char limit
+- chore: update all packages — flow: scripts, release.yml on production branch, remove fix from b...
+- fix: remove fix from build script — runs as side effect, dirtying working tree
+
 ## [1.14.0] - 2026-02-25
 
 - fix: exclude bin/ from coverage, rename scripts to flow:release/ship/hotfix
