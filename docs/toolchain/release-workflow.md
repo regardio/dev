@@ -32,7 +32,7 @@ code that has passed staging validation.
 ### Full flow diagram
 
 ```text
-                    flow-release "msg"
+                    flow-release [message]
                     ┌─────────────────────-────┐
                     │ tests pass               │
                     │ fix → commit (if needed) │
@@ -94,7 +94,7 @@ CI is intentionally minimal. It does not re-run tests. It:
 
 | Command | Usage | Purpose |
 |---------|-------|---------|
-| `flow-release` | `flow-release "message"` | Deploy changes to staging |
+| `flow-release` | `flow-release [message]` | Deploy changes to staging |
 | `flow-ship` | `flow-ship <patch\|minor\|major>` | Promote staging to production with version bump |
 | `flow-hotfix` | `flow-hotfix start <name>` | Create a hotfix branch from production |
 | `flow-hotfix` | `flow-hotfix finish <patch\|minor> "message"` | Finish and propagate a hotfix |
@@ -106,6 +106,8 @@ CI is intentionally minimal. It does not re-run tests. It:
 From `main`, with a clean working tree:
 
 ```bash
+pnpm flow:release
+# or with an optional message for the auto-fix commit:
 pnpm flow:release "Add new vitest configs"
 ```
 
@@ -203,3 +205,14 @@ Add the convenience scripts to `package.json`:
 
 Create an initial `CHANGELOG.md` if one does not exist (the tools will create
 it automatically on first use if absent).
+
+## Private Packages
+
+Packages that should never be published to npm must set `"private": true` in
+`package.json` and omit `"publishConfig"`. This is the npm-standard mechanism
+that prevents accidental publishing regardless of how `npm publish` is called.
+
+The git flow (`flow-release`, `flow-ship`, `flow-hotfix`) works identically for
+private packages — versioning, changelogs, and branch promotion all continue as
+normal. The CI `release.yml` detects `private: true` and skips the publish and
+GitHub Release steps gracefully.

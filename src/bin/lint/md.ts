@@ -4,7 +4,7 @@
  * Usage: lint-md [--fix] [globs...]
  *
  * Default globs (if none provided): "**\/*.md" "**\/*.mdx"
- * Default exclusions (always added): "!**\/.changeset/**" "!**\/node_modules/**" "!**\/dist/**"
+ * Default exclusions (always added): "!**\/dist/**" "!**\/node_modules/**"
  */
 import { spawn } from 'node:child_process';
 import { createRequire } from 'node:module';
@@ -15,7 +15,7 @@ const packageDir = dirname(require.resolve('markdownlint-cli2'));
 const bin = join(packageDir, 'markdownlint-cli2-bin.mjs');
 
 const DEFAULT_GLOBS = ['**/*.md', '**/*.mdx'];
-const DEFAULT_EXCLUSIONS = ['!**/.changeset/**', '!**/node_modules/**', '!**/dist/**'];
+const DEFAULT_EXCLUSIONS = ['!**/dist/**', '!**/node_modules/**'];
 
 const rawArgs = process.argv.slice(2);
 const fixFlag = rawArgs.includes('--fix');

@@ -2,7 +2,7 @@
 /**
  * flow-release: Deploy changes to staging following the GitLab workflow.
  *
- * Usage: flow-release "message"
+ * Usage: flow-release [message]
  *
  * GitLab workflow:
  *   main → staging  (staging deploy, no version bump yet)
@@ -24,13 +24,7 @@ import { join } from 'node:path';
 import { branchExists, git, gitRead, runQualityChecks, runScript } from './utils.js';
 
 const args = process.argv.slice(2);
-const message = args.join(' ');
-
-if (!message) {
-  console.error('Usage: flow-release "message"');
-  console.error('Example: flow-release "Add new vitest configs"');
-  process.exit(1);
-}
+const message = args.join(' ') || 'auto-fix formatting';
 
 // ---------------------------------------------------------------------------
 // Guard: must be on main
@@ -126,5 +120,4 @@ git('checkout', 'main');
 git('push', 'origin', 'main');
 
 console.log('\n✅ Changes deployed to staging');
-console.log(`   "${message}"`);
 console.log('Run flow-ship <patch|minor|major> when ready to promote to production.');

@@ -41,24 +41,24 @@ Configuration and usage for each tool in the stack:
 pnpm build         # Build all packages
 pnpm dev           # Start development
 pnpm fix           # Run all fixes and linting
+pnpm flow:release  # Deploy changes to staging
+pnpm flow:ship <patch|minor|major>  # Version and promote to production
 pnpm lint          # Run linting only
-pnpm test          # Run tests
 pnpm report        # Run tests with coverage
+pnpm test          # Run tests
 pnpm typecheck     # TypeScript type checking
-pnpm release "…"   # Deploy changes to staging
-pnpm ship <patch|minor|major>  # Version and promote to production
 ```
 
 ### Config Files
 
 | File | Purpose |
 |------|---------|
-| `tsconfig.json` | TypeScript configuration |
-| `biome.jsonc` | Linting and formatting |
-| `vitest.config.ts` | Unit test configuration |
-| `playwright.config.ts` | E2E test configuration |
 | `.commitlintrc.json` | Commit message rules |
 | `.markdownlint.json` | Markdown rules |
+| `biome.jsonc` | Linting and formatting |
+| `playwright.config.ts` | E2E test configuration |
+| `tsconfig.json` | TypeScript configuration |
+| `vitest.config.ts` | Unit test configuration |
 
 ### Extending Presets
 
