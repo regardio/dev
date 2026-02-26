@@ -1,5 +1,9 @@
 # @regardio/dev
 
+## [1.15.1] - 2026-02-26
+
+- chore: add private package guard to release.yml
+
 ## [1.15.0] - 2026-02-26
 
 - refactor: remove changesets, lock file
