@@ -1,5 +1,12 @@
 # @regardio/dev
 
+## [1.15.0] - 2026-02-26
+
+- refactor: remove changesets, lock file
+- chore: deps
+- Merge pull request #4 from regardio/dependabot/npm_and_yarn/ajv-8.18.0
+- chore(deps): bump ajv from 8.17.1 to 8.18.0
+
 ## [1.14.3] - 2026-02-25
 
 - fix: guard clean.ts spawn behind main-module check to prevent process.exit leaking into tests
