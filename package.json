@@ -1,7 +1,7 @@
 {
   "$schema": "https://www.schemastore.org/package.json",
   "name": "@regardio/dev",
-  "version": "1.16.0",
+  "version": "1.16.1",
   "private": false,
   "description": "Regardio developer tooling for testing, linting, and build workflows",
   "keywords": [

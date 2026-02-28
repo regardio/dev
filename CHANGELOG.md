@@ -1,5 +1,9 @@
 # @regardio/dev
 
+## [1.16.1] - 2026-02-28
+
+- fix: ship should test, not report
+
 ## [1.16.0] - 2026-02-28
 
 - refactor: ship tools
