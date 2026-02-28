@@ -27,7 +27,7 @@ The goal is code that's correct, consistent, and a pleasure to work with.
 | **Testing** | Vitest, Playwright, Testing Library |
 | **Build** | TypeScript, tsx, Vite |
 | **Workflow** | Husky, GitLab Flow |
-| **CLI utilities** | exec-clean, exec-p, exec-s, exec-ts, flow-release, flow-ship, flow-hotfix, lint-biome, lint-md, lint-package |
+| **CLI utilities** | exec-clean, exec-p, exec-s, exec-ts, ship-staging, ship-production, ship-hotfix, lint-biome, lint-md, lint-package |
 
 ## Quick Start
 

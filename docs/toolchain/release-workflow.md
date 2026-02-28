@@ -23,7 +23,7 @@ code that has passed staging validation.
 
 1. **Branches mirror environments.** `staging` always reflects what is deployed to the staging server; `production` always reflects what is deployed to production. There is never ambiguity about what is running where.
 
-2. **Version numbers are a production guarantee.** A version bump only happens at `flow-ship` time, after the code has been validated in staging. This means every version tag in git and every release on npm corresponds to code that has actually been tested end-to-end in a real environment.
+2. **Version numbers are a production guarantee.** A version bump only happens at `ship-production` time, after the code has been validated in staging. This means every version tag in git and every release on npm corresponds to code that has actually been tested end-to-end in a real environment.
 
 3. **Tests are a local gate, not a CI gate.** Quality checks (`build`, `typecheck`, `report`) run on your machine before any commit is made. Broken code cannot enter the repository. CI only runs `build` and `publish` — it trusts the local gates.
 
@@ -32,7 +32,7 @@ code that has passed staging validation.
 ### Full flow diagram
 
 ```text
-                    flow-release [message]
+                    ship-staging [message]
                     ┌─────────────────────-────┐
                     │ tests pass               │
                     │ fix → commit (if needed) │
@@ -42,7 +42,7 @@ main ───────────────┤ ff-merge main → staging 
                                 │
                            (validated in staging)
                                 │
-                    flow-ship minor
+                    ship-production minor
                     ┌─────────────────-────────┐
                     │ tests pass on staging    │
                     │ bump version             │
@@ -57,12 +57,12 @@ staging ────────────┤ update CHANGELOG.md      ├─�
                            production
 
 
-                    flow-hotfix start fix-name
+                    ship-hotfix start fix-name
                     ┌────────────────────────-─┐
 production ─────────┤ create hotfix/fix-name   ├──► hotfix/fix-name
                     └───────────────────────-──┘
                                 │
-                    flow-hotfix finish patch "msg"
+                    ship-hotfix finish patch "msg"
                     ┌─────────────────────-────┐
                     │ tests pass               │
                     │ bump version             │
@@ -78,7 +78,7 @@ hotfix/fix-name ────┤ update CHANGELOG.md      ├──► production
 | Branch | Contains | Version bumped? |
 |--------|----------|-----------------|
 | `main` | All committed, tested work | Only after a ship or hotfix |
-| `staging` | Everything in `main` at last `flow-release`, plus the version commit when shipping | After `flow-ship` commits it |
+| `staging` | Everything in `main` at last `ship-staging`, plus the version commit when shipping | After `ship-production` commits it |
 | `production` | Only shipped, versioned releases | Yes — always |
 
 ### GitHub Actions role
@@ -94,10 +94,10 @@ CI is intentionally minimal. It does not re-run tests. It:
 
 | Command | Usage | Purpose |
 |---------|-------|---------|
-| `flow-release` | `flow-release [message]` | Deploy changes to staging |
-| `flow-ship` | `flow-ship <patch\|minor\|major>` | Promote staging to production with version bump |
-| `flow-hotfix` | `flow-hotfix start <name>` | Create a hotfix branch from production |
-| `flow-hotfix` | `flow-hotfix finish <patch\|minor> "message"` | Finish and propagate a hotfix |
+| `ship-staging` | `ship-staging [message]` | Deploy changes to staging |
+| `ship-production` | `ship-production <patch\|minor\|major>` | Promote staging to production with version bump |
+| `ship-hotfix` | `ship-hotfix start <name>` | Create a hotfix branch from production |
+| `ship-hotfix` | `ship-hotfix finish <patch\|minor> "message"` | Finish and propagate a hotfix |
 
 ## Typical Release Flow
 
@@ -106,9 +106,9 @@ CI is intentionally minimal. It does not re-run tests. It:
 From `main`, with a clean working tree:
 
 ```bash
-pnpm flow:release
+pnpm ship:staging
 # or with an optional message for the auto-fix commit:
-pnpm flow:release "Add new vitest configs"
+pnpm ship:staging "Add new vitest configs"
 ```
 
 This will:
@@ -126,7 +126,7 @@ You can do this multiple times. Each commit accumulates in `staging`.
 When staging has been validated and you are ready to release:
 
 ```bash
-pnpm flow:ship minor
+pnpm ship:production minor
 ```
 
 This will:
@@ -142,7 +142,7 @@ This will:
 9. Commit with `chore(release): <package>@<version>`
 10. Fast-forward merge `staging` into `production` and push
 11. Fast-forward merge `production` back into `main` and push
-12. Sync `staging` with `main` so the next `flow-release` can ff-merge cleanly
+12. Sync `staging` with `main` so the next `ship-staging` can ff-merge cleanly
 13. Return to `main`
 
 ## Hotfix Flow
@@ -151,10 +151,10 @@ For urgent fixes that must go directly to production:
 
 ```bash
 # 1. Create hotfix branch from production
-pnpm flow:hotfix start fix-auth-bug
+pnpm ship:hotfix start fix-auth-bug
 
 # 2. Make your changes, then finish
-pnpm flow:hotfix finish patch "Fix critical auth token expiry bug"
+pnpm ship:hotfix finish patch "Fix critical auth token expiry bug"
 ```
 
 `finish` will:
@@ -196,9 +196,9 @@ Add the convenience scripts to `package.json`:
 ```json
 {
   "scripts": {
-    "flow:hotfix": "flow-hotfix",
-    "flow:release": "flow-release",
-    "flow:ship": "flow-ship"
+    "ship:hotfix": "ship-hotfix",
+    "ship:production": "ship-production",
+    "ship:staging": "ship-staging"
   }
 }
 ```
@@ -212,7 +212,7 @@ Packages that should never be published to npm must set `"private": true` in
 `package.json` and omit `"publishConfig"`. This is the npm-standard mechanism
 that prevents accidental publishing regardless of how `npm publish` is called.
 
-The git flow (`flow-release`, `flow-ship`, `flow-hotfix`) works identically for
+The git flow (`ship-staging`, `ship-production`, `ship-hotfix`) works identically for
 private packages — versioning, changelogs, and branch promotion all continue as
 normal. The CI `release.yml` detects `private: true` and skips the publish and
 GitHub Release steps gracefully.

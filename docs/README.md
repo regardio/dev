@@ -41,8 +41,8 @@ Configuration and usage for each tool in the stack:
 pnpm build         # Build all packages
 pnpm dev           # Start development
 pnpm fix           # Run all fixes and linting
-pnpm flow:release  # Deploy changes to staging
-pnpm flow:ship <patch|minor|major>  # Version and promote to production
+pnpm ship:staging  # Deploy changes to staging
+pnpm ship:production <patch|minor|major>  # Version and promote to production
 pnpm lint          # Run linting only
 pnpm report        # Run tests with coverage
 pnpm test          # Run tests

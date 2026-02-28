@@ -2,7 +2,7 @@
 # Copy this file to .github/workflows/release.yml in your package
 #
 # Required setup:
-# 1. Add "flow:release": "flow-release", "flow:ship": "flow-ship" to package.json scripts
+# 1. Add "ship:staging": "ship-staging", "ship:production": "ship-production" to package.json scripts
 # 2. Create staging and production branches:
 #    git checkout -b staging && git push -u origin staging
 #    git checkout -b production && git push -u origin production
@@ -10,8 +10,8 @@
 #    pnpm build && npm publish --access public
 #
 # Usage:
-# - Run `pnpm flow:release "message"` to deploy changes to staging
-# - Run `pnpm flow:ship patch|minor|major` to version, promote to production, and trigger this workflow
+# - Run `pnpm ship:staging "message"` to deploy changes to staging
+# - Run `pnpm ship:production patch|minor|major` to version, promote to production, and trigger this workflow
 
 name: Release
 

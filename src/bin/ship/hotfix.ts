@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 /**
- * flow-hotfix: Manage hotfix branches based on production code.
+ * ship-hotfix: Manage hotfix branches based on production code.
  *
  * Usage:
- *   flow-hotfix start <name>                        - Create hotfix/<name> from production
- *   flow-hotfix finish <patch|minor> "description"  - Finish and propagate the hotfix
+ *   ship-hotfix start <name>                        - Create hotfix/<name> from production
+ *   ship-hotfix finish <patch|minor> "description"  - Finish and propagate the hotfix
  *
  * GitLab workflow:
  *   production → hotfix/<name> → production → staging → main
@@ -44,7 +44,7 @@ const subArgs = process.argv.slice(3);
 if (subcommand === 'start') {
   const name = subArgs[0];
   if (!name) {
-    console.error('Usage: flow-hotfix start <name>');
+    console.error('Usage: ship-hotfix start <name>');
     process.exit(1);
   }
 
@@ -72,7 +72,7 @@ if (subcommand === 'start') {
   git('checkout', '-b', hotfixBranch);
 
   console.log(`\n✅ Hotfix branch "${hotfixBranch}" created from production.`);
-  console.log('Apply your fix, then run: flow-hotfix finish <patch|minor> "description"');
+  console.log('Apply your fix, then run: ship-hotfix finish <patch|minor> "description"');
   process.exit(0);
 }
 
@@ -84,14 +84,14 @@ if (subcommand === 'finish') {
   const message = subArgs.slice(1).join(' ');
 
   if (!bumpType || !['patch', 'minor'].includes(bumpType)) {
-    console.error('Usage: flow-hotfix finish <patch|minor> "description"');
+    console.error('Usage: ship-hotfix finish <patch|minor> "description"');
     console.error('Hotfixes use patch or minor bumps only.');
     process.exit(1);
   }
 
   if (!message) {
     console.error('A description is required.');
-    console.error('Example: flow-hotfix finish patch "Fix critical auth bug"');
+    console.error('Example: ship-hotfix finish patch "Fix critical auth bug"');
     process.exit(1);
   }
 
@@ -205,6 +205,6 @@ if (subcommand === 'finish') {
 // Unknown subcommand
 // ---------------------------------------------------------------------------
 console.error('Usage:');
-console.error('  flow-hotfix start <name>');
-console.error('  flow-hotfix finish <patch|minor> "description"');
+console.error('  ship-hotfix start <name>');
+console.error('  ship-hotfix finish <patch|minor> "description"');
 process.exit(1);

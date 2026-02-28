@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 /**
- * flow-release: Deploy changes to staging following the GitLab workflow.
+ * ship-staging: Deploy changes to staging following the GitLab workflow.
  *
- * Usage: flow-release [message]
+ * Usage: ship-staging [message]
  *
  * GitLab workflow:
  *   main → staging  (staging deploy, no version bump yet)
  *
- * Versioning happens at ship time (flow-ship), not here.
+ * Versioning happens at ship time (ship-production), not here.
  * This keeps version numbers reserved for production-verified code.
  *
  * This script:
@@ -120,4 +120,4 @@ git('checkout', 'main');
 git('push', 'origin', 'main');
 
 console.log('\n✅ Changes deployed to staging');
-console.log('Run flow-ship <patch|minor|major> when ready to promote to production.');
+console.log('Run ship-production <patch|minor|major> when ready to promote to production.');

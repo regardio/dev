@@ -115,7 +115,7 @@ Commit messages are validated by [Commitlint](../toolchain/commitlint.md) via Gi
 
 ## Changelog Generation
 
-Changelogs are updated automatically by `flow-ship` at release time. The commit
+Changelogs are updated automatically by `ship-production` at release time. The commit
 subjects between the previous production tip and the current staging HEAD are
 collected and written as bullet points into `CHANGELOG.md`.
 

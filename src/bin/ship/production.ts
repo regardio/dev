@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /**
- * flow-ship: Version and promote staging to production following the GitLab workflow.
+ * ship-production: Version and promote staging to production following the GitLab workflow.
  *
- * Usage: flow-ship <patch|minor|major>
+ * Usage: ship-production <patch|minor|major>
  *
  * GitLab workflow:
  *   staging → (version bump commit) → production
@@ -20,7 +20,7 @@
  * 7. Commits the version bump on staging
  * 8. Merges staging into production (fast-forward) and pushes
  * 9. Merges production back into main to carry the version commit forward
- * 10. Syncs staging with main so the next flow-release can ff-merge cleanly
+ * 10. Syncs staging with main so the next ship-staging can ff-merge cleanly
  * 11. Returns to main
  */
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
@@ -41,8 +41,8 @@ const args = process.argv.slice(2);
 const bumpType = args[0];
 
 if (!bumpType || !['patch', 'minor', 'major'].includes(bumpType)) {
-  console.error('Usage: flow-ship <patch|minor|major>');
-  console.error('Example: flow-ship minor');
+  console.error('Usage: ship-production <patch|minor|major>');
+  console.error('Example: ship-production minor');
   process.exit(1);
 }
 

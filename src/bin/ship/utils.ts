@@ -1,5 +1,5 @@
 /**
- * Shared utilities for flow-release, flow-ship, and flow-hotfix.
+ * Shared utilities for ship-staging, ship-production, and ship-hotfix.
  *
  * Git commands use execFileSync (not a shell string) so user-provided
  * strings such as commit messages are never interpolated by the shell.

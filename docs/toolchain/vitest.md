@@ -23,7 +23,7 @@ Library packages must meet minimum coverage thresholds before publishing:
 These thresholds are enforced by:
 
 1. **`pnpm report`** - Fails if coverage is below thresholds
-2. **`flow-release`** - Runs coverage check before releasing
+2. **`ship-staging`** - Runs coverage check before deploying to staging
 3. **GitHub Actions** - Runs coverage check before publishing to npm
 
 To check coverage locally:

@@ -117,7 +117,7 @@ Library packages must meet minimum coverage thresholds:
 These are enforced at multiple stages:
 
 - **Local development** - `pnpm report` fails if below thresholds
-- **Release script** - `flow-release` runs coverage before bumping version
+- **Release script** - `ship-staging` runs coverage before deploying to staging
 - **CI/CD** - GitHub Actions runs coverage before publishing to npm
 
 ## Quality Gates
