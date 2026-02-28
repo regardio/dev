@@ -116,7 +116,7 @@ Library packages must meet minimum coverage thresholds:
 
 These are enforced at multiple stages:
 
-- **Local development** - `pnpm report` fails if below thresholds
+- **Local development** - `pnpm test` fails if below thresholds
 - **Release script** - `ship-staging` runs coverage before deploying to staging
 - **CI/CD** - GitHub Actions runs coverage before publishing to npm
 
@@ -126,7 +126,7 @@ Before code can be published to npm, it must pass:
 
 1. **Build** - `pnpm build` must succeed
 2. **Type check** - `pnpm typecheck` must pass
-3. **Coverage** - `pnpm report` must meet thresholds
+3. **Coverage** - `pnpm test` must meet thresholds
 
 ## Continuous Integration
 

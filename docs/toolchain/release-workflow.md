@@ -25,7 +25,7 @@ code that has passed staging validation.
 
 2. **Version numbers are a production guarantee.** A version bump only happens at `ship-production` time, after the code has been validated in staging. This means every version tag in git and every release on npm corresponds to code that has actually been tested end-to-end in a real environment.
 
-3. **Tests are a local gate, not a CI gate.** Quality checks (`build`, `typecheck`, `report`) run on your machine before any commit is made. Broken code cannot enter the repository. CI only runs `build` and `publish` — it trusts the local gates.
+3. **Tests are a local gate, not a CI gate.** Quality checks (`build`, `typecheck`, `test`) run on your machine before any commit is made. Broken code cannot enter the repository. CI only runs `build` and `publish` — it trusts the local gates.
 
 4. **You always land back on `main`.** Every command returns you to `main` when it finishes so you can keep working without manual branch switching.
 
@@ -114,7 +114,7 @@ pnpm ship:staging "Add new vitest configs"
 This will:
 
 1. Guard: must be on `main`, working tree clean
-2. Run `pnpm build`, `pnpm typecheck`, `pnpm report` — aborts on failure
+2. Run `pnpm build`, `pnpm typecheck`, `pnpm test` — aborts on failure
 3. Run `pnpm fix` — if it produces changes, commits them as `chore(staging): <message>`
 4. Fast-forward merge `main` into `staging` and push
 5. Push `main` and return
@@ -185,7 +185,7 @@ or pushed to any environment:
 ```bash
 pnpm build      # Must succeed
 pnpm typecheck  # Must succeed
-pnpm report     # Tests with coverage — must succeed
+pnpm test       # Tests with coverage — must succeed
 ```
 
 ## Adoption

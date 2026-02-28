@@ -75,7 +75,7 @@ export const insertChangelog = (changelogPath: string, entry: string): void => {
 export const runQualityChecks = (): void => {
   runScript('build');
   runScript('typecheck');
-  runScript('report');
+  runScript('test');
 };
 
 /**
