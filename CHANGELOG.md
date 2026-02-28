@@ -1,5 +1,9 @@
 # @regardio/dev
 
+## [1.16.0] - 2026-02-28
+
+- refactor: ship tools
+
 ## [1.15.1] - 2026-02-26
 
 - chore: add private package guard to release.yml
