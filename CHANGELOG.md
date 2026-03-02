@@ -1,5 +1,9 @@
 # @regardio/dev
 
+## [1.16.2] - 2026-03-02
+
+- chore: deps
+
 ## [1.16.1] - 2026-02-28
 
 - fix: ship should test, not report
