@@ -1,26 +1,26 @@
 #!/usr/bin/env node
 /**
- * ship-production: Version and promote staging to production following the GitLab workflow.
+ * ship-production: Version and promote main to production following the GitLab workflow.
  *
  * Usage: ship-production <patch|minor|major>
  *
  * GitLab workflow:
- *   staging → (version bump commit) → production
+ *   main → (version bump commit) → production → staging → main
  *
  * Versioning is intentionally deferred to this step so that version numbers
  * only ever correspond to production-verified code.
  *
  * This script:
  * 1. Ensures the current branch is main and the working tree is clean
- * 2. Verifies staging is ahead of production (there is something to ship)
- * 3. Runs quality checks on the staging branch
+ * 2. Verifies main is ahead of production (there is something to ship)
+ * 3. Runs quality checks on main
  * 4. Bumps the version in package.json
- * 5. Collects change descriptions from git log between production and staging
+ * 5. Collects change descriptions from git log between production and main
  * 6. Updates CHANGELOG.md
- * 7. Commits the version bump on staging
- * 8. Merges staging into production (fast-forward) and pushes
- * 9. Merges production back into main to carry the version commit forward
- * 10. Syncs staging with main so the next ship-staging can ff-merge cleanly
+ * 7. Commits the version bump on main
+ * 8. Merges main into production (fast-forward) and pushes
+ * 9. Merges production into staging to keep it in sync
+ * 10. Merges production back into main to ensure consistency
  * 11. Returns to main
  */
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
@@ -85,11 +85,12 @@ if (!branchExists('production')) {
 }
 
 // ---------------------------------------------------------------------------
-// Verify staging has commits not yet in production
+// Verify main has commits not yet in production
 // ---------------------------------------------------------------------------
-const ahead = gitRead('log', 'origin/production..origin/staging', '--oneline');
+git('pull', '--ff-only', 'origin', 'main');
+const ahead = gitRead('log', 'origin/production..HEAD', '--oneline');
 if (!ahead) {
-  console.error('staging is already in sync with production. Nothing to ship.');
+  console.error('main is already in sync with production. Nothing to ship.');
   process.exit(1);
 }
 
@@ -114,24 +115,19 @@ if (!confirm(`\nShip ${packageName} as a ${bumpType} release?`)) {
 }
 
 // ---------------------------------------------------------------------------
-// Quality checks on staging
+// Quality checks on main
 // ---------------------------------------------------------------------------
-console.log('\nChecking out staging for quality checks...');
-git('checkout', 'staging');
-git('pull', '--ff-only', 'origin', 'staging');
-
-console.log('\nRunning quality checks on staging...');
+console.log('\nRunning quality checks on main...');
 try {
   runQualityChecks();
 } catch {
-  console.error('\nQuality checks failed on staging. Fix issues before shipping.');
-  git('checkout', 'main');
+  console.error('\nQuality checks failed on main. Fix issues before shipping.');
   process.exit(1);
 }
 console.log('✅ Quality checks passed');
 
 // ---------------------------------------------------------------------------
-// Read version from staging package.json and bump
+// Read version from main package.json and bump
 // ---------------------------------------------------------------------------
 const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8')) as {
   name: string;
@@ -180,36 +176,34 @@ try {
 }
 
 // ---------------------------------------------------------------------------
-// Commit version bump on staging
+// Commit version bump on main
 // ---------------------------------------------------------------------------
 git('add', '-A');
 git('commit', '-m', `chore(release): ${packageName}@${newVersion}`, '-m', changeBody);
 
 // ---------------------------------------------------------------------------
-// Merge staging → production
+// Merge main → production
 // ---------------------------------------------------------------------------
-console.log('\nMerging staging into production...');
+console.log('\nMerging main into production...');
 git('checkout', 'production');
 git('pull', '--ff-only', 'origin', 'production');
-git('merge', '--ff-only', 'staging');
+git('merge', '--ff-only', 'main');
 git('push', 'origin', 'production');
 
 // ---------------------------------------------------------------------------
-// Bring version commit back to main
+// Sync staging with production
 // ---------------------------------------------------------------------------
-console.log('\nSyncing version commit back to main...');
-git('checkout', 'main');
-git('pull', '--ff-only', 'origin', 'main');
+console.log('\nSyncing staging with production...');
+git('checkout', 'staging');
+git('pull', '--ff-only', 'origin', 'staging');
 git('merge', '--ff-only', 'production');
-git('push', 'origin', 'main');
+git('push', 'origin', 'staging');
 
 // ---------------------------------------------------------------------------
-// Sync staging with main so the next flow-release can ff-merge cleanly
+// Return to main and sync
 // ---------------------------------------------------------------------------
-git('checkout', 'staging');
-git('merge', '--ff-only', 'main');
-git('push', 'origin', 'staging');
 git('checkout', 'main');
+git('pull', '--ff-only', 'origin', 'main');
 
 console.log(`\n✅ Shipped ${packageName}@${newVersion} to production`);
 console.log('You are on main and ready to keep working.');

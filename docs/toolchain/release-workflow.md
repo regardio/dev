@@ -7,32 +7,34 @@ GitLab-flow-based release process for all Regardio packages.
 Branches mirror deployment environments:
 
 ```text
-main → staging → production
+main → production → staging
 ```
 
 - **`main`** — active development, always deployable
-- **`staging`** — validated before promotion to production
+- **`staging`** — optional validation environment (automatically synced from production)
 - **`production`** — production-verified, versioned code only
 
-Version numbers are assigned at ship time, so they always correspond to
-code that has passed staging validation.
+Version numbers are assigned at ship time. You can ship directly from `main` to `production`,
+or optionally deploy to `staging` first for validation before shipping to production.
 
 ## How It Works
 
 ### Design principles
 
-1. **Branches mirror environments.** `staging` always reflects what is deployed to the staging server; `production` always reflects what is deployed to production. There is never ambiguity about what is running where.
+1. **Branches mirror environments.** `staging` reflects what is deployed to the staging server (when used); `production` always reflects what is deployed to production. There is never ambiguity about what is running where.
 
-2. **Version numbers are a production guarantee.** A version bump only happens at `ship-production` time, after the code has been validated in staging. This means every version tag in git and every release on npm corresponds to code that has actually been tested end-to-end in a real environment.
+2. **Version numbers are a production guarantee.** A version bump only happens at `ship-production` time. This means every version tag in git and every release on npm corresponds to code that has been validated and shipped to production.
 
-3. **Tests are a local gate, not a CI gate.** Quality checks (`build`, `typecheck`, `test`) run on your machine before any commit is made. Broken code cannot enter the repository. CI only runs `build` and `publish` — it trusts the local gates.
+3. **Staging is optional.** You can ship directly from `main` to `production`. Use `ship-staging` when you want to test changes in a staging environment first. Either way, `staging` is automatically synced with `production` after each ship.
 
-4. **You always land back on `main`.** Every command returns you to `main` when it finishes so you can keep working without manual branch switching.
+4. **Tests are a local gate, not a CI gate.** Quality checks (`build`, `typecheck`, `test`) run on your machine before any commit is made. Broken code cannot enter the repository. CI only runs `build` and `publish` — it trusts the local gates.
+
+5. **You always land back on `main`.** Every command returns you to `main` when it finishes so you can keep working without manual branch switching.
 
 ### Full flow diagram
 
 ```text
-                    ship-staging [message]
+                    ship-staging [message] (OPTIONAL)
                     ┌─────────────────────-────┐
                     │ tests pass               │
                     │ fix → commit (if needed) │
@@ -42,14 +44,16 @@ main ───────────────┤ ff-merge main → staging 
                                 │
                            (validated in staging)
                                 │
+                                ▼
                     ship-production minor
                     ┌─────────────────-────────┐
-                    │ tests pass on staging    │
+                    │ tests pass on main       │
                     │ bump version             │
-staging ────────────┤ update CHANGELOG.md      ├──► staging
+main ───────────────┤ update CHANGELOG.md      ├──► production
                     │ chore(release): pkg@ver  │
-                    │ ff-merge staging → prod  │
-                    │ ff-merge prod → main     │
+                    │ ff-merge main → prod     │
+                    │ ff-merge prod → staging  │
+                    │ sync back to main        │
                     └─────────────────-────────┘
                                 │
                            (npm publish + GitHub Release triggered by CI)
@@ -78,7 +82,7 @@ hotfix/fix-name ────┤ update CHANGELOG.md      ├──► production
 | Branch | Contains | Version bumped? |
 |--------|----------|-----------------|
 | `main` | All committed, tested work | Only after a ship or hotfix |
-| `staging` | Everything in `main` at last `ship-staging`, plus the version commit when shipping | After `ship-production` commits it |
+| `staging` | Synced from `production` after each ship, or from `main` via `ship-staging` | After `ship-production` syncs it |
 | `production` | Only shipped, versioned releases | Yes — always |
 
 ### GitHub Actions role
@@ -94,14 +98,41 @@ CI is intentionally minimal. It does not re-run tests. It:
 
 | Command | Usage | Purpose |
 |---------|-------|---------|
-| `ship-staging` | `ship-staging [message]` | Deploy changes to staging |
-| `ship-production` | `ship-production <patch\|minor\|major>` | Promote staging to production with version bump |
+| `ship-staging` | `ship-staging [message]` | (Optional) Deploy changes to staging for testing |
+| `ship-production` | `ship-production <patch\|minor\|major>` | Ship from main to production with version bump |
 | `ship-hotfix` | `ship-hotfix start <name>` | Create a hotfix branch from production |
 | `ship-hotfix` | `ship-hotfix finish <patch\|minor> "message"` | Finish and propagate a hotfix |
 
 ## Typical Release Flow
 
-### 1. Deploy to staging
+### Option A: Ship directly to production (recommended)
+
+From `main`, with a clean working tree:
+
+```bash
+pnpm ship:production minor
+```
+
+This will:
+
+1. Guard: must be on `main`, working tree clean
+2. Fetch and verify `production` branch exists
+3. Show all commits to be shipped and ask for confirmation — aborts if declined
+4. Run full quality suite on `main` — aborts on failure
+5. Bump version in `package.json` (patch / minor / major)
+6. Collect all `git log` subjects since last production tip as changelog entries
+7. Insert a new section into `CHANGELOG.md`
+8. Run `pnpm fix`
+9. Commit with `chore(release): <package>@<version>` on `main`
+10. Fast-forward merge `main` into `production` and push
+11. Sync `staging` with `production` to keep it up to date
+12. Return to `main`
+
+### Option B: Test in staging first (optional)
+
+If you want to validate changes in a staging environment before shipping:
+
+#### 1. Deploy to staging
 
 From `main`, with a clean working tree:
 
@@ -121,29 +152,15 @@ This will:
 
 You can do this multiple times. Each commit accumulates in `staging`.
 
-### 2. Ship to production
+#### 2. Ship to production
 
-When staging has been validated and you are ready to release:
+After validating in staging, ship to production using the same command as Option A:
 
 ```bash
 pnpm ship:production minor
 ```
 
-This will:
-
-1. Guard: must be on `main`, working tree clean
-2. Fetch and verify `staging` and `production` branches exist
-3. Show all commits to be shipped and ask for confirmation — aborts if declined
-4. Check out `staging`, run full quality suite — aborts on failure
-5. Bump version in `package.json` (patch / minor / major)
-6. Collect all `git log` subjects since last production tip as changelog entries
-7. Insert a new section into `CHANGELOG.md`
-8. Run `pnpm fix`
-9. Commit with `chore(release): <package>@<version>`
-10. Fast-forward merge `staging` into `production` and push
-11. Fast-forward merge `production` back into `main` and push
-12. Sync `staging` with `main` so the next `ship-staging` can ff-merge cleanly
-13. Return to `main`
+The workflow is identical — it ships from `main` to `production` and syncs `staging` afterward.
 
 ## Hotfix Flow
 

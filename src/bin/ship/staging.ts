@@ -7,6 +7,12 @@
  * GitLab workflow:
  *   main → staging  (staging deploy, no version bump yet)
  *
+ * This script is OPTIONAL. You can ship directly to production using ship-production,
+ * which will automatically sync staging afterward.
+ *
+ * Use ship-staging when you want to test changes in a staging environment before
+ * shipping to production. Otherwise, skip this step and use ship-production directly.
+ *
  * Versioning happens at ship time (ship-production), not here.
  * This keeps version numbers reserved for production-verified code.
  *
@@ -120,4 +126,5 @@ git('checkout', 'main');
 git('push', 'origin', 'main');
 
 console.log('\n✅ Changes deployed to staging');
-console.log('Run ship-production <patch|minor|major> when ready to promote to production.');
+console.log('Run ship-production <patch|minor|major> when ready to ship to production.');
+console.log('(Or ship directly from main to production without using ship-staging first.)');
