@@ -1,5 +1,9 @@
 # @regardio/dev
 
+## [1.17.0] - 2026-03-17
+
+- ci: simplify shipping
+
 ## [1.16.3] - 2026-03-17
 
 - refactor: remove ts test
