@@ -59,7 +59,6 @@
     "exec-husky": "dist/bin/exec/husky.js",
     "exec-p": "dist/bin/exec/p.js",
     "exec-s": "dist/bin/exec/s.js",
-    "exec-ts": "dist/bin/exec/ts.js",
     "exec-tsc": "dist/bin/exec/tsc.js",
     "lint-biome": "dist/bin/lint/biome.js",
     "lint-commit": "dist/bin/lint/commit.js",
