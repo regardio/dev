@@ -1,5 +1,9 @@
 # @regardio/dev
 
+## [1.17.1] - 2026-03-17
+
+- ci: sync main after merge
+
 ## [1.17.0] - 2026-03-17
 
 - ci: simplify shipping
