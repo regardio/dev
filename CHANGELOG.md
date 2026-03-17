@@ -1,5 +1,12 @@
 # @regardio/dev
 
+## [1.16.3] - 2026-03-17
+
+- refactor: remove ts test
+- refactor: remove exec-ts wrapper
+- chore: deps
+- chore: deps
+
 ## [1.16.2] - 2026-03-02
 
 - chore: deps
