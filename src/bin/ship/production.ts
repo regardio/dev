@@ -200,10 +200,10 @@ git('merge', '--ff-only', 'production');
 git('push', 'origin', 'staging');
 
 // ---------------------------------------------------------------------------
-// Return to main and sync
+// Return to main and push
 // ---------------------------------------------------------------------------
 git('checkout', 'main');
-git('pull', '--ff-only', 'origin', 'main');
+git('push', 'origin', 'main');
 
 console.log(`\n✅ Shipped ${packageName}@${newVersion} to production`);
 console.log('You are on main and ready to keep working.');
