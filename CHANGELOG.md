@@ -1,5 +1,9 @@
 # @regardio/dev
 
+## [1.18.0] - 2026-03-18
+
+- chore: deps
+
 ## [1.17.1] - 2026-03-17
 
 - ci: sync main after merge
