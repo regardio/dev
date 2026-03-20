@@ -1,5 +1,13 @@
 # @regardio/dev
 
+## [1.18.1] - 2026-03-20
+
+- fix: inferrable type annotations are desirable with dts
+- chore: deps
+- chore: deps
+- feat: explicit types for UserConfig
+- ci: workflow replacing workspace dependencies
+
 ## [1.18.0] - 2026-03-18
 
 - chore: deps
