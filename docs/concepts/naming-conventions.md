@@ -92,7 +92,7 @@ Use **snake_case** with verb prefix:
 ```sql
 CREATE FUNCTION get_user_by_id(p_user_id UUID) ...
 CREATE FUNCTION create_member(p_ensemble_id UUID, p_user_id UUID) ...
-CREATE FUNCTION update_participation_level(p_member_id UUID, p_level TEXT) ...
+CREATE FUNCTION update_stake_level(p_member_id UUID, p_level TEXT) ...
 ```
 
 ### Parameters and Variables
@@ -119,10 +119,13 @@ $$ LANGUAGE plpgsql;
 Use **snake_case** for enum types and values:
 
 ```sql
-CREATE TYPE participation_level AS ENUM (
-  'observer',
-  'contributor',
-  'steward'
+CREATE TYPE stake_level AS ENUM (
+  'ATTEND',
+  'RESPOND',
+  'OBSERVE',
+  'CONTRIBUTE',
+  'NURTURE',
+  'MAINTAIN'
 );
 ```
 

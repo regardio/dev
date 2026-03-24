@@ -119,26 +119,70 @@ CREATE TABLE {schema}.{table_name} (
 
 ### Function Naming
 
-Follow pattern: `{group}_{verb}_{target}`
+Function naming patterns vary by category to optimize for clarity and readability. Choose the pattern that best fits the function's purpose.
 
-- **Group**: Domain area using short, full words
-- **Verb**: Action performed (e.g., `get`, `set`, `add`, `list`, `convert`, `check`)
-- **Target**: Entity or data being acted upon
+#### Pattern Categories
 
-#### Example Group Prefixes
+**1. Entity Management (CRUD Operations)**
 
-| Prefix     | Domain                   |
-|------------|---------------------------|
-| `auth`     | Authorization            |
-| `check`    | Validation logic         |
-| `intl`     | Internationalization     |
-| `json`     | JSON operations          |
-| `jsonb`    | JSONB operations         |
-| `storage`  | Storage management       |
-| `time`     | Timestamp/date handling  |
-| `user`     | User management          |
-| `org`      | Organization management  |
-| `calc`     | Calculations             |
+Pattern: `{entity}_{verb}` or `{entity}_{verb}_{context}`
+
+Use for functions that create, read, update, or delete a specific entity type. Include context when the operation applies to a specific scope or relationship to avoid ambiguity.
+
+Examples:
+
+- `user_create` - Creates a new user
+- `user_delete` - Soft-deletes a user
+- `ownership_transfer` - Transfers ownership between entities
+- `member_invite_to_group` - Invites a member to a group
+- `invitation_accept` - Accepts an invitation
+- `content_publish_to_channel` - Publishes content to a channel
+
+**2. Domain Utilities**
+
+Pattern: `{domain}_{verb}_{target}` or `{domain}_{is/has}_{property}`
+
+Use for helper functions organized by domain area. This is the baseline pattern for most utility functions.
+
+Examples:
+
+- `jsonb_is_boolean` - Validates JSONB as boolean
+- `jsonb_matches_model` - Validates JSONB against model schema
+- `jsonb_filter_schema` - Filters JSONB by schema properties
+- `storage_get_usage` - Gets storage usage statistics
+- `storage_create_bucket` - Creates storage bucket
+- `model_get_schema` - Retrieves model JSON schema
+- `util_create_key` - Creates API key
+- `util_is_valid_key` - Validates API key
+
+**3. Access Control & Validation**
+
+Pattern: `{entity}_{verb}_{property}` or `{entity}_{check/is}_{condition}`
+
+Use for access control and validation functions. Include entity context to clarify what is being checked or validated.
+
+Examples:
+
+- `member_get_role_in_group` - Gets member's role in a group
+- `user_is_owner_of_entity` - Checks if user owns an entity
+- `access_check_resource_permissions` - Validates user has resource access
+- `entity_is_isolated` - Validates entity isolation boundaries
+- `entity_prevent_id_change` - Trigger preventing entity_id mutation
+- `category_can_move_to_parent` - Validates category can move to new parent
+
+**4. Private Schema Helpers**
+
+Pattern: `{entity}_{get/has}_{property}` or `{entity}_{verb}_{target}`
+
+Use for JWT claim accessors and bypass-RLS helpers in the private schema. Be explicit about what entity and property is being accessed to avoid confusion.
+
+Examples:
+
+- `private.user_get_id()` - Gets current user ID from JWT
+- `private.user_get_organization_id()` - Gets current organization ID from JWT
+- `private.user_get_access_level()` - Gets user's access level from JWT
+- `private.user_has_admin_override()` - Checks if user has admin override flag
+- `private.user_get_group_ids()` - Gets group IDs where user has membership (bypass-RLS)
 
 #### Standard Verb Terms
 
@@ -154,15 +198,25 @@ Follow pattern: `{group}_{verb}_{target}`
 | `calculate`| Perform a calculation                  |
 | `is`       | Test a boolean condition               |
 | `has`      | Check for existence or ownership       |
+| `filter`   | Filter or transform data               |
+| `transfer` | Transfer ownership or stewardship      |
+| `invite`   | Create invitation                      |
+| `accept`   | Accept invitation or request           |
+| `publish`  | Publish content                        |
 
-Examples:
+#### Domain Prefixes
 
-- `intl_convert_unit` - Converts units between locales
-- `check_handle` - Validates handle format
-- `user_get_by_id` - Retrieves user by ID
-- `org_list_members` - Lists organization members
-- `time_set_updated` - Sets updated_at timestamp
-- `calc_total_amount` - Calculates total amount
+| Prefix     | Domain                   |
+|------------|---------------------------|
+| `auth`     | Authorization            |
+| `user`     | User management          |
+| `group`    | Group management         |
+| `content`  | Content management       |
+| `jsonb`    | JSONB operations         |
+| `storage`  | Storage management       |
+| `model`    | Schema/model operations  |
+| `util`     | General utilities        |
+| `workflow` | Workflow functions       |
 
 ### Constraint Naming
 
