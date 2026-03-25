@@ -1,5 +1,9 @@
 # @regardio/dev
 
+## [1.18.3] - 2026-03-25
+
+- fix: path to husky
+
 ## [1.18.2] - 2026-03-25
 
 - chore: deps
