@@ -1,5 +1,11 @@
 # @regardio/dev
 
+## [1.18.2] - 2026-03-25
+
+- chore: deps
+- fix: simplify db docs
+- chore: deps
+
 ## [1.18.1] - 2026-03-20
 
 - fix: inferrable type annotations are desirable with dts
