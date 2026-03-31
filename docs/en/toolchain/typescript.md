@@ -1,3 +1,13 @@
+---
+
+title: TypeScript Configuration
+type: guide
+status: published
+summary: TypeScript setup and configuration for Regardio projects
+related: [biome, vitest]
+locale: en-US
+---
+
 # TypeScript Configuration
 
 Strict TypeScript configuration for type-safe, maintainable code.

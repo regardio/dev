@@ -1,3 +1,13 @@
+---
+
+title: Vitest
+type: guide
+status: published
+summary: Unit and integration testing for TypeScript projects
+related: [typescript, playwright]
+locale: en-US
+---
+
 # Vitest
 
 Fast unit testing powered by Vite.

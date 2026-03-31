@@ -1,6 +1,16 @@
+---
+
+title: Workflow
+type: guide
+status: published
+summary: Automated release process for Regardio packages
+related: [commitlint]
+locale: en-US
+---
+
 # Release Workflow
 
-GitLab-flow-based release process for all Regardio packages.
+Automated release process for Regardio packages.
 
 ## Overview
 

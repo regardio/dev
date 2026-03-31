@@ -1,3 +1,13 @@
+---
+
+title: AI Agent Guidelines
+type: guide
+status: published
+summary: Instructions for AI coding assistants working with Regardio projects
+related: [coding-standards, react-standards, development-principles]
+locale: en-US
+---
+
 # AI Agent Guidelines
 
 Instructions for AI coding assistants working with Regardio projects.
@@ -77,6 +87,152 @@ This document provides universal guidance for Claude, Codex, Cursor, Windsurf, G
 - Document function behavior with comments
 - Follow multi-tenancy patterns where applicable
 
+## Common Patterns
+
+### React State Management
+
+#### ✅ Good: Single State Object
+
+```typescript
+const [state, setState] = useState({
+  isLoading: false,
+  data: null,
+  error: null
+});
+
+// Update single property
+setState(prev => ({ ...prev, isLoading: true }));
+
+// Update multiple properties
+setState(prev => ({ ...prev, isLoading: false, data: result }));
+```
+
+#### ❌ Bad: Multiple useState Calls
+
+```typescript
+const [isLoading, setIsLoading] = useState(false);
+const [data, setData] = useState(null);
+const [error, setError] = useState(null);
+```
+
+### Avoiding useEffect
+
+#### ✅ Good: Derived State
+
+```typescript
+// Compute values directly from props/state
+const filteredItems = items.filter(item => item.active);
+const totalPrice = cartItems.reduce((sum, item) => sum + item.price, 0);
+```
+
+#### ❌ Bad: Unnecessary useEffect
+
+```typescript
+const [filteredItems, setFilteredItems] = useState([]);
+
+useEffect(() => {
+  setFilteredItems(items.filter(item => item.active));
+}, [items]);
+```
+
+#### ✅ Good: Event Handlers
+
+```typescript
+const handleSubmit = async () => {
+  setState(prev => ({ ...prev, isLoading: true }));
+  try {
+    const result = await api.submit(formData);
+    setState(prev => ({ ...prev, isLoading: false, data: result }));
+  } catch (error) {
+    setState(prev => ({ ...prev, isLoading: false, error }));
+  }
+};
+```
+
+#### ❌ Bad: useEffect for Side Effects
+
+```typescript
+useEffect(() => {
+  if (shouldSubmit) {
+    api.submit(formData);
+  }
+}, [shouldSubmit]);
+```
+
+### SQL Function Patterns
+
+#### ✅ Good: Proper Naming and Structure
+
+```sql
+CREATE FUNCTION update_user_profile(
+  p_user_id uuid,
+  p_name text,
+  p_email text
+) RETURNS void AS $$
+DECLARE
+  v_old_name text;
+  v_timestamp timestamptz;
+BEGIN
+  -- Get current values
+  SELECT name INTO v_old_name
+  FROM user_profiles
+  WHERE id = p_user_id;
+
+  -- Update profile
+  UPDATE user_profiles
+  SET
+    name = p_name,
+    email = p_email,
+    updated_at = now()
+  WHERE id = p_user_id;
+
+  -- Log change
+  INSERT INTO audit_log (user_id, old_value, new_value)
+  VALUES (p_user_id, v_old_name, p_name);
+END;
+$$ LANGUAGE plpgsql;
+```
+
+#### ❌ Bad: Poor Naming
+
+```sql
+CREATE FUNCTION updateProfile(
+  userId uuid,
+  name text
+) RETURNS void AS $$
+DECLARE
+  oldName text;  -- Should be v_old_name
+BEGIN
+  -- function logic
+END;
+$$ LANGUAGE plpgsql;
+```
+
+### TypeScript Type Safety
+
+#### ✅ Good: Explicit Interfaces
+
+```typescript
+interface UserProfile {
+  id: string;
+  name: string;
+  email: string;
+  createdAt: Date;
+}
+
+function updateProfile(profile: UserProfile): Promise<void> {
+  // Implementation
+}
+```
+
+#### ❌ Bad: Using any
+
+```typescript
+function updateProfile(profile: any): Promise<void> {
+  // Implementation
+}
+```
+
 ## Commands
 
 ```bash
@@ -105,7 +261,7 @@ Run `typecheck` regularly. Run linting when task is complete.
 
 ## Related Documentation
 
-- [Coding Standards](./coding-standards.md)
-- [Naming Conventions](./naming-conventions.md)
-- [Testing Approach](./testing.md)
-- [Commit Conventions](./commits.md)
+- [Coding](./coding.md)
+- [Naming](./naming.md)
+- [Testing](./testing.md)
+- [Commits](./commits.md)

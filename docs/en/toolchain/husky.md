@@ -1,3 +1,13 @@
+---
+
+title: Husky
+type: guide
+status: published
+summary: Git hooks for quality gates
+related: [commitlint, biome]
+locale: en-US
+---
+
 # Husky
 
 Git hooks for automated quality checks.

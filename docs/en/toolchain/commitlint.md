@@ -1,3 +1,13 @@
+---
+
+title: Commitlint
+type: guide
+status: published
+summary: Enforce conventional commit messages
+related: [husky]
+locale: en-US
+---
+
 # Commitlint
 
 Enforce conventional commit messages for consistent changelogs.

@@ -1,3 +1,13 @@
+---
+
+title: Coding Standards
+type: concept
+status: published
+summary: TypeScript, React, and general coding patterns for Regardio projects
+related: [react-standards, development-principles, naming-conventions]
+locale: en-US
+---
+
 # Coding Standards
 
 TypeScript, React, and general coding patterns for Regardio projects.
@@ -9,26 +19,22 @@ TypeScript, React, and general coding patterns for Regardio projects.
 - Enable strict TypeScript type checking
 - Define explicit interfaces for data structures
 - Avoid `any` type except when absolutely necessary
-- Use proper type assertions when needed
 
 ### Code Structure
 
 - Group related functionality in modules
-- Use explicit exports in package.json rather than barrel files
-- Keep modules focused on single responsibility
+- Use explicit exports in package.json (no barrel files)
+- Single responsibility per module
 - Extract common logic into utility functions
 
 ### Function Design
 
 - Write small, focused functions
-- Use proper parameter typing
-- Implement proper error handling
+- Proper parameter typing and error handling
 - Return explicit types when inference is unclear
 
-### Examples
-
 ```typescript
-// Good: Explicit interface, clear types
+// Good
 interface UserProfile {
   id: string;
   displayName: string;
@@ -51,24 +57,22 @@ async function fetchUser(id) {
 ### Components
 
 - Use functional components with hooks
-- Create small, focused components with single responsibility
-- Define explicit prop interfaces with TypeScript
-- Prefer composition over inheritance
+- Small, focused components with single responsibility
+- Explicit prop interfaces with TypeScript
+- Composition over inheritance
 
 ### Hooks
 
-- Provide proper dependency arrays for `useEffect` and `useMemo`
-- Extract reusable logic into custom hooks (follow `use` naming convention)
-- Implement proper cleanup in `useEffect`
-- **`useEffect` is a code smell** - Avoid if possible, justify when used
+- Proper dependency arrays for `useEffect` and `useMemo`
+- Extract reusable logic into custom hooks (`use` prefix)
+- Implement cleanup in `useEffect`
+- **`useEffect` is a code smell** - Avoid if possible
 
 ### State
 
-- Keep state as close to its usage as possible
-- Prefer single state object over many separate `useState` calls
+- Keep state close to usage
+- Prefer single state object over multiple `useState` calls
 - Use `useReducer` for complex state logic
-
-### Example
 
 ```typescript
 interface ButtonProps {
@@ -80,11 +84,7 @@ interface ButtonProps {
 
 function Button({ variant, isDisabled, onClick, children }: ButtonProps) {
   return (
-    <button
-      className={`btn btn--${variant}`}
-      disabled={isDisabled}
-      onClick={onClick}
-    >
+    <button className={`btn btn--${variant}`} disabled={isDisabled} onClick={onClick}>
       {children}
     </button>
   );
@@ -95,10 +95,10 @@ function Button({ variant, isDisabled, onClick, children }: ButtonProps) {
 
 ### Avoid Obvious Comments
 
-Code should be self-documenting. Comments should explain *why*, not *what*:
+Comments explain *why*, not *what*:
 
 ```typescript
-// Bad: Obvious comment
+// Bad: Obvious
 // Increment counter by 1
 counter += 1;
 
@@ -121,13 +121,11 @@ try {
 
 ### Use Implicit Type Inference
 
-Let TypeScript infer types when obvious:
-
 ```typescript
-// Good: Type is inferred as string[]
+// Good: Inferred as string[]
 const names = ['Alice', 'Bob'];
 
-// Unnecessary: Explicit type adds noise
+// Unnecessary
 const names: string[] = ['Alice', 'Bob'];
 
 // Good: Explicit when not obvious

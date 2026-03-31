@@ -1,3 +1,13 @@
+---
+
+title: Markdownlint
+type: guide
+status: published
+summary: Linting and formatting for Markdown files
+related: [biome]
+locale: en-US
+---
+
 # Markdownlint
 
 Consistent, readable Markdown documentation.

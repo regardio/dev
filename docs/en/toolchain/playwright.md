@@ -1,3 +1,13 @@
+---
+
+title: Playwright
+type: guide
+status: published
+summary: End-to-end testing for web applications
+related: [vitest]
+locale: en-US
+---
+
 # Playwright
 
 End-to-end testing for web applications.

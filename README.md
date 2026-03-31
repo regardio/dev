@@ -51,23 +51,28 @@ Detailed documentation is organized by topic:
 
 ### Concepts
 
-- [Development Principles](./docs/concepts/development-principles.md) - Code quality, architecture, maintainability
-- [Coding Standards](./docs/concepts/coding-standards.md) - TypeScript, React, and general patterns
-- [Naming Conventions](./docs/concepts/naming-conventions.md) - Consistent naming across languages
-- [Commit Conventions](./docs/concepts/commits.md) - Conventional commits and changelog generation
-- [Testing Approach](./docs/concepts/testing.md) - Testing philosophy and patterns
-- [AI Agent Guidelines](./docs/concepts/ai-agents.md) - Instructions for AI coding assistants
+- [AI Agents](./docs/en/agents.md) - Instructions for AI coding assistants
+- [API](./docs/en/api.md) - API design and implementation guidelines
+- [Coding](./docs/en/coding.md) - TypeScript, React, and general patterns
+- [Commits](./docs/en/commits.md) - Conventional commits and changelog generation
+- [Documentation](./docs/en/documentation.md) - Documentation structure and conventions
+- [Naming](./docs/en/naming.md) - Consistent naming across languages
+- [Principles](./docs/en/principles.md) - Code quality, architecture, maintainability
+- [React](./docs/en/react.md) - React and TypeScript development patterns
+- [SQL](./docs/en/sql.md) - PostgreSQL/Supabase schema styling and structure
+- [Testing](./docs/en/testing.md) - Testing philosophy and patterns
+- [Writing](./docs/en/writing.md) - Voice, tone, and language for content
 
 ### Toolchain
 
-- [TypeScript](./docs/toolchain/typescript.md) - Strict TypeScript configuration
-- [Biome](./docs/toolchain/biome.md) - Linting and formatting
-- [Vitest](./docs/toolchain/vitest.md) - Unit and integration testing
-- [Playwright](./docs/toolchain/playwright.md) - End-to-end testing
-- [Commitlint](./docs/toolchain/commitlint.md) - Commit message validation
-- [Markdownlint](./docs/toolchain/markdownlint.md) - Markdown quality
-- [Husky](./docs/toolchain/husky.md) - Git hooks
-- [Release Workflow](./docs/toolchain/release-workflow.md) - GitLab-flow-based versioning and releases
+- [Biome](./docs/en/toolchain/biome.md) - Linting and formatting
+- [Commitlint](./docs/en/toolchain/commitlint.md) - Commit message validation
+- [Husky](./docs/en/toolchain/husky.md) - Git hooks
+- [Markdownlint](./docs/en/toolchain/markdownlint.md) - Markdown quality
+- [Playwright](./docs/en/toolchain/playwright.md) - End-to-end testing
+- [Releases](./docs/en/toolchain/releases.md) - GitLab-flow-based versioning and releases
+- [TypeScript](./docs/en/toolchain/typescript.md) - Strict TypeScript configuration
+- [Vitest](./docs/en/toolchain/vitest.md) - Unit and integration testing
 
 ## Portability
 

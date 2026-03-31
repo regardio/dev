@@ -1,3 +1,13 @@
+---
+
+title: Biome
+type: guide
+status: published
+summary: Fast, unified linting and formatting for JavaScript and TypeScript
+related: [typescript, markdownlint]
+locale: en-US
+---
+
 # Biome
 
 Fast, unified linting and formatting for JavaScript and TypeScript.
