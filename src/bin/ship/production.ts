@@ -176,12 +176,14 @@ try {
   // fix:pkg may not exist
 }
 
-// Format package.json with biome
+// Format modified files
 try {
   git('add', '-A');
   const changedFiles = gitRead('diff', '--cached', '--name-only').split('\n').filter(Boolean);
+
+  // Format JSON files with biome
   for (const file of changedFiles) {
-    if (file.endsWith('.json') || file.endsWith('.md')) {
+    if (file.endsWith('.json')) {
       try {
         execSync(`npx biome check --write ${file}`, { cwd: process.cwd(), stdio: 'inherit' });
       } catch {
@@ -189,8 +191,19 @@ try {
       }
     }
   }
+
+  // Format markdown files with markdownlint
+  for (const file of changedFiles) {
+    if (file.endsWith('.md')) {
+      try {
+        execSync(`npx markdownlint-cli2 --fix ${file}`, { cwd: process.cwd(), stdio: 'inherit' });
+      } catch {
+        // File might not need formatting or markdownlint not available
+      }
+    }
+  }
 } catch {
-  // Biome not available
+  // Formatters not available
 }
 
 // ---------------------------------------------------------------------------
