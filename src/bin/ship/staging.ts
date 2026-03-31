@@ -19,18 +19,14 @@
  * This script:
  * 1. Ensures the current branch is main and the working tree is clean
  * 2. Pulls latest main from origin
- * 3. Runs quality checks locally (build, typecheck, tests)
- * 4. Runs fix — commits formatting output (if any) with a commitlint-compliant message
- * 5. Merges main into staging (fast-forward) and pushes
- * 6. Pushes main and returns so work can continue
+ * 3. Runs quality checks locally (build, lint, typecheck, tests)
+ * 4. Merges main into staging (fast-forward) and pushes
+ * 5. Pushes main and returns so work can continue
  */
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-import { branchExists, git, gitRead, runQualityChecks, runScript } from './utils.js';
-
-const args = process.argv.slice(2);
-const message = args.join(' ') || 'auto-fix formatting';
+import { branchExists, git, gitRead, runQualityChecks } from './utils.js';
 
 // ---------------------------------------------------------------------------
 // Guard: must be on main
@@ -92,24 +88,6 @@ try {
   process.exit(1);
 }
 console.log('✅ Quality checks passed');
-
-// ---------------------------------------------------------------------------
-// Fix formatting if available
-// ---------------------------------------------------------------------------
-try {
-  runScript('fix');
-} catch {
-  // fix may not exist in all packages
-}
-
-// ---------------------------------------------------------------------------
-// Commit formatting fixes (if any)
-// ---------------------------------------------------------------------------
-git('add', '-A');
-const hasStagedChanges = gitRead('diff', '--cached', '--name-only') !== '';
-if (hasStagedChanges) {
-  git('commit', '-m', `chore(staging): ${message}`);
-}
 
 // ---------------------------------------------------------------------------
 // Merge into staging

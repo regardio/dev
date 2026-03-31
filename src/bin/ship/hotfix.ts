@@ -32,7 +32,6 @@ import {
   gitRead,
   insertChangelog,
   runQualityChecks,
-  runScript,
 } from './utils.js';
 
 const subcommand = process.argv[2];
@@ -145,13 +144,6 @@ if (subcommand === 'finish') {
   const changelogPath = join(process.cwd(), 'CHANGELOG.md');
   const today = new Date().toISOString().slice(0, 10);
   insertChangelog(changelogPath, `## [${newVersion}] - ${today} (hotfix)\n\n${message}\n`);
-
-  // Fix formatting if available
-  try {
-    runScript('fix');
-  } catch {
-    // fix may not exist in all packages
-  }
 
   // Commit
   git('add', '-A');

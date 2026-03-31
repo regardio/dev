@@ -37,17 +37,16 @@ or optionally deploy to `staging` first for validation before shipping to produc
 
 3. **Staging is optional.** You can ship directly from `main` to `production`. Use `ship-staging` when you want to test changes in a staging environment first. Either way, `staging` is automatically synced with `production` after each ship.
 
-4. **Tests are a local gate, not a CI gate.** Quality checks (`build`, `typecheck`, `test`) run on your machine before any commit is made. Broken code cannot enter the repository. CI only runs `build` and `publish` — it trusts the local gates.
+4. **Tests are a local gate, not a CI gate.** Quality checks (`build`, `lint`, `typecheck`, `test`) run on your machine before any commit is made. Broken code cannot enter the repository. CI only runs `build` and `publish` — it trusts the local gates.
 
 5. **You always land back on `main`.** Every command returns you to `main` when it finishes so you can keep working without manual branch switching.
 
 ### Full flow diagram
 
 ```text
-                    ship-staging [message] (OPTIONAL)
+                    ship-staging (OPTIONAL)
                     ┌─────────────────────-────┐
-                    │ tests pass               │
-                    │ fix → commit (if needed) │
+                    │ quality checks pass      │
 main ───────────────┤ ff-merge main → staging  ├──► main (pushed)
                     │ push staging + main      │
                     └────────────────────-─────┘
@@ -108,7 +107,7 @@ CI is intentionally minimal. It does not re-run tests. It:
 
 | Command | Usage | Purpose |
 |---------|-------|---------|
-| `ship-staging` | `ship-staging [message]` | (Optional) Deploy changes to staging for testing |
+| `ship-staging` | `ship-staging` | (Optional) Deploy changes to staging for testing |
 | `ship-production` | `ship-production <patch\|minor\|major>` | Ship from main to production with version bump |
 | `ship-hotfix` | `ship-hotfix start <name>` | Create a hotfix branch from production |
 | `ship-hotfix` | `ship-hotfix finish <patch\|minor> "message"` | Finish and propagate a hotfix |
@@ -132,11 +131,10 @@ This will:
 5. Bump version in `package.json` (patch / minor / major)
 6. Collect all `git log` subjects since last production tip as changelog entries
 7. Insert a new section into `CHANGELOG.md`
-8. Run `pnpm fix`
-9. Commit with `chore(release): <package>@<version>` on `main`
-10. Fast-forward merge `main` into `production` and push
-11. Sync `staging` with `production` to keep it up to date
-12. Return to `main`
+8. Commit with `chore(release): <package>@<version>` on `main`
+9. Fast-forward merge `main` into `production` and push
+10. Sync `staging` with `production` to keep it up to date
+11. Return to `main`
 
 ### Option B: Test in staging first (optional)
 
@@ -148,17 +146,14 @@ From `main`, with a clean working tree:
 
 ```bash
 pnpm ship:staging
-# or with an optional message for the auto-fix commit:
-pnpm ship:staging "Add new vitest configs"
 ```
 
 This will:
 
 1. Guard: must be on `main`, working tree clean
-2. Run `pnpm build`, `pnpm typecheck`, `pnpm test` — aborts on failure
-3. Run `pnpm fix` — if it produces changes, commits them as `chore(staging): <message>`
-4. Fast-forward merge `main` into `staging` and push
-5. Push `main` and return
+2. Run quality checks (`build`, `lint`, `typecheck`, `test`) — aborts on failure
+3. Fast-forward merge `main` into `staging` and push
+4. Push `main` and return
 
 You can do this multiple times. Each commit accumulates in `staging`.
 
@@ -211,9 +206,12 @@ or pushed to any environment:
 
 ```bash
 pnpm build      # Must succeed
+pnpm lint       # Must succeed (validates without modifying)
 pnpm typecheck  # Must succeed
 pnpm test       # Tests with coverage — must succeed
 ```
+
+**Note:** If `lint` fails, run `pnpm fix` manually to apply fixes, then commit the changes before shipping.
 
 ## Adoption
 

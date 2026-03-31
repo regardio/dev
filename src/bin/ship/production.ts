@@ -34,7 +34,6 @@ import {
   gitRead,
   insertChangelog,
   runQualityChecks,
-  runScript,
 } from './utils.js';
 
 const args = process.argv.slice(2);
@@ -165,15 +164,6 @@ const changeBody =
 const changelogPath = join(process.cwd(), 'CHANGELOG.md');
 const today = new Date().toISOString().slice(0, 10);
 insertChangelog(changelogPath, `## [${newVersion}] - ${today}\n\n${changeBody}\n`);
-
-// ---------------------------------------------------------------------------
-// Fix formatting if available
-// ---------------------------------------------------------------------------
-try {
-  runScript('fix');
-} catch {
-  // fix may not exist in all packages
-}
 
 // ---------------------------------------------------------------------------
 // Commit version bump on main
