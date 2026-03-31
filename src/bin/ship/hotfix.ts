@@ -22,6 +22,7 @@
  *   7. Pushes all three branches, deletes the hotfix branch
  *   8. Checks out main
  */
+import { execSync } from 'node:child_process';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
@@ -150,12 +151,24 @@ if (subcommand === 'finish') {
   try {
     runScript('fix:pkg');
   } catch {
-    // fix:pkg may not exist, try generic fix
-    try {
-      runScript('fix');
-    } catch {
-      // No fix script available
+    // fix:pkg may not exist
+  }
+
+  // Format package.json with biome
+  try {
+    git('add', '-A');
+    const changedFiles = gitRead('diff', '--cached', '--name-only').split('\n').filter(Boolean);
+    for (const file of changedFiles) {
+      if (file.endsWith('.json') || file.endsWith('.md')) {
+        try {
+          execSync(`npx biome check --write ${file}`, { cwd: process.cwd(), stdio: 'inherit' });
+        } catch {
+          // File might not need formatting or biome not available
+        }
+      }
     }
+  } catch {
+    // Biome not available
   }
 
   // Commit
