@@ -131,10 +131,11 @@ This will:
 5. Bump version in `package.json` (patch / minor / major)
 6. Collect all `git log` subjects since last production tip as changelog entries
 7. Insert a new section into `CHANGELOG.md`
-8. Commit with `chore(release): <package>@<version>` on `main`
-9. Fast-forward merge `main` into `production` and push
-10. Sync `staging` with `production` to keep it up to date
-11. Return to `main`
+8. Fix formatting of modified files (`package.json`, `CHANGELOG.md`)
+9. Commit with `chore(release): <package>@<version>` on `main`
+10. Fast-forward merge `main` into `production` and push
+11. Sync `staging` with `production` to keep it up to date
+12. Return to `main`
 
 ### Option B: Test in staging first (optional)
 
