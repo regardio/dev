@@ -1,5 +1,12 @@
 # @regardio/dev
 
+## [1.19.0] - 2026-03-31
+
+- refactor: documentation
+- chore: deps
+- chore: deps
+- chore: deps
+
 ## [1.18.3] - 2026-03-25
 
 - fix: path to husky
