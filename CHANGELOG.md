@@ -1,5 +1,12 @@
 # @regardio/dev
 
+## [1.20.0] - 2026-03-31
+
+- fix: also fix changelog
+- fix: fix package.json after modifications
+- fix: proper linting
+- refactor: release workflows verify data, not modify code
+
 ## [1.19.0] - 2026-03-31
 
 - refactor: documentation
