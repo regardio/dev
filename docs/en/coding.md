@@ -12,22 +12,58 @@ locale: en-US
 
 TypeScript, React, and general coding patterns for Regardio projects.
 
-## TypeScript
+## Impulse
 
-### Type Safety
+Shared coding standards become necessary when teams need to read, review, and change the same code without relying on personal habit alone.
+
+- Inconsistent code structure increases cognitive load
+- Weak conventions slow reviews and make refactoring harder
+- Shared patterns help projects stay legible over time
+
+## Signal
+
+Standards are most useful when they support judgment instead of replacing it.
+
+- TypeScript and React both benefit from explicit, readable structure
+- Error handling, state management, and exceptions reveal where code quality matters most
+- A small set of recurring patterns can remove avoidable ambiguity
+
+## Effect
+
+There are several ways to document coding practice.
+
+- A broad style guide can be comprehensive, but hard to apply
+- Purely local conventions are flexible, but they drift quickly
+- A compact set of shared patterns gives teams usable guidance without freezing every decision
+
+## Accord
+
+We use shared coding standards to keep TypeScript, React, and general implementation patterns understandable across Regardio projects.
+
+- Prefer clarity over cleverness
+- Keep modules and functions focused
+- Make exceptions explicit when a rule does not apply cleanly
+
+## Action
+
+Use the patterns below when writing and reviewing code.
+
+### TypeScript
+
+#### Type Safety
 
 - Enable strict TypeScript type checking
 - Define explicit interfaces for data structures
 - Avoid `any` type except when absolutely necessary
 
-### Code Structure
+#### Code Structure
 
 - Group related functionality in modules
 - Use explicit exports in package.json (no barrel files)
 - Single responsibility per module
 - Extract common logic into utility functions
 
-### Function Design
+#### Function Design
 
 - Write small, focused functions
 - Proper parameter typing and error handling
@@ -52,23 +88,23 @@ async function fetchUser(id) {
 }
 ```
 
-## React
+### React
 
-### Components
+#### Components
 
 - Use functional components with hooks
 - Small, focused components with single responsibility
 - Explicit prop interfaces with TypeScript
 - Composition over inheritance
 
-### Hooks
+#### Hooks
 
 - Proper dependency arrays for `useEffect` and `useMemo`
 - Extract reusable logic into custom hooks (`use` prefix)
 - Implement cleanup in `useEffect`
 - **`useEffect` is a code smell** - Avoid if possible
 
-### State
+#### State
 
 - Keep state close to usage
 - Prefer single state object over multiple `useState` calls
@@ -91,9 +127,9 @@ function Button({ variant, isDisabled, onClick, children }: ButtonProps) {
 }
 ```
 
-## General Patterns
+### General Patterns
 
-### Avoid Obvious Comments
+#### Avoid Obvious Comments
 
 Comments explain *why*, not *what*:
 
@@ -107,7 +143,7 @@ counter += 1;
 counter += 1;
 ```
 
-### Handle Errors Gracefully
+#### Handle Errors Gracefully
 
 ```typescript
 try {
@@ -119,7 +155,7 @@ try {
 }
 ```
 
-### Use Implicit Type Inference
+#### Use Implicit Type Inference
 
 ```typescript
 // Good: Inferred as string[]
@@ -132,9 +168,9 @@ const names: string[] = ['Alice', 'Bob'];
 const config: AppConfig = loadConfig();
 ```
 
-## Exceptions
+### Exceptions
 
-When rules don't apply, document why:
+When rules do not apply, document why:
 
 ```typescript
 // biome-ignore lint/complexity/noForEach: forEach is clearer for side effects
@@ -145,3 +181,17 @@ const result = legacyLib.process(data);
 ```
 
 Always include a reason explaining the exception.
+
+## Essence
+
+This document gives coding work a shared practical baseline.
+
+- Teams can read and review code against the same expectations
+- TypeScript and React patterns stay easier to reason about across projects
+- Exceptions remain deliberate instead of becoming silent drift
+
+Related documents:
+
+- [Development Principles](./principles.md) — Universal coding standards and principles for Regardio projects
+- [React and TypeScript Standards](./react.md) — TypeScript and React development patterns for Regardio projects
+- [Naming Conventions](./naming.md) — Consistent naming patterns across Regardio projects

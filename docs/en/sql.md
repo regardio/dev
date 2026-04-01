@@ -12,18 +12,54 @@ locale: en-US
 
 SQL schema styling and structure guidelines for PostgreSQL and Supabase projects.
 
-## Schema Organization
+## Impulse
 
-### Schema Structure
+Database work needs clear structural standards because schema decisions are costly to reverse once they shape application behavior.
+
+- Inconsistent SQL structure makes schemas harder to maintain
+- Weak naming and placement choices blur access boundaries and intent
+- Shared standards help teams design schema, functions, and policies with the same assumptions
+
+## Signal
+
+SQL quality depends on more than syntax. Organization, naming, security, and testing all shape whether a schema remains workable over time.
+
+- Schema placement communicates responsibility and exposure
+- Naming and formatting affect readability across migrations and reviews
+- Functions, access control, and tests reveal where structural discipline matters most
+
+## Effect
+
+There are several ways to document database standards.
+
+- A style-only guide helps formatting, but misses architectural concerns
+- Team-local conventions can fit one system, but they drift across projects
+- A combined schema and function standard gives teams a shared basis for structural SQL work
+
+## Accord
+
+We use shared SQL standards to keep PostgreSQL and Supabase schemas legible, secure, and maintainable across Regardio projects.
+
+- Prefer explicit naming and schema placement
+- Treat security and access control as part of schema design
+- Keep documentation and testing close to the database objects they describe
+
+## Action
+
+Use the patterns below when designing schemas, naming functions, formatting SQL, and testing database behavior.
+
+### Schema Organization
+
+#### Schema Structure
 
 - **`public`** - User-facing API (views, functions)
 - **`private`** - Core data storage, relational integrity
 - **`util`/`tools`** - Utility functions, development helpers
 - **`extensions`** - Third-party extensions
 
-## File Organization
+### File Organization
 
-### File Structure
+#### File Structure
 
 ```sql
 /*
@@ -35,7 +71,7 @@ SQL schema styling and structure guidelines for PostgreSQL and Supabase projects
 -- Definitions, Indexes, Triggers, Comments, Permissions
 ```
 
-## Naming Conventions
+### Naming Conventions
 
 - Use `snake_case` for all identifiers
 - Singular form for table names (`user`, not `users`)
@@ -50,7 +86,7 @@ CREATE TABLE {schema}.{table_name} (
 );
 ```
 
-### Function Naming
+#### Function Naming
 
 **Pattern Categories:**
 
@@ -70,7 +106,7 @@ CREATE TABLE {schema}.{table_name} (
 
 **Domain Prefixes**: `auth`, `user`, `group`, `content`, `jsonb`, `storage`, `model`, `util`
 
-### Constraint, Index, and Trigger Naming
+#### Constraint, Index, and Trigger Naming
 
 - **Constraints**: `chk_[field]_[purpose]`, `fk_[field]`, `uq_[field]`
 - **Indexes**: `idx_[field]`, `idx_unique_[field]`
@@ -83,9 +119,9 @@ CREATE TRIGGER trg_updated_at BEFORE UPDATE ON {schema}.{table}
   FOR EACH ROW EXECUTE FUNCTION {schema}.time_set_updated();
 ```
 
-## Table Design
+### Table Design
 
-### Standard Structure
+#### Standard Structure
 
 Group fields logically:
 
@@ -110,13 +146,13 @@ CREATE TABLE {schema}.{entity} (
 );
 ```
 
-### JSONB Fields
+#### JSONB Fields
 
 - Validate against JSON Schema 2020-12
 - Include GIN indexes for searchability
 - Use `_intl` suffix for internationalized content
 
-## Function Standards
+### Function Standards
 
 - Declare volatility (IMMUTABLE, STABLE, VOLATILE)
 - Set security context (SECURITY DEFINER/INVOKER)
@@ -140,13 +176,13 @@ END;
 $function$;
 ```
 
-### Schema Placement
+#### Schema Placement
 
 - **Public**: API endpoints, business logic, access control
 - **Private**: Data manipulation, complex logic, performance-critical
 - **Tools**: Development utilities, migrations, testing
 
-## SQL Formatting
+### SQL Formatting
 
 - 2-space indentation
 - Capitalize SQL keywords
@@ -161,7 +197,7 @@ WHERE o.deleted_at IS NULL AND u.active = true
 ORDER BY o.created_at DESC;
 ```
 
-## Documentation
+### Documentation
 
 - Add purpose comments to tables and functions
 - Comment all columns with descriptions
@@ -174,9 +210,9 @@ CREATE TABLE {schema}.organization (...);
 COMMENT ON COLUMN {schema}.organization.handle IS 'Unique identifier for URLs';
 ```
 
-## Access Control
+### Access Control
 
-### Multi-Tenancy
+#### Multi-Tenancy
 
 - Include tenant identifier in tenant-scoped tables
 - Use foreign keys for relationship integrity
@@ -191,9 +227,9 @@ CREATE POLICY document_isolation ON {schema}.document FOR SELECT
   ));
 ```
 
-## Testing
+### Testing
 
-### PGTap Assertions
+#### PGTap Assertions
 
 - `is(value, expected, description)` - Equality test
 - `throws_ok(sql, error_code, message, description)` - Error test
@@ -206,7 +242,7 @@ SET ROLE role_name;
 SELECT * FROM finish();
 ```
 
-### Testing Standards
+#### Testing Standards
 
 - Test functions with valid and invalid inputs
 - Verify access control rules
@@ -214,7 +250,7 @@ SELECT * FROM finish();
 - Validate constraints and triggers
 - Use EXPLAIN ANALYZE for performance
 
-## Best Practices
+### Best Practices
 
 - Follow naming conventions strictly
 - Comment tables, columns, and functions
@@ -222,7 +258,15 @@ SELECT * FROM finish();
 - Add indexes for foreign keys and frequent queries
 - Use migrations for all schema changes
 
----
+## Essence
 
-**License**: This documentation is licensed under [CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
-by Regardio.
+This document gives database work a shared structural language.
+
+- Schemas and functions stay easier to reason about over time
+- Security and access control remain visible in schema design
+- Reviews can focus on trade-offs instead of avoidable inconsistency
+
+Related documents:
+
+- [Naming Conventions](./naming.md) — Consistent naming patterns across Regardio projects
+- [API Design Standards](./api.md) — API design and implementation guidelines for Regardio projects

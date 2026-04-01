@@ -12,7 +12,7 @@ locale: en-US
 
 Fast, unified linting and formatting for JavaScript and TypeScript.
 
-## Context
+## Impulse
 
 This guide begins with the tension it responds to: code quality checks are easiest to trust when formatting and linting stay consistent across packages.
 
@@ -20,7 +20,7 @@ This guide begins with the tension it responds to: code quality checks are easie
 - Slow feedback loops make quality checks easier to postpone
 - Shared defaults help teams keep code review focused on behavior rather than style
 
-## Rationale
+## Signal
 
 From there, the guide points to the observations that make Biome useful in practice.
 
@@ -28,7 +28,7 @@ From there, the guide points to the observations that make Biome useful in pract
 - Fast execution supports regular local checks
 - A shared wrapper keeps behavior stable across the monorepo
 
-## Considerations
+## Effect
 
 These observations open a few plausible ways to approach code quality checks.
 
@@ -36,7 +36,7 @@ These observations open a few plausible ways to approach code quality checks.
 - Project-specific setups can fit local preferences, but they fragment the developer experience
 - A shared Biome preset creates a common baseline with less repeated configuration
 
-## Decision
+## Accord
 
 This guide then makes the direction explicit so readers can see what we are choosing and why.
 
@@ -44,16 +44,16 @@ This guide then makes the direction explicit so readers can see what we are choo
 - Use wrapper commands so packages behave consistently
 - Let package-specific exceptions remain explicit and rare
 
-## Implementation
-
-With that direction in place, the remainder of the document shows how to apply it in day-to-day work.
-
 ### Why Biome?
 
 - **Speed** - 10-100x faster than ESLint + Prettier
 - **Unified** - Single tool for linting and formatting
 - **Zero config** - Sensible defaults out of the box
 - **TypeScript-first** - Built with TypeScript in mind
+
+## Action
+
+With that direction in place, the remainder of the document shows how to apply it in day-to-day work.
 
 ### Configuration
 
@@ -124,14 +124,12 @@ items.forEach(item => process(item));
 
 Always include a reason explaining why the exception is necessary.
 
-### Editor Integration
+## Essence
 
 Install the Biome extension for your editor:
 
 - **VS Code**: [Biome extension](https://marketplace.visualstudio.com/items?itemName=biomejs.biome)
 - **JetBrains**: Built-in support via settings
-
-## References
 
 - [Biome Documentation](https://biomejs.dev/)
 - [Rules Reference](https://biomejs.dev/linter/rules/)

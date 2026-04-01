@@ -10,9 +10,45 @@ locale: en-US
 
 # Documentation
 
-Complete documentation for the @regardio/dev toolchain.
+Complete documentation for the `@regardio/dev` toolchain.
 
-## Concepts
+## Impulse
+
+A shared toolchain needs documentation that helps readers move from orientation to detail without guessing where to start.
+
+- Documentation becomes harder to use when standards and tools are scattered
+- Readers need both conceptual guidance and practical setup instructions
+- A clear index reduces the cost of entering or revisiting the toolchain
+
+## Signal
+
+The docs in this package serve different purposes, but they belong to one shared system.
+
+- Concept documents explain principles and recurring patterns
+- Toolchain guides explain how to configure and use specific tools
+- Writing guidance supports the voice and structure of the docs themselves
+
+## Effect
+
+There are a few ways to organize documentation.
+
+- A flat list is simple, but it hides the difference between concepts and tools
+- A purely narrative introduction helps newcomers, but slows repeat readers
+- A structured index gives readers quick access while still showing how the pieces fit together
+
+## Accord
+
+This README acts as the entry point for `@regardio/dev` documentation.
+
+- Group documents by role so readers can navigate by intent
+- Keep quick-reference material close to the index
+- Link into detailed documents instead of repeating them here
+
+## Action
+
+Use the sections below to find the document that matches the question you are trying to answer.
+
+### Concepts
 
 Foundational principles and standards that guide development:
 
@@ -29,16 +65,16 @@ Foundational principles and standards that guide development:
 | [SQL](./en/sql.md) | PostgreSQL/Supabase schema styling and structure |
 | [Testing](./en/testing.md) | Testing philosophy and patterns |
 
-## Locale-Specific Documentation
+### Locale-Specific Documentation
 
-Writing for Regardio content (crucial aspects available in German):
+Writing for Regardio content:
 
 | Document | Description |
 |----------|-------------|
 | [Writing in English](./en/writing.md) | Voice, tone, and language for English content |
 | [Schreiben auf Deutsch](./de/writing.md) | Stimme, Ton und Sprache für deutsche Inhalte |
 
-## Toolchain
+### Toolchain
 
 Configuration and usage for each tool in the stack:
 
@@ -46,6 +82,7 @@ Configuration and usage for each tool in the stack:
 |----------|-------------|
 | [Biome](./en/toolchain/biome.md) | Linting and formatting |
 | [Commitlint](./en/toolchain/commitlint.md) | Commit message validation |
+| [Dependencies](./en/toolchain/dependencies.md) | Safe dependency updates and supply-chain controls |
 | [Husky](./en/toolchain/husky.md) | Git hooks |
 | [Markdownlint](./en/toolchain/markdownlint.md) | Markdown quality |
 | [Playwright](./en/toolchain/playwright.md) | End-to-end testing |
@@ -53,9 +90,9 @@ Configuration and usage for each tool in the stack:
 | [TypeScript](./en/toolchain/typescript.md) | Strict TypeScript configuration |
 | [Vitest](./en/toolchain/vitest.md) | Unit and integration testing |
 
-## Quick Reference
+### Quick Reference
 
-### Commands
+#### Commands
 
 ```bash
 pnpm build         # Build all packages
@@ -69,7 +106,7 @@ pnpm test          # Run tests
 pnpm typecheck     # TypeScript type checking
 ```
 
-### Config Files
+#### Config Files
 
 | File | Purpose |
 |------|---------|
@@ -77,10 +114,11 @@ pnpm typecheck     # TypeScript type checking
 | `.markdownlint.json` | Markdown rules |
 | `biome.jsonc` | Linting and formatting |
 | `playwright.config.ts` | E2E test configuration |
+| `pnpm-workspace.yaml` | Workspace dependency and supply-chain policy |
 | `tsconfig.json` | TypeScript configuration |
 | `vitest.config.ts` | Unit test configuration |
 
-### Extending Presets
+#### Extending Presets
 
 ```jsonc
 // biome.jsonc
@@ -95,3 +133,15 @@ pnpm typecheck     # TypeScript type checking
 // .markdownlint.json
 { "extends": "@regardio/dev/markdownlint" }
 ```
+
+## Essence
+
+This index gives the documentation set a navigable shape.
+
+- New readers can find the right entry point faster
+- Experienced readers can jump directly to the detail they need
+- The relationship between principles, tooling, and writing stays visible
+
+Related documents:
+
+- [Documentation Standard](./en/documentation.md) — Template and standard for Regardio documentation following the six-step structure

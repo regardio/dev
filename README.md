@@ -67,6 +67,7 @@ Detailed documentation is organized by topic:
 
 - [Biome](./docs/en/toolchain/biome.md) - Linting and formatting
 - [Commitlint](./docs/en/toolchain/commitlint.md) - Commit message validation
+- [Dependencies](./docs/en/toolchain/dependencies.md) - Safe dependency updates and supply-chain controls
 - [Husky](./docs/en/toolchain/husky.md) - Git hooks
 - [Markdownlint](./docs/en/toolchain/markdownlint.md) - Markdown quality
 - [Playwright](./docs/en/toolchain/playwright.md) - End-to-end testing

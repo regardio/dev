@@ -58,11 +58,11 @@ jobs:
               Object.keys(pkg[depType]).forEach(key => {
                 if (pkg[depType][key].startsWith('workspace:')) {
                   try {
-                    const version = execSync(\`npm view \${key} version\`, { encoding: 'utf8' }).trim();
-                    pkg[depType][key] = \`^\${version}\`;
-                    console.log(\`Replaced \${key}@workspace:* with ^\${version}\`);
+                    const version = execSync(`npm view ${key} version`, { encoding: 'utf8' }).trim();
+                    pkg[depType][key] = version;
+                    console.log(`Replaced ${key}@workspace:* with ${version}`);
                   } catch (e) {
-                    console.error(\`Error: Could not find \${key} on npm. Publish it first.\`);
+                    console.error(`Error: Could not find ${key} on npm. Publish it first.`);
                     process.exit(1);
                   }
                 }

@@ -1,6 +1,6 @@
 ---
 
-title: Workflow
+title: Release Workflow
 type: guide
 status: published
 summary: Automated release process for Regardio packages
@@ -12,7 +12,43 @@ locale: en-US
 
 Automated release process for Regardio packages.
 
-## Overview
+## Impulse
+
+Release work becomes risky when branch meaning, versioning, and quality gates depend on shared memory instead of a stable workflow.
+
+- Teams need a clear relationship between development, validation, and production branches
+- Version numbers lose meaning if they are assigned before production validation
+- Release commands should make promotion predictable without hiding what they do
+
+## Signal
+
+A reliable release process depends on more than automation. It needs clear branch semantics, explicit quality gates, and a workflow that stays legible under pressure.
+
+- Branches should correspond to environments rather than private habits
+- Local checks can prevent broken code from entering release flow
+- Hotfix work needs a path that is fast without becoming improvised
+
+## Effect
+
+There are several ways to structure package releases.
+
+- CI-only release logic centralizes automation, but it can obscure what happens locally
+- Fully manual branch and version management is flexible, but it is easy to get wrong
+- A guided command workflow keeps release steps explicit while reducing repeated manual work
+
+## Accord
+
+We use a branch-based release workflow in which `main`, `staging`, and `production` correspond to clear deployment states.
+
+- Version bumps happen at ship time, not earlier
+- Local quality gates run before release changes are committed
+- Hotfixes follow an explicit path back through all long-lived branches
+
+## Action
+
+Use the workflow description, commands, and examples below when shipping packages.
+
+### Overview
 
 Branches mirror deployment environments:
 
@@ -24,24 +60,19 @@ main → production → staging
 - **`staging`** — optional validation environment (automatically synced from production)
 - **`production`** — production-verified, versioned code only
 
-Version numbers are assigned at ship time. You can ship directly from `main` to `production`,
-or optionally deploy to `staging` first for validation before shipping to production.
+Version numbers are assigned at ship time. You can ship directly from `main` to `production`, or optionally deploy to `staging` first for validation before shipping to production.
 
-## How It Works
+### How It Works
 
-### Design principles
+#### Design principles
 
 1. **Branches mirror environments.** `staging` reflects what is deployed to the staging server (when used); `production` always reflects what is deployed to production. There is never ambiguity about what is running where.
-
 2. **Version numbers are a production guarantee.** A version bump only happens at `ship-production` time. This means every version tag in git and every release on npm corresponds to code that has been validated and shipped to production.
-
 3. **Staging is optional.** You can ship directly from `main` to `production`. Use `ship-staging` when you want to test changes in a staging environment first. Either way, `staging` is automatically synced with `production` after each ship.
-
 4. **Tests are a local gate, not a CI gate.** Quality checks (`build`, `lint`, `typecheck`, `test`) run on your machine before any commit is made. Broken code cannot enter the repository. CI only runs `build` and `publish` — it trusts the local gates.
-
 5. **You always land back on `main`.** Every command returns you to `main` when it finishes so you can keep working without manual branch switching.
 
-### Full flow diagram
+#### Full flow diagram
 
 ```text
                     ship-staging (OPTIONAL)
@@ -86,7 +117,7 @@ hotfix/fix-name ────┤ update CHANGELOG.md      ├──► production
                     └───────────────────-──────┘
 ```
 
-### What each branch represents at any point in time
+#### What each branch represents at any point in time
 
 | Branch | Contains | Version bumped? |
 |--------|----------|-----------------|
@@ -94,7 +125,7 @@ hotfix/fix-name ────┤ update CHANGELOG.md      ├──► production
 | `staging` | Synced from `production` after each ship, or from `main` via `ship-staging` | After `ship-production` syncs it |
 | `production` | Only shipped, versioned releases | Yes — always |
 
-### GitHub Actions role
+#### GitHub Actions role
 
 CI is intentionally minimal. It does not re-run tests. It:
 
@@ -103,7 +134,7 @@ CI is intentionally minimal. It does not re-run tests. It:
 3. Publishes with OIDC provenance if so
 4. Creates a GitHub Release with the top CHANGELOG section as the release body
 
-## Commands
+### Commands
 
 | Command | Usage | Purpose |
 |---------|-------|---------|
@@ -112,9 +143,9 @@ CI is intentionally minimal. It does not re-run tests. It:
 | `ship-hotfix` | `ship-hotfix start <name>` | Create a hotfix branch from production |
 | `ship-hotfix` | `ship-hotfix finish <patch\|minor> "message"` | Finish and propagate a hotfix |
 
-## Typical Release Flow
+### Typical Release Flow
 
-### Option A: Ship directly to production (recommended)
+#### Option A: Ship directly to production (recommended)
 
 From `main`, with a clean working tree:
 
@@ -137,11 +168,11 @@ This will:
 11. Sync `staging` with `production` to keep it up to date
 12. Return to `main`
 
-### Option B: Test in staging first (optional)
+#### Option B: Test in staging first (optional)
 
 If you want to validate changes in a staging environment before shipping:
 
-#### 1. Deploy to staging
+##### 1. Deploy to staging
 
 From `main`, with a clean working tree:
 
@@ -158,7 +189,7 @@ This will:
 
 You can do this multiple times. Each commit accumulates in `staging`.
 
-#### 2. Ship to production
+##### 2. Ship to production
 
 After validating in staging, ship to production using the same command as Option A:
 
@@ -168,7 +199,7 @@ pnpm ship:production minor
 
 The workflow is identical — it ships from `main` to `production` and syncs `staging` afterward.
 
-## Hotfix Flow
+### Hotfix Flow
 
 For urgent fixes that must go directly to production:
 
@@ -190,7 +221,7 @@ pnpm ship:hotfix finish patch "Fix critical auth token expiry bug"
 6. Delete the hotfix branch
 7. Return to `main`
 
-## Branch Setup
+### Branch Setup
 
 If `staging` or `production` branches do not yet exist in your repository:
 
@@ -200,10 +231,9 @@ git checkout -b production && git push -u origin production
 git checkout main
 ```
 
-## Quality Gates
+### Quality Gates
 
-Every command enforces the same gates — no broken code can be committed
-or pushed to any environment:
+Every command enforces the same gates — no broken code can be committed or pushed to any environment:
 
 ```bash
 pnpm build      # Must succeed
@@ -214,10 +244,9 @@ pnpm test       # Tests with coverage — must succeed
 
 **Note:** If `lint` fails, run `pnpm fix` manually to apply fixes, then commit the changes before shipping.
 
-## Adoption
+### Adoption
 
-Any package using `@regardio/dev` gets these commands via the installed bins.
-Add the convenience scripts to `package.json`:
+Any package using `@regardio/dev` gets these commands via the installed bins. Add the convenience scripts to `package.json`:
 
 ```json
 {
@@ -229,16 +258,23 @@ Add the convenience scripts to `package.json`:
 }
 ```
 
-Create an initial `CHANGELOG.md` if one does not exist (the tools will create
-it automatically on first use if absent).
+Create an initial `CHANGELOG.md` if one does not exist (the tools will create it automatically on first use if absent).
 
-## Private Packages
+### Private Packages
 
-Packages that should never be published to npm must set `"private": true` in
-`package.json` and omit `"publishConfig"`. This is the npm-standard mechanism
-that prevents accidental publishing regardless of how `npm publish` is called.
+Packages that should never be published to npm must set `"private": true` in `package.json` and omit `"publishConfig"`. This is the npm-standard mechanism that prevents accidental publishing regardless of how `npm publish` is called.
 
-The git flow (`ship-staging`, `ship-production`, `ship-hotfix`) works identically for
-private packages — versioning, changelogs, and branch promotion all continue as
-normal. The CI `release.yml` detects `private: true` and skips the publish and
-GitHub Release steps gracefully.
+The git flow (`ship-staging`, `ship-production`, `ship-hotfix`) works identically for private packages — versioning, changelogs, and branch promotion all continue as normal. The CI `release.yml` detects `private: true` and skips the publish and GitHub Release steps gracefully.
+
+## Essence
+
+This workflow gives releases a predictable path from development to production.
+
+- Branches keep a stable relationship to deployed environments
+- Version numbers remain meaningful because they are assigned at ship time
+- Release automation stays explicit enough to understand and trust
+
+Related documents:
+
+- [Commit Conventions](../commits.md) — Conventional commits for consistent history and automated changelogs
+- [Commitlint](./commitlint.md) — Commit message validation

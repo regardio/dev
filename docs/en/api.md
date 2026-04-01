@@ -12,7 +12,7 @@ locale: en-US
 
 API design and implementation guidelines for Regardio projects.
 
-## Context
+## Impulse
 
 APIs shape how systems communicate, how permissions are enforced, and how failures surface to people and machines.
 
@@ -20,15 +20,15 @@ APIs shape how systems communicate, how permissions are enforced, and how failur
 - Weak boundaries around authentication, authorization, and validation increase system risk
 - Shared patterns help teams design endpoints that remain understandable across projects
 
-## Rationale
+## Signal
 
-These standards collect the recurring patterns we have observed in Regardio projects when APIs remain maintainable over time.
+These standards collect the recurring patterns that keep APIs maintainable over time.
 
 - Resource-oriented routes make intent easier to follow
 - Consistent response and error shapes reduce friction between clients and servers
 - Explicit validation and access control make trust boundaries visible
 
-## Considerations
+## Effect
 
 We considered a few ways to document API work.
 
@@ -36,7 +36,7 @@ We considered a few ways to document API work.
 - A framework-specific guide is concrete, but it does not travel well across projects
 - A pattern-oriented standard gives enough structure while still fitting different stacks
 
-## Decision
+## Accord
 
 We document APIs through shared design patterns, implementation examples, and operational expectations.
 
@@ -44,7 +44,7 @@ We document APIs through shared design patterns, implementation examples, and op
 - Use stable response and error structures
 - Treat security, validation, performance, documentation, and testing as part of the API surface
 
-## Implementation
+## Action
 
 Apply these patterns when designing, implementing, and reviewing endpoints.
 
@@ -366,13 +366,17 @@ describe('User API', () => {
 });
 ```
 
-## References
+## Essence
 
-- [React](./react.md) - Client-side integration patterns
-- [SQL](./sql.md) - Database function implementation
-- [Testing](./testing.md) - Testing philosophy and patterns
-- [Principles](./principles.md) - Universal coding standards
+This standard gives API work a shared shape across Regardio projects.
 
----
+- Clients can rely on predictable endpoint behavior
+- Teams can review API changes against explicit patterns instead of personal preference
+- Security, validation, and testing remain visible as part of implementation quality
 
-**License**: [CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) © Regardio
+Related documents:
+
+- [React and TypeScript Standards](./react.md) — TypeScript and React development patterns for Regardio projects
+- [SQL Schema Standards](./sql.md) — SQL schema styling and structure guidelines for PostgreSQL and Supabase projects
+- [Testing Approach](./testing.md) — Testing philosophy and patterns for Regardio projects
+- [Development Principles](./principles.md) — Universal coding standards and principles for Regardio projects
