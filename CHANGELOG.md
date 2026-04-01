@@ -1,5 +1,10 @@
 # @regardio/dev
 
+## [1.20.1] - 2026-04-01
+
+- docs: coherent structure
+- docs: working towards a definitive ADR-style documentationt template
+
 ## [1.20.0] - 2026-03-31
 
 - fix: also fix changelog
