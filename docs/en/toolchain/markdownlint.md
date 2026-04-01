@@ -84,3 +84,11 @@ Or in config for specific files:
 
 - [Markdownlint Rules](https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md)
 - [markdownlint-cli2](https://github.com/DavidAnson/markdownlint-cli2)
+
+## Essence
+
+This guide gives Markdown documentation a shared structural baseline.
+
+- Files stay easier to read and review
+- Formatting differences become automated checks instead of repeated discussion
+- Exceptions remain intentional and visible in the source

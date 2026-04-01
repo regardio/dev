@@ -14,39 +14,39 @@ Template for Regardio documentation. Replace placeholder text with actual conten
 
 ## Context
 
-Brief introduction to the topic. What moves us? Why does this exist?
+What problem is this document attempting to solve?
 
-- Background and motivation for this document
-- The need or problem being addressed
-- Who this serves and when to use it
+- The problem or tension this document addresses
+- Why this problem matters
+- Who this serves and when it becomes relevant
 
 ## Rationale
 
-What do we want to achieve? Core reasoning and principles.
+What ideas have we pondered to resolve the problem?
 
-- Goals and intentions of this approach
-- Why this structure serves clarity
-- Approaches considered before deciding
+- The ideas, thoughts, or lines of inquiry explored
+- What was shared, discussed, or surfaced
+- How these ideas helped clarify the problem
 
-## Options
+## Considerations
 
-What are the parts? What did we consider?
+What options have we taken into account?
 
-- Alternative approaches evaluated
-- Trade-offs identified between options
-- Key decision points that led to current approach
+- The possible options or responses considered
+- Trade-offs between the options
+- What each option would change or enable
 
 ## Decision
 
-What did we decide? The chosen approach.
+What conclusion have we reached?
 
-- The specific solution or pattern adopted
-- Key stakeholders and scope
-- Boundaries and constraints of this decision
+- The chosen direction
+- The reasoning for choosing it
+- The boundaries and constraints of the decision
 
 ## Implementation
 
-How do we execute? Technical details and structure.
+How do we act upon our decision? What needs to be done to implement this?
 
 ### Frontmatter Template
 
@@ -68,23 +68,14 @@ locale: en-US | de-DE
 
 ### Structure Patterns
 
-Documentation follows the six fields of the Regardio System:
+Documentation follows the six Steps of the Regardio System:
 
-1. **Context** (Quellen) - Why does this exist?
-2. **Rationale** (Vorhaben) - What are we pursuing?
-3. **Options** (Facetten) - What did we consider?
-4. **Decision** (Kreise) - What did we decide?
-5. **Implementation** (Pläne) - How do we execute?
-6. **Consequences** (Brücken) - How does this connect?
-
-Not all documents need all sections. Adapt to fit:
-
-- **Entity docs**: Context, Decision, Implementation, Consequences
-- **Architecture docs**: Context, Rationale, Options, Decision, Implementation, Consequences
-- **Concept docs**: Context, Rationale, Implementation
-- **Guide docs**: Context, Implementation, Consequences
-
-Section names can be adapted naturally. Structure guides thinking, not formatting.
+1. **Impulse** - What problem is this document attempting to solve?
+2. **Signal** - What ideas have we pondered to resolve the problem?
+3. **Effect** - What options have we considered?
+4. **Accord** - What decision have we made?
+5. **Action** - How do we act upon our decision? What needs to be done to implement this?
+6. **Essence** - What solution does this provide? What provides assurance this works?
 
 ### Writing Style
 
@@ -95,6 +86,20 @@ Follow System style guides:
 - Use concrete language over abstractions
 - Avoid: must, revolutionary, potential, leverage, optimize
 - Prefer: notice, explore, might, could, pattern, rhythm
+- **Bold** for System terms at first introduction
+- *Italic* for emphasis or foreign language equivalents
+- Code blocks with language identifiers
+- Tables for structured comparisons
+- No emojis
+
+## References
+
+What solution does this provide? What provides assurance this works?
+
+- The resulting solution or outcome
+- Why this resolves the problem well
+- What provides confidence or assurance that it works
+- Remaining implications, follow-up, or proof points
 
 ### Cross-References
 
@@ -102,23 +107,6 @@ Follow System style guides:
 - Reference schemas: `` [`path/to/schema.sql`](path) ``
 - Include language alternates: `*[Deutsch](../de/file.md)*`
 - Reference System docs: `[Field](../../../../packages/system/docs/en/field.md)`
-
-### Formatting
-
-- **Bold** for System terms at first introduction
-- *Italic* for emphasis or foreign language equivalents
-- Code blocks with language identifiers
-- Tables for structured comparisons
-- No emojis
-
-## Consequences
-
-How does this connect? Impact and implications.
-
-- Impact of this approach on documentation quality
-- Trade-offs between structure and flexibility
-- Related documents and cross-references
-- Future considerations for documentation evolution
 
 ### Related Documents
 

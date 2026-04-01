@@ -12,9 +12,45 @@ locale: en-US
 
 API design and implementation guidelines for Regardio projects.
 
-## API Design Principles
+## Context
 
-### RESTful Patterns
+APIs shape how systems communicate, how permissions are enforced, and how failures surface to people and machines.
+
+- Inconsistent API design makes integration harder and error handling less predictable
+- Weak boundaries around authentication, authorization, and validation increase system risk
+- Shared patterns help teams design endpoints that remain understandable across projects
+
+## Rationale
+
+These standards collect the recurring patterns we have observed in Regardio projects when APIs remain maintainable over time.
+
+- Resource-oriented routes make intent easier to follow
+- Consistent response and error shapes reduce friction between clients and servers
+- Explicit validation and access control make trust boundaries visible
+
+## Considerations
+
+We considered a few ways to document API work.
+
+- A minimal checklist is fast to scan, but it leaves too much room for interpretation
+- A framework-specific guide is concrete, but it does not travel well across projects
+- A pattern-oriented standard gives enough structure while still fitting different stacks
+
+## Decision
+
+We document APIs through shared design patterns, implementation examples, and operational expectations.
+
+- Prefer predictable REST-style routes and status codes
+- Use stable response and error structures
+- Treat security, validation, performance, documentation, and testing as part of the API surface
+
+## Implementation
+
+Apply these patterns when designing, implementing, and reviewing endpoints.
+
+### API Design Principles
+
+#### RESTful Patterns
 
 - Resource-oriented design
 - Use appropriate HTTP verbs (GET, POST, PUT, PATCH, DELETE)
@@ -29,14 +65,14 @@ PATCH  /api/users/:id      # Update user
 DELETE /api/users/:id      # Delete user
 ```
 
-### Data Consistency
+#### Data Consistency
 
 - Maintain single source of truth
 - Implement proper access control
 - Standardized response formats
 - Version APIs for backward compatibility
 
-### Response Format
+#### Response Format
 
 ```typescript
 interface SuccessResponse<T> {
@@ -53,9 +89,9 @@ interface ErrorResponse {
 type ApiResponse<T> = SuccessResponse<T> | ErrorResponse;
 ```
 
-## Error Handling
+### Error Handling
 
-### Error Categories
+#### Error Categories
 
 ```typescript
 enum ApiErrorType {
@@ -82,7 +118,7 @@ class ApiError extends Error {
 }
 ```
 
-### HTTP Status Codes
+#### HTTP Status Codes
 
 | Code | Use Case |
 |------|----------|
@@ -97,7 +133,7 @@ class ApiError extends Error {
 | 429 | Rate limit exceeded |
 | 500 | Server error |
 
-### Error Response Format
+#### Error Response Format
 
 ```typescript
 {
@@ -110,7 +146,7 @@ class ApiError extends Error {
 }
 ```
 
-### Client Error Handling
+#### Client Error Handling
 
 ```typescript
 async function fetchUser(id: string): Promise<User> {
@@ -130,9 +166,9 @@ async function fetchUser(id: string): Promise<User> {
 }
 ```
 
-## Security Standards
+### Security Standards
 
-### Authentication
+#### Authentication
 
 - Use JWT or similar token mechanisms
 - Always use HTTPS in production
@@ -163,7 +199,7 @@ class AuthService {
 }
 ```
 
-### Authorization
+#### Authorization
 
 - Grant minimum necessary permissions
 - Implement role-based access control
@@ -183,7 +219,7 @@ async function updateUser(id: string, data: Partial<User>): Promise<User> {
 }
 ```
 
-### Input Validation
+#### Input Validation
 
 - Never trust client data
 - Validate types, ranges, and formats
@@ -211,9 +247,9 @@ function validateUserUpdate(data: unknown): Partial<User> {
 }
 ```
 
-## Performance
+### Performance
 
-### Query Optimization
+#### Query Optimization
 
 - Implement pagination for list endpoints
 - Support filtering and field selection
@@ -245,7 +281,7 @@ async function listUsers(params: ListParams): Promise<ApiResponse<User[]>> {
 }
 ```
 
-### Caching & Rate Limiting
+#### Caching & Rate Limiting
 
 - Use Cache-Control headers and ETags
 - Cache frequently accessed data
@@ -269,7 +305,7 @@ const apiLimiter = rateLimit({
 app.use('/api/', apiLimiter);
 ```
 
-## Documentation
+### Documentation
 
 Document endpoints with:
 
@@ -293,7 +329,7 @@ Document endpoints with:
 
 Consider using OpenAPI/Swagger for comprehensive API documentation.
 
-## Testing
+### Testing
 
 - **Unit tests**: Individual functions and handlers
 - **Integration tests**: API endpoints with database
@@ -330,7 +366,7 @@ describe('User API', () => {
 });
 ```
 
-## Related Documentation
+## References
 
 - [React](./react.md) - Client-side integration patterns
 - [SQL](./sql.md) - Database function implementation
