@@ -1,5 +1,9 @@
 # @regardio/dev
 
+## [1.20.2] - 2026-04-04
+
+- docs: applying Regardio System principles to our documentation
+
 ## [1.20.1] - 2026-04-01
 
 - docs: coherent structure
