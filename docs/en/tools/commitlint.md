@@ -134,7 +134,7 @@ This guide gives commit history a shared shape that supports both people and aut
 
 Related documents:
 
-- [Commit Conventions](../commits.md) — Conventional commits and changelog generation
+- [Commit Conventions](../conventions/commits.md) — Conventional commits and changelog generation
 - [Husky](./husky.md) — Git hooks for quality gates
 
 ### Resources

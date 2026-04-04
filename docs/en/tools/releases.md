@@ -276,5 +276,5 @@ This workflow gives releases a predictable path from development to production.
 
 Related documents:
 
-- [Commit Conventions](../commits.md) — Conventional commits for consistent history and automated changelogs
+- [Commit Conventions](../conventions/commits.md) — Conventional commits for consistent history and automated changelogs
 - [Commitlint](./commitlint.md) — Commit message validation

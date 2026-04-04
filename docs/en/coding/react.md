@@ -305,6 +305,6 @@ This document gives frontend work a shared React and TypeScript baseline.
 
 Related documents:
 
-- [Coding Standards](./coding.md) — TypeScript, React, and general coding patterns for Regardio projects
-- [Testing Approach](./testing.md) — Testing philosophy and patterns for Regardio projects
+- [Coding Standards](./coding/coding.md) — TypeScript, React, and general coding patterns for Regardio projects
+- [Testing Approach](../conventions/testing.md) — Testing philosophy and patterns for Regardio projects
 - [Development Principles](./principles.md) — Universal coding standards and principles for Regardio projects

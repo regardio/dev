@@ -197,7 +197,7 @@ This guide gives TypeScript testing a shared operational baseline.
 
 Related documents:
 
-- [Testing Approach](../testing.md) — Testing philosophy and patterns for Regardio projects
+- [Testing Approach](../conventions/testing.md) — Testing philosophy and patterns for Regardio projects
 - [Playwright](./playwright.md) — End-to-end testing for web applications
 - [TypeScript Configuration](./typescript.md) — TypeScript setup and configuration for Regardio projects
 

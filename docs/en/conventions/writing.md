@@ -10,7 +10,7 @@ locale: en-US
 
 # Writing in English
 
-*[Deutsch](../de/writing.md)*
+*[Deutsch](../de/konventionen/schreiben.md)*
 
 Voice, tone, and language guidance for English Regardio content.
 
@@ -80,24 +80,6 @@ The uniqueness of each individual requires us to avoid pigeonholing and unnecess
 
 English expects shorter sentences and key information up front. If a sentence needs to be read twice, shorten it.
 
-### The System's Structure
-
-The System is organized into **Fields** (*Felder*), **Perspectives** (*Blickwinkel*), and **Degrees** (*Grade*). There are six Fields (Sources, Pursuits, Facets, Circles, Plans, Bridges), twelve Perspectives (two per Field), and twelve Degrees (two per Field).
-
-The twelve positions follow the image of an analog clock. Each Field contains two Perspectives - and these two are not arbitrarily different. They reflect a duality inherent in all human endeavor: odd positions face toward becoming - toward doing, emerging, self-determination, inner drive. Even positions face toward what has been achieved - toward arriving, experiencing, community, security. Neither is complete without the other; together they span the space in which pursuits unfold.
-
-This duality shows up in every Field: Readiness needs both the drive and the leisure to do something. A pursuit can flourish when we know what drives us toward it and why. All facets of a pursuit can be described as steps and elements. Our collaboration in a circle of people is determined by stake and scope. When we make plans, we form an image of certain patterns and give them a frame. Connections can be very practical bonds and personal views.
-
-Opposing Fields influence each other: Sources and Circles, Pursuits and Plans, Facets and Bridges.
-
-### The System as Language
-
-The Regardio System is not a methodology and not a framework. It is a grammar - a map of the categories in which people feel, think, and act while pursuing what matters to them. It describes what people do, not what they are.
-
-### Intellectual Roots
-
-The System draws from various traditions of thought: the idea of flourishing as fulfilled activity, the complementarity of opposites, mindfulness and balance. We reference ideas, not names. The sources show themselves in the structure, not in citation. This is not a scholarly treatise, but applied art carried by collective intelligence.
-
 ### Practical Matters
 
 **Formatting:** Headers for navigation. Prose for connected thoughts. Bold for System terms at first introduction. Italics for German counterparts. No emojis.
@@ -127,4 +109,4 @@ This guide gives English Regardio writing a shared voice without turning style i
 Related documents:
 
 - [Documentation Standard](./documentation.md) — Template and standard for Regardio documentation following the six-step structure
-- [Writing in German](../de/writing.md) — Stimme, Ton und Sprache für deutsche Inhalte
+- [Writing in German](../de/konventionen/schreiben.md) — Stimme, Ton und Sprache für deutsche Inhalte

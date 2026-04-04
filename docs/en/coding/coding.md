@@ -194,4 +194,4 @@ Related documents:
 
 - [Development Principles](./principles.md) — Universal coding standards and principles for Regardio projects
 - [React and TypeScript Standards](./react.md) — TypeScript and React development patterns for Regardio projects
-- [Naming Conventions](./naming.md) — Consistent naming patterns across Regardio projects
+- [Naming Conventions](../conventions/naming.md) — Consistent naming patterns across Regardio projects

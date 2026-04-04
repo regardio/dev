@@ -46,222 +46,31 @@ We use a shared set of agent guidelines so AI assistants work within Regardio's 
 
 ## Action
 
-Use the guidance below when an AI assistant writes, edits, reviews, or explains code in Regardio projects.
+Use the guidance below when an AI assistant writes, edits, reviews, or explains code in Regardio projects. For detailed coding, naming, testing, and tooling standards, follow the linked documents.
 
-### Core Principles
+### How Agents Should Work
 
-- **Write clean, explicit TypeScript** - Avoid `any`, use strict mode
-- **Avoid obvious comments** - Code should be self-documenting
-- **Avoid unnecessary complexity** - Only implement what is explicitly required
-- **Use implicit type inference** - Unless impossible
-- **Handle errors gracefully** - Use try/catch with appropriate error types
-- **No emojis** - Unless explicitly requested
+- **Scope changes tightly** - Only change what the task requires. Do not refactor adjacent code, add features, or reorganize files unless asked.
+- **Read before writing** - Understand existing patterns in the file and its neighbors before editing. Match the style you find.
+- **Avoid unnecessary complexity** - Only implement what is explicitly required. Do not introduce abstractions, helpers, or utilities speculatively.
+- **No emojis** - Unless explicitly requested.
+- **Preserve comments and documentation** - Do not add or remove comments unless the task calls for it.
+- **Explain uncertainty** - If something is ambiguous, say so rather than guessing.
 
-### TypeScript Standards
+### Standards to Follow
 
-#### Type Safety
+Agents are expected to follow the same standards as human contributors. These are documented separately:
 
-- Enable strict TypeScript type checking
-- Define explicit interfaces for data structures
-- Avoid `any` type except when absolutely necessary
-- Use proper type assertions when needed
-
-#### Code Structure
-
-- Group related functionality in modules
-- Use explicit exports in package.json rather than barrel files
-- Keep modules focused on single responsibility
-- Extract common logic into utility functions
-
-#### Function Design
-
-- Write small, focused functions
-- Use proper parameter typing
-- Implement proper error handling
-- Return explicit types when inference is unclear
-
-### React Standards
-
-#### Components
-
-- Use functional components with hooks
-- Create small, focused components with single responsibility
-- Define explicit prop interfaces with TypeScript
-- Prefer composition over inheritance
-
-#### Hooks
-
-- Provide proper dependency arrays for `useEffect` and `useMemo`
-- Extract reusable logic into custom hooks (follow `use` naming convention)
-- Implement proper cleanup in `useEffect`
-- **`useEffect` is a code smell** - Avoid if possible, justify when used
-
-#### State
-
-- Keep state as close to its usage as possible
-- Prefer single state object over many separate `useState` calls
-- Use `useReducer` for complex state logic
-
-#### Testing
-
-- Add `data-test` attributes for E2E tests where appropriate
-
-### SQL / Database Standards
-
-#### Naming
-
-- Use `snake_case` for all database identifiers
-- Prefix function parameters with `p_`, local variables with `v_`
-- Use descriptive names that reflect purpose
-
-#### Structure
-
-- Write focused, single-purpose functions
-- Implement proper error handling
-- Document function behavior with comments
-- Follow multi-tenancy patterns where applicable
-
-### Common Patterns
-
-#### React State Management
-
-##### Good: Single State Object
-
-```typescript
-const [state, setState] = useState({
-  isLoading: false,
-  data: null,
-  error: null
-});
-
-// Update single property
-setState(prev => ({ ...prev, isLoading: true }));
-
-// Update multiple properties
-setState(prev => ({ ...prev, isLoading: false, data: result }));
-```
-
-##### Bad: Multiple useState Calls
-
-```typescript
-const [isLoading, setIsLoading] = useState(false);
-const [data, setData] = useState(null);
-const [error, setError] = useState(null);
-```
-
-#### Avoiding useEffect
-
-##### Good: Derived State
-
-```typescript
-// Compute values directly from props/state
-const filteredItems = items.filter(item => item.active);
-const totalPrice = cartItems.reduce((sum, item) => sum + item.price, 0);
-```
-
-##### Bad: Unnecessary useEffect
-
-```typescript
-const [filteredItems, setFilteredItems] = useState([]);
-
-useEffect(() => {
-  setFilteredItems(items.filter(item => item.active));
-}, [items]);
-```
-
-##### Good: Event Handlers
-
-```typescript
-const handleSubmit = async () => {
-  setState(prev => ({ ...prev, isLoading: true }));
-  try {
-    const result = await api.submit(formData);
-    setState(prev => ({ ...prev, isLoading: false, data: result }));
-  } catch (error) {
-    setState(prev => ({ ...prev, isLoading: false, error }));
-  }
-};
-```
-
-##### Bad: useEffect for Side Effects
-
-```typescript
-useEffect(() => {
-  if (shouldSubmit) {
-    api.submit(formData);
-  }
-}, [shouldSubmit]);
-```
-
-#### SQL Function Patterns
-
-##### Good: Proper Naming and Structure
-
-```sql
-CREATE FUNCTION update_user_profile(
-  p_user_id uuid,
-  p_name text,
-  p_email text
-) RETURNS void AS $$
-DECLARE
-  v_old_name text;
-  v_timestamp timestamptz;
-BEGIN
-  SELECT name INTO v_old_name
-  FROM user_profiles
-  WHERE id = p_user_id;
-
-  UPDATE user_profiles
-  SET
-    name = p_name,
-    email = p_email,
-    updated_at = now()
-  WHERE id = p_user_id;
-
-  INSERT INTO audit_log (user_id, old_value, new_value)
-  VALUES (p_user_id, v_old_name, p_name);
-END;
-$$ LANGUAGE plpgsql;
-```
-
-##### Bad: Poor Naming
-
-```sql
-CREATE FUNCTION updateProfile(
-  userId uuid,
-  name text
-) RETURNS void AS $$
-DECLARE
-  oldName text;
-BEGIN
-END;
-$$ LANGUAGE plpgsql;
-```
-
-#### TypeScript Type Safety
-
-##### Good: Explicit Interfaces
-
-```typescript
-interface UserProfile {
-  id: string;
-  name: string;
-  email: string;
-  createdAt: Date;
-}
-
-function updateProfile(profile: UserProfile): Promise<void> {
-  // Implementation
-}
-```
-
-##### Bad: Using any
-
-```typescript
-function updateProfile(profile: any): Promise<void> {
-  // Implementation
-}
-```
+- [Coding Standards](./coding/coding.md) — TypeScript, React, and general coding patterns
+- [React and TypeScript Standards](./coding/react.md) — Component, hook, and state patterns
+- [SQL Schema Standards](./coding/sql.md) — PostgreSQL naming, structure, and access control
+- [Development Principles](./coding/principles.md) — Code quality, architecture, security
+- [API Standards](./coding/api.md) — API design and implementation
+- [Naming Conventions](./conventions/naming.md) — Naming across TypeScript, SQL, CSS, Git
+- [Testing Approach](./conventions/testing.md) — Testing philosophy and patterns
+- [Commit Conventions](./conventions/commits.md) — Conventional commits and changelog generation
+- [Documentation Standard](./conventions/documentation.md) — Document structure and conventions
+- [Writing in English](./conventions/writing.md) — Voice, tone, and language
 
 ### Commands
 
@@ -276,19 +85,6 @@ pnpm typecheck     # TypeScript type checking
 
 Run `typecheck` regularly. Run linting when task is complete.
 
-### Security
-
-- Avoid security vulnerabilities (XSS, SQL injection, OWASP Top 10)
-- Implement proper validation at system boundaries
-- Use proper access control patterns
-- Never hardcode secrets or API keys
-
-### Documentation
-
-- Document complex logic with comments explaining *why*
-- Use JSDoc for TypeScript functions when helpful
-- Keep README files updated
-
 ## Essence
 
 This guide gives AI assistants a project-specific baseline for writing and editing code in Regardio.
@@ -297,9 +93,4 @@ This guide gives AI assistants a project-specific baseline for writing and editi
 - Reviewers can expect a more consistent level of code quality
 - Repository conventions remain visible instead of being rediscovered task by task
 
-Related documents:
-
-- [Coding Standards](./coding.md) — TypeScript, React, and general coding patterns for Regardio projects
-- [Naming Conventions](./naming.md) — Consistent naming patterns across Regardio projects
-- [Testing Approach](./testing.md) — Testing philosophy and patterns for Regardio projects
-- [Commit Conventions](./commits.md) — Conventional commits for consistent history and automated changelogs
+All related documents are listed in the [Standards to Follow](#standards-to-follow) section above.

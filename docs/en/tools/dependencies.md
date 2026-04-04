@@ -159,5 +159,5 @@ This approach keeps Regardio dependency updates frequent without treating packag
 Related documents:
 
 - [Release Workflow](./releases.md) — Automated release process for Regardio packages
-- [Testing Approach](../testing.md) — Testing philosophy and patterns for Regardio projects
+- [Testing Approach](../conventions/testing.md) — Testing philosophy and patterns for Regardio projects
 - [TypeScript Configuration](./typescript.md) — TypeScript setup and configuration for Regardio projects

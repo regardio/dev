@@ -126,8 +126,8 @@ This guide gives Markdown documentation a shared structural baseline.
 
 Related documents:
 
-- [Documentation Standard](../documentation.md) — Template and standard for Regardio
-  documentation following the six-step structure
+- [Documentation Standard](../conventions/documentation.md) — Template and standards
+  for Regardio documentation following the six-step structure
 - [Biome](./biome.md) — Fast, unified linting and formatting
 
 ### Resources

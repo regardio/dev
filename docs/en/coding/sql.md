@@ -268,5 +268,5 @@ This document gives database work a shared structural language.
 
 Related documents:
 
-- [Naming Conventions](./naming.md) — Consistent naming patterns across Regardio projects
+- [Naming Conventions](../conventions/naming.md) — Consistent naming patterns across Regardio projects
 - [API Design Standards](./api.md) — API design and implementation guidelines for Regardio projects

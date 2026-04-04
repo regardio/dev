@@ -52,28 +52,28 @@ Detailed documentation is organized by topic:
 ### Concepts
 
 - [AI Agents](./docs/en/agents.md) - Instructions for AI coding assistants
-- [API](./docs/en/api.md) - API design and implementation guidelines
-- [Coding](./docs/en/coding.md) - TypeScript, React, and general patterns
-- [Commits](./docs/en/commits.md) - Conventional commits and changelog generation
-- [Documentation](./docs/en/documentation.md) - Documentation structure and conventions
-- [Naming](./docs/en/naming.md) - Consistent naming across languages
-- [Principles](./docs/en/principles.md) - Code quality, architecture, maintainability
-- [React](./docs/en/react.md) - React and TypeScript development patterns
-- [SQL](./docs/en/sql.md) - PostgreSQL/Supabase schema styling and structure
-- [Testing](./docs/en/testing.md) - Testing philosophy and patterns
-- [Writing](./docs/en/writing.md) - Voice, tone, and language for content
+- [API](./docs/en/coding/api.md) - API design and implementation guidelines
+- [Coding](./docs/en/coding/coding.md) - TypeScript, React, and general patterns
+- [Commits](./docs/en/conventions/commits.md) - Conventional commits and changelog generation
+- [Documentation](./docs/en/conventions/documentation.md) - Documentation structure and conventions
+- [Naming](./docs/en/conventions/naming.md) - Consistent naming across languages
+- [Principles](./docs/en/coding/principles.md) - Code quality, architecture, maintainability
+- [React](./docs/en/coding/react.md) - React and TypeScript development patterns
+- [SQL](./docs/en/coding/sql.md) - PostgreSQL/Supabase schema styling and structure
+- [Testing](./docs/en/conventions/testing.md) - Testing philosophy and patterns
+- [Writing](./docs/en/conventions/writing.md) - Voice, tone, and language for content
 
 ### Toolchain
 
-- [Biome](./docs/en/toolchain/biome.md) - Linting and formatting
-- [Commitlint](./docs/en/toolchain/commitlint.md) - Commit message validation
-- [Dependencies](./docs/en/toolchain/dependencies.md) - Safe dependency updates and supply-chain controls
-- [Husky](./docs/en/toolchain/husky.md) - Git hooks
-- [Markdownlint](./docs/en/toolchain/markdownlint.md) - Markdown quality
-- [Playwright](./docs/en/toolchain/playwright.md) - End-to-end testing
-- [Releases](./docs/en/toolchain/releases.md) - GitLab-flow-based versioning and releases
-- [TypeScript](./docs/en/toolchain/typescript.md) - Strict TypeScript configuration
-- [Vitest](./docs/en/toolchain/vitest.md) - Unit and integration testing
+- [Biome](./docs/en/tools/biome.md) - Linting and formatting
+- [Commitlint](./docs/en/tools/commitlint.md) - Commit message validation
+- [Dependencies](./docs/en/tools/dependencies.md) - Safe dependency updates and supply-chain controls
+- [Husky](./docs/en/tools/husky.md) - Git hooks
+- [Markdownlint](./docs/en/tools/markdownlint.md) - Markdown quality
+- [Playwright](./docs/en/tools/playwright.md) - End-to-end testing
+- [Releases](./docs/en/tools/releases.md) - GitLab-flow-based versioning and releases
+- [TypeScript](./docs/en/tools/typescript.md) - Strict TypeScript configuration
+- [Vitest](./docs/en/tools/vitest.md) - Unit and integration testing
 
 ## Portability
 

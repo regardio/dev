@@ -72,7 +72,7 @@ Writing for Regardio content:
 | Document | Description |
 |----------|-------------|
 | [Writing in English](./en/writing.md) | Voice, tone, and language for English content |
-| [Schreiben auf Deutsch](./de/writing.md) | Stimme, Ton und Sprache für deutsche Inhalte |
+| [Schreiben auf Deutsch](./de/konventionen/schreiben.md) | Stimme, Ton und Sprache für deutsche Inhalte |
 
 ### Toolchain
 

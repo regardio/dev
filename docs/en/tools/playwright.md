@@ -159,7 +159,7 @@ This guide gives browser-level testing a clear role in the overall testing strat
 
 Related documents:
 
-- [Testing Approach](../testing.md) — Testing philosophy and patterns for Regardio projects
+- [Testing Approach](../conventions/testing.md) — Testing philosophy and patterns for Regardio projects
 - [Vitest](./vitest.md) — Unit and integration testing for TypeScript projects
 
 ### Resources

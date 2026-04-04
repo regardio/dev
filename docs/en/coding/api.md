@@ -378,5 +378,5 @@ Related documents:
 
 - [React and TypeScript Standards](./react.md) — TypeScript and React development patterns for Regardio projects
 - [SQL Schema Standards](./sql.md) — SQL schema styling and structure guidelines for PostgreSQL and Supabase projects
-- [Testing Approach](./testing.md) — Testing philosophy and patterns for Regardio projects
+- [Testing Approach](../conventions/testing.md) — Testing philosophy and patterns for Regardio projects
 - [Development Principles](./principles.md) — Universal coding standards and principles for Regardio projects

@@ -107,5 +107,5 @@ This document gives technical work a shared foundation without turning every dec
 
 Related documents:
 
-- [Coding Standards](./coding.md) — TypeScript, React, and general coding patterns
-- [Testing Approach](./testing.md) — Testing philosophy and patterns
+- [Coding Standards](./coding/coding.md) — TypeScript, React, and general coding patterns
+- [Testing Approach](../conventions/testing.md) — Testing philosophy and patterns
