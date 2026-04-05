@@ -99,7 +99,7 @@ This prevents transitive dependencies from resolving through git URLs, tarballs,
 minimumReleaseAge: 1440
 ```
 
-Regardio waits 24 hours before pnpm may install a newly published version. This gives time for compromised packages to be detected and removed before they reach the workspace.
+We wait 24 hours before pnpm may install a newly published version. This gives time for compromised packages to be detected and removed before they reach the workspace.
 
 The root `ncu` script mirrors this with `--cooldown 1`, which helps align version selection with the install policy. pnpm still remains the authoritative enforcement point during installation.
 
