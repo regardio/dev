@@ -1,5 +1,12 @@
 # @regardio/dev
 
+## [1.21.0] - 2026-04-08
+
+- docs: fix broken links
+- chore(@regardio/dev): upgrade dependencies
+- chore: deps
+- chore: update workflow packages
+
 ## [1.20.2] - 2026-04-04
 
 - docs: applying Regardio System principles to our documentation
