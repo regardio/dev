@@ -54,16 +54,16 @@ Foundational principles and standards that guide development:
 
 | Document | Description |
 |----------|-------------|
-| [AI Agents](./en/agents.md) | Instructions for AI coding assistants |
-| [API](./en/api.md) | API design and implementation guidelines |
-| [Coding](./en/coding.md) | TypeScript, React, and general patterns |
-| [Commits](./en/commits.md) | Conventional commits and changelog generation |
-| [Documentation](./en/documentation.md) | Documentation structure and conventions |
-| [Naming](./en/naming.md) | Consistent naming across languages |
-| [Principles](./en/principles.md) | Code quality, architecture, maintainability |
-| [React](./en/react.md) | React and TypeScript development patterns |
-| [SQL](./en/sql.md) | PostgreSQL/Supabase schema styling and structure |
-| [Testing](./en/testing.md) | Testing philosophy and patterns |
+| [AI Agents](./agents.md) | Instructions for AI coding assistants |
+| [API](./coding/api.md) | API design and implementation guidelines |
+| [Coding](./coding/coding.md) | TypeScript, React, and general patterns |
+| [Commits](./conventions/commits.md) | Conventional commits and changelog generation |
+| [Documentation](./conventions/documentation.md) | Documentation structure and conventions |
+| [Naming](./conventions/naming.md) | Consistent naming across languages |
+| [Principles](./coding/principles.md) | Code quality, architecture, maintainability |
+| [React](./coding/react.md) | React and TypeScript development patterns |
+| [SQL](./coding/sql.md) | PostgreSQL/Supabase schema styling and structure |
+| [Testing](./conventions/testing.md) | Testing philosophy and patterns |
 
 ### Locale-Specific Documentation
 
@@ -71,8 +71,8 @@ Writing for Regardio content:
 
 | Document | Description |
 |----------|-------------|
-| [Writing in English](./en/writing.md) | Voice, tone, and language for English content |
-| [Schreiben auf Deutsch](./de/konventionen/schreiben.md) | Stimme, Ton und Sprache für deutsche Inhalte |
+| [Writing in English](./conventions/writing.md) | Voice, tone, and language for English content |
+| [Schreiben auf Deutsch](../de/konventionen/schreiben.md) | Stimme, Ton und Sprache für deutschsprachige Inhalte |
 
 ### Toolchain
 
@@ -80,15 +80,15 @@ Configuration and usage for each tool in the stack:
 
 | Document | Description |
 |----------|-------------|
-| [Biome](./en/toolchain/biome.md) | Linting and formatting |
-| [Commitlint](./en/toolchain/commitlint.md) | Commit message validation |
-| [Dependencies](./en/toolchain/dependencies.md) | Safe dependency updates and supply-chain controls |
-| [Husky](./en/toolchain/husky.md) | Git hooks |
-| [Markdownlint](./en/toolchain/markdownlint.md) | Markdown quality |
-| [Playwright](./en/toolchain/playwright.md) | End-to-end testing |
-| [Releases](./en/toolchain/releases.md) | GitLab-flow-based versioning and releases |
-| [TypeScript](./en/toolchain/typescript.md) | Strict TypeScript configuration |
-| [Vitest](./en/toolchain/vitest.md) | Unit and integration testing |
+| [Biome](./tools/biome.md) | Linting and formatting |
+| [Commitlint](./tools/commitlint.md) | Commit message validation |
+| [Dependencies](./tools/dependencies.md) | Safe dependency updates and supply-chain controls |
+| [Husky](./tools/husky.md) | Git hooks |
+| [Markdownlint](./tools/markdownlint.md) | Markdown quality |
+| [Playwright](./tools/playwright.md) | End-to-end testing |
+| [Releases](./tools/releases.md) | GitLab-flow-based versioning and releases |
+| [TypeScript](./tools/typescript.md) | Strict TypeScript configuration |
+| [Vitest](./tools/vitest.md) | Unit and integration testing |
 
 ### Quick Reference
 
@@ -144,4 +144,4 @@ This index gives the documentation set a navigable shape.
 
 Related documents:
 
-- [Documentation Standard](./en/documentation.md) — Template and standard for Regardio documentation following the six-step structure
+- [Documentation Standard](./conventions/documentation.md) — Template and standard for Regardio documentation following the six-step structure
