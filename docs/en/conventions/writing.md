@@ -1,112 +1,112 @@
 ---
 
-title: Writing in English
+title: Writing
 type: guide
 status: published
-summary: Voice, tone, and language guidance for English Regardio content
+summary: Voice, tone, and language guidance for Regardio content
 related: [documentation, development-principles]
 locale: en-US
 ---
 
-# Writing in English
+# Regardio Clarity
 
-*[Deutsch](../de/konventionen/schreiben.md)*
+The voice in which you write about Regardio and its tools.
 
-Voice, tone, and language guidance for English Regardio content.
+## What you are doing
 
-## Impulse
+You write *from within* the System, not *about* it. Your job is to trigger recognition. The reader you are writing for should be able to think *Yes, that's how it is.*
 
-Writing about the Regardio System requires language that helps readers recognize lived patterns without feeling instructed or reduced.
+Two trains of thought carry everything the System does — and everything you write about it.
 
-- Abstract language can make the System feel heavier than it is
-- Explanatory tone can turn observation into prescription
-- Shared writing guidance helps documents sound like they belong together
+**Any one object can be observed from two sides.** Front and back, inside and outside, past and future, still and moving, question and answer, start and finish. A thing that looks complete from one angle shows something new from the other. Writing that only shows one side flattens what it describes. Writing that acknowledges both gives the reader room to stand where they already stand.
 
-## Signal
+**A whole becomes graspable when it is cut into a few distinct parts.** Six is the number to return to: enough variety to cover what matters, few enough to hold in the head at once, clear enough to name and locate each piece. A pie cut into six slices is something anyone can picture. When a subject resists clarity, the move is not more words — it is better cuts.
 
-The way we write is part of the meaning readers receive.
+These two habits are the grammar underneath the System. Carry them quietly. You rarely name them. They are just the shape of the thinking.
 
-- Readers follow a line of thought more easily than a declared method
-- Tone determines whether the System feels inviting or doctrinal
-- English benefits from shorter sentences and early clarity
+## How to meet the reader
 
-## Effect
+Every reader comes with their own life and their own pursuit. Assume they notice things for themselves. Trust them to do their own connecting. Address them directly, without talking up or down.
 
-There are several ways to write about a complex system.
+The ground under the writing is careful observation of how people actually feel, think, and act — not advice about how they should. When an idea becomes personally recognizable while staying broadly true, it has landed. When it only flatters or only instructs, it hasn't.
 
-- Instructional language can feel efficient, but it often speaks from above the subject
-- Highly abstract writing can sound profound, but it quickly loses readers
-- A reflective, concrete voice helps people enter the subject without flattening it
+## Stance
 
-## Accord
+Four movements carry every piece.
 
-We write about the Regardio System as something observed and explored, not as a framework imposed on readers.
+1. **Derive, don't declare.** One thought leads to the next. "The System recognizes…" speaks from above. Better: the observation that leads to the structure. Readers follow a line of thought, not an instruction.
+2. **Observe, don't instruct.** Write like someone who has listened carefully and is sharing an observation, not like someone explaining a method.
+3. **Structure offers freedom, not rules.** The cuts exist to widen a view that has become too narrow, not to discipline one that is already broad.
+4. **Turned toward what could be, without promises.** Warm, attentive, spacious. Curious about people rather than diagnostic. No salvation talk, no coaching register.
 
-- Derive thought instead of asserting doctrine
-- Prefer concrete language over inflated abstraction
-- Keep the voice warm, attentive, and spacious
+## Before and after
 
-## Action
+**Instead of:** *"Apply this framework to align your team."*
+**Try:** *"What does the decision we made last week have to do with what's slowing us down now?"*
 
-Use the guidance below when writing English content about Regardio and the System.
+**Instead of:** *"The System helps you gain clarity."*
+**Try:** *"A few angles worth looking at, whatever the pursuit."*
 
-### Voice and Tone
+**Instead of:** *"Pursuits flourish with a clear core."*
+**Try:** *"How will we know when we've arrived?"*
 
-We write like someone who has listened carefully and is sharing an observation. Not like someone explaining a method.
+The System's questions are not headers. They are real questions, worth sitting with.
 
-In practice:
+## Language
 
-Instead of "The System helps you gain clarity" try: "When the facets of a pursuit are clear, decisions tend to follow more easily."
+Language that leaves room lets readers think. Language that pushes does the thinking for them. Given the choice, choose room.
 
-Instead of "Use Bridges to recognize connections" try: "What does the decision we made last week have to do with what's slowing us down now?"
+**Favor:** notice, explore, find, might, could, pattern, rhythm, carry, hold — words that leave room.
 
-Instead of "Pursuits flourish with a clear core" try: "How will we know when we've arrived?"
+**Avoid:** must, potential, resources, values, purpose, sustainability, growth, leverage, empower, ownership, journey, mindset, authentic. These either push or have been worn down to noise.
 
-The System's questions are not headers. They are real questions worth sitting with.
+**No method jargon.** Not from business, not from coaching, not from therapy, not from spirituality. If a term has a clear everyday word behind it, use the everyday word.
 
-### Derive, Don't Describe
+**People are not categories.** Describe what people do and bring about, not what they are. This is also how gendered forms are handled — name actions, not groups.
 
-The System maps the grammar that pursuits already carry within them - it does not invent rules. Texts should show how one thought leads to the next, not assert what the System does.
+**The System is humane.** Equal, free cooperation is built in. Avoid connotations of hierarchy, ownership, dominance, control, or force. Reflect that without announcing it.
 
-"The System recognizes..." or "The System recommends..." describe from the outside. Better: follow the line of thought that leads to the structure. Readers follow a thought, not an instruction.
+**Complexity earns its place or goes.** Make hard ideas reachable without flattening them. If a sentence has to be read twice, shorten it. If an idea has been reduced past recognition, let it breathe again.
 
-### Language
+## System terms
 
-We favor: notice, explore, might, could, pattern, rhythm - words that leave room.
+System terms carry precisely defined concepts. Use them as they are; don't swap in synonyms for variety. When tempted to reach for a buzzword, reach for a System term instead — if it fits. If no System term fits, the buzzword probably isn't earning its place either.
 
-We avoid: must, critical, revolutionary, unlock potential, values, purpose, sustainability, growth - words that either create pressure or have been used so often they have stopped meaning anything. When we mean something specific, we say it specifically.
+In every language the System is written in, the terms are chosen to capture the spirit of each concept in that language — not to translate literally from another. Don't import words from other languages into the prose. Let each language stand on its own.
 
-The uniqueness of each individual requires us to avoid pigeonholing and unnecessary categorization. We describe what people do and accomplish without reducing them to specific characteristics. This also applies to gendering. Equal, free collaboration is built into the System.
+## Roots, kept in the background
 
-English expects shorter sentences and key information up front. If a sentence needs to be read twice, shorten it.
+The System draws from many traditions of thought. Reference ideas, not names. The sources show themselves in the structure, not in citation. This is working craft carried by collective intelligence, not a scholarly treatise.
 
-### Practical Matters
+## Format and craft
 
-**Formatting:** Headers for navigation. Prose for connected thoughts. Bold for System terms at first introduction. Italics for German counterparts. No emojis.
+**Headers** for orientation. **Prose** for connected thought. **Bold** for System terms at first introduction. *Italics* for genuine emphasis. No emojis. Lists only when the content is genuinely a list — bullets never replace a thought.
 
-**Bilingual references:** System terms are introduced with the German counterpart at first mention: "Fields (*Felder*)," "Perspectives (*Blickwinkel*)," "Degrees (*Grade*)." After that, the English term suffices. Every file references its German equivalent.
+## Language-specific caveats
 
-**The weight of "flourishing":** The German "Gelingen" carries connotations difficult to capture in English - success that is organic rather than forced. "Flourishing" does similar work: it implies conditions that allow something to thrive, not a finish line to cross.
+### German
 
-**American English conventions:** "organize" not "organise," "color" not "colour," "toward" not "towards," periods and commas inside quotation marks.
+- Address the reader with *du* unless the context clearly calls for *Sie* (formal contracts, legal notices). Keep it direct, without affectation.
+- No gendering artifacts: no *:innen*, no asterisks, no *(m/w/d)*. Prefer action-based descriptions over group labels: *wer etwas vorhat*, *ein Mensch, der …*, *die Person, die …*, *Mitwirkende*, *Beteiligte*.
+- Quotation marks: German low-high („…") in body text.
 
-### Before You Publish
+### English
 
-- [ ] Does it sound like a conversation I would actually enjoy having?
-- [ ] Does the text derive rather than describe?
-- [ ] Are abstract thoughts grounded in concrete examples?
-- [ ] Is it free of jargon and overused buzzwords?
-- [ ] Are System terms used consistently?
+- American English: *organize*, *color*, *toward*, *behavior*, *center*. Periods and commas inside quotation marks.
+- No gendered forms. Name actions: *the person pursuing this*, *contributors*, *those involved*. Singular *they* is fine where a pronoun is unavoidable.
+- Quotation marks: straight double quotes (") in Markdown source; typographic quotes ("…") in rendered prose.
 
-## Essence
+## Check before publishing
 
-This guide gives English Regardio writing a shared voice without turning style into a script.
+- Does it sound like a conversation the reader would want to be in?
+- Does the text derive rather than declare?
+- Are abstract thoughts grounded in concrete examples?
+- Are System terms used consistently, in their precise meaning?
+- Is it free of coaching register, pigeonholing, and tired buzzwords?
+- Could the honest response be *"Yes, that's how it is"*?
 
-- Writers can stay consistent without sounding formulaic
-- Readers can meet the System through observation rather than instruction
-- Tone, vocabulary, and structure remain connected to the subject itself
+*This guide is itself a living text. When in doubt: would you enjoy reading this?*
 
 Related documents:
 
 - [Documentation Standard](./documentation.md) — Template and standard for Regardio documentation following the six-step structure
-- [Writing in German](../de/konventionen/schreiben.md) — Stimme, Ton und Sprache für deutsche Inhalte

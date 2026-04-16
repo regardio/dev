@@ -70,7 +70,7 @@ Agents are expected to follow the same standards as human contributors. These ar
 - [Testing Approach](./conventions/testing.md) — Testing philosophy and patterns
 - [Commit Conventions](./conventions/commits.md) — Conventional commits and changelog generation
 - [Documentation Standard](./conventions/documentation.md) — Document structure and conventions
-- [Writing in English](./conventions/writing.md) — Voice, tone, and language
+- [Writing](./conventions/writing.md) — Voice, tone, and language
 
 ### Commands
 

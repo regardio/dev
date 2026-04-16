@@ -64,15 +64,7 @@ Foundational principles and standards that guide development:
 | [React](./coding/react.md) | React and TypeScript development patterns |
 | [SQL](./coding/sql.md) | PostgreSQL/Supabase schema styling and structure |
 | [Testing](./conventions/testing.md) | Testing philosophy and patterns |
-
-### Locale-Specific Documentation
-
-Writing for Regardio content:
-
-| Document | Description |
-|----------|-------------|
-| [Writing in English](./conventions/writing.md) | Voice, tone, and language for English content |
-| [Schreiben auf Deutsch](../de/konventionen/schreiben.md) | Stimme, Ton und Sprache für deutschsprachige Inhalte |
+| [Writing](./conventions/writing.md) | Voice, tone, and language |
 
 ### Toolchain
 
