@@ -1,5 +1,11 @@
 # @regardio/dev
 
+## [1.22.0] - 2026-04-16
+
+- refactor: writing style
+- chore(@regardio/dev): upgrade dependencies
+- chore(@regardio/dev): upgrade dependencies
+
 ## [1.21.0] - 2026-04-08
 
 - docs: fix broken links
