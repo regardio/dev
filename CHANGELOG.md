@@ -1,5 +1,9 @@
 # @regardio/dev
 
+## [1.23.0] - 2026-04-17
+
+- refactor: further simplified and streamlined documentation, sql tooling
+
 ## [1.22.0] - 2026-04-16
 
 - refactor: writing style
