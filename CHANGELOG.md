@@ -1,5 +1,10 @@
 # @regardio/dev
 
+## [1.24.0] - 2026-04-17
+
+- refactor: further rewriting to get closer to authentic Regardio clarity
+- refactor: meta-documentation. that's how we write
+
 ## [1.23.0] - 2026-04-17
 
 - refactor: further simplified and streamlined documentation, sql tooling
