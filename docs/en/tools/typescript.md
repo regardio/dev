@@ -10,45 +10,9 @@ locale: en-US
 
 # TypeScript Configuration
 
-Strict TypeScript configuration for type-safe, maintainable code.
+Strict shared TypeScript presets for Regardio projects. Extend from `@regardio/dev` instead of rebuilding config from scratch. Keep strict settings enabled.
 
-## Impulse
-
-TypeScript projects are easier to maintain when type expectations stay clear across packages and applications.
-
-- Inconsistent compiler settings create surprising differences between projects
-- Loose type checking hides mistakes until runtime
-- Shared presets reduce repeated setup and review friction
-
-## Signal
-
-The most stable projects tend to treat TypeScript configuration as part of the architecture, not as a local convenience.
-
-- Strict checking catches mistakes before code reaches production
-- Separate presets help different project types keep a shared baseline
-- Build-specific configuration keeps development and production concerns distinct
-
-## Effect
-
-We considered a few ways to define TypeScript usage.
-
-- Per-project configuration allows flexibility, but it increases drift
-- A single universal config is simple, but it does not fit every runtime equally well
-- Shared presets with focused extensions balance consistency and practical differences
-
-## Accord
-
-We use strict shared TypeScript presets and keep project-specific configuration minimal and explicit.
-
-- Extend from `@regardio/dev` presets instead of rebuilding config from scratch
-- Separate build output concerns from day-to-day type checking
-- Keep strict settings enabled so types remain trustworthy
-
-## Action
-
-Choose the preset that matches your project and apply the examples below as the starting point.
-
-### Presets
+## Presets
 
 | Preset | Use Case |
 |--------|----------|
@@ -56,9 +20,9 @@ Choose the preset that matches your project and apply the examples below as the 
 | `@regardio/dev/typescript/react.json` | React applications and components |
 | `@regardio/dev/typescript/build.json` | Build-specific settings (extends base) |
 
-### Configuration
+## Configuration
 
-#### tsconfig.json
+### tsconfig.json
 
 ```json
 {
@@ -76,7 +40,7 @@ For React projects:
 }
 ```
 
-#### tsconfig.build.json
+### tsconfig.build.json
 
 Separate build config for production output:
 
@@ -91,7 +55,7 @@ Separate build config for production output:
 }
 ```
 
-### Strict Settings
+## Strict Settings
 
 The base config enables strict TypeScript checking:
 
@@ -101,7 +65,7 @@ The base config enables strict TypeScript checking:
 - `noImplicitReturns: true` - All code paths must return a value
 - `noFallthroughCasesInSwitch: true` - Prevents switch fallthrough bugs
 
-### Scripts
+## Scripts
 
 ```json
 {
@@ -113,14 +77,6 @@ The base config enables strict TypeScript checking:
 ```
 
 Run `typecheck` regularly during development to catch type errors early.
-
-## Essence
-
-This guide gives Regardio projects a shared TypeScript baseline.
-
-- Types behave more predictably across packages and applications
-- Build and development concerns stay easier to reason about
-- Teams can review exceptions as explicit choices rather than inherited drift
 
 Related documents:
 

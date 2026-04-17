@@ -10,47 +10,11 @@ locale: en-US
 
 # React and TypeScript Standards
 
-TypeScript and React development patterns for Regardio projects.
+Patterns for components, hooks, state, and testing. Apply these when designing frontend code.
 
-## Impulse
+## TypeScript Standards
 
-React applications become harder to maintain when component structure, state handling, and type usage vary from one area to another.
-
-- Inconsistent patterns make components harder to read and reuse
-- Weak typing or unclear state boundaries increase regression risk
-- Shared guidance helps teams reason about frontend code in similar ways
-
-## Signal
-
-React and TypeScript work best together when types, behavior, and component boundaries stay explicit.
-
-- Clear prop and state design reduces ambiguity
-- Reusable hooks and focused components keep logic easier to test
-- Performance and accessibility choices are part of everyday frontend design, not later additions
-
-## Effect
-
-There are several ways to document frontend standards.
-
-- Minimal conventions leave room for style, but they often drift
-- Highly prescriptive rules can become brittle when real components vary
-- Shared patterns with examples give teams enough structure while preserving judgment
-
-## Accord
-
-We use explicit React and TypeScript patterns to keep frontend code understandable, testable, and maintainable across Regardio projects.
-
-- Prefer small, focused components
-- Keep types and state design visible in the code
-- Treat accessibility and performance as part of the component contract
-
-## Action
-
-Use the patterns and examples below when designing components, hooks, and stateful UI.
-
-### TypeScript Standards
-
-#### Type Definitions
+### Type Definitions
 
 - Explicit types for function parameters and return values
 - Prefer `interface` for object shapes, `type` for unions
@@ -68,17 +32,17 @@ function processUser(data: UserData): Promise<ProcessedUser> { }
 
 interface Repository<T extends { id: string }> {
   findById(id: string): Promise<T | null>;
-  create(data: Omit<T, 'id'>): Promise<T>;
+  create(data: Pick<T, Exclude<keyof T, 'id'>>): Promise<T>;
 }
 ```
 
-#### Naming Conventions
+### Naming Conventions
 
 - **camelCase**: variables, functions, methods
 - **PascalCase**: types, interfaces, classes, components
 - **UPPER_SNAKE_CASE**: constants
 
-#### Error Handling
+### Error Handling
 
 - Use discriminated unions or Result types
 - Define specific error types for failure modes
@@ -99,9 +63,9 @@ async function fetchUser(id: string): Promise<Result<User>> {
 }
 ```
 
-### React Standards
+## React Standards
 
-#### Component Structure
+### Component Structure
 
 - Use functional components with hooks
 - Single responsibility per component
@@ -127,7 +91,7 @@ export function Card({ title, description, onSelect, isSelected = false }: CardP
 }
 ```
 
-#### Hook Usage
+### Hook Usage
 
 - Extract reusable logic into custom hooks
 - Include all dependencies in useEffect arrays
@@ -180,9 +144,7 @@ function SearchForm({ onSubmit }: { onSubmit: (query: string) => void }) {
 }
 ```
 
-### Component Architecture
-
-#### File Organization
+### File Organization
 
 - `components/ui/` - Reusable UI components
 - `components/features/` - Feature-specific components
@@ -190,22 +152,22 @@ function SearchForm({ onSubmit }: { onSubmit: (query: string) => void }) {
 - `types/` - Type definitions
 - `utils/` - Utility functions
 
-#### Component Categories
+### Component Categories
 
 - **UI Components**: Pure, reusable, no business logic
 - **Feature Components**: Domain logic, backend integration
 - **Page Components**: Route-level, coordinate features
 
-#### Props Design
+### Props Design
 
 - Pass only what is needed
 - Use useCallback for function props
 - Provide sensible defaults
 - Handle undefined gracefully
 
-### State Management
+## State Management
 
-#### Local State
+### Local State
 
 - **useState**: Simple component state
 - **useReducer**: Complex state logic
@@ -229,15 +191,15 @@ function reducer(state: State, action: Action): State {
 }
 ```
 
-#### Global State
+### Global State
 
 - **Context**: Theme, user preferences, authentication
 - **External stores**: Complex application state
 - **Server state**: React Query or SWR
 
-### Performance
+## Performance
 
-#### Optimization Strategies
+### Optimization Strategies
 
 - Code splitting by route and feature
 - Lazy load components and data
@@ -258,7 +220,7 @@ function App() {
 }
 ```
 
-#### Rendering Performance
+### Rendering Performance
 
 - **React.memo**: Memoize expensive components
 - **useMemo**: Memoize calculations
@@ -271,7 +233,7 @@ const ListItem = React.memo(function ListItem({ item, onSelect }: { item: Item; 
 });
 ```
 
-### Testing
+## Testing
 
 Test behavior, not implementation:
 
@@ -288,23 +250,15 @@ describe('SearchForm', () => {
 });
 ```
 
-#### Accessibility Testing
+### Accessibility Testing
 
 - Verify keyboard navigation
 - Ensure screen reader access
 - Check ARIA attributes
 - Test focus management
 
-## Essence
-
-This document gives frontend work a shared React and TypeScript baseline.
-
-- Components become easier to read, reuse, and review
-- State, typing, and rendering choices stay more deliberate
-- Accessibility and performance remain visible as design concerns, not later fixes
-
 Related documents:
 
-- [Coding Standards](./coding/coding.md) — TypeScript, React, and general coding patterns for Regardio projects
-- [Testing Approach](../conventions/testing.md) — Testing philosophy and patterns for Regardio projects
-- [Development Principles](./principles.md) — Universal coding standards and principles for Regardio projects
+- [Coding Standards](./coding.md) — TypeScript and general coding patterns
+- [Testing Approach](./testing.md) — Testing philosophy and patterns
+- [Development Principles](./principles.md) — Universal coding standards and principles

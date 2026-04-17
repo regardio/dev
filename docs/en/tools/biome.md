@@ -10,52 +10,9 @@ locale: en-US
 
 # Biome
 
-Fast, unified linting and formatting for JavaScript and TypeScript.
+Fast, unified linting and formatting for JavaScript and TypeScript. Single tool replacing ESLint + Prettier. Configuration is centralized through `@regardio/dev`; use wrapper commands so all packages behave consistently.
 
-## Impulse
-
-This guide begins with the tension it responds to: code quality checks are easiest to trust when formatting and linting stay consistent across packages.
-
-- Separate tools for formatting and linting increase configuration drift
-- Slow feedback loops make quality checks easier to postpone
-- Shared defaults help teams keep code review focused on behavior rather than style
-
-## Signal
-
-From there, the guide points to the observations that make Biome useful in practice.
-
-- A single tool can cover common formatting and linting needs
-- Fast execution supports regular local checks
-- A shared wrapper keeps behavior stable across the monorepo
-
-## Effect
-
-These observations open a few plausible ways to approach code quality checks.
-
-- Combining many independent tools gives flexibility, but it increases maintenance effort
-- Project-specific setups can fit local preferences, but they fragment the developer experience
-- A shared Biome preset creates a common baseline with less repeated configuration
-
-## Accord
-
-This guide then makes the direction explicit so readers can see what we are choosing and why.
-
-- Keep configuration centralized through `@regardio/dev`
-- Use wrapper commands so packages behave consistently
-- Let package-specific exceptions remain explicit and rare
-
-### Why Biome?
-
-- **Speed** - 10-100x faster than ESLint + Prettier
-- **Unified** - Single tool for linting and formatting
-- **Zero config** - Sensible defaults out of the box
-- **TypeScript-first** - Built with TypeScript in mind
-
-## Action
-
-With that direction in place, the remainder of the document shows how to apply it in day-to-day work.
-
-### Configuration
+## Configuration
 
 Create `biome.jsonc` in your package root:
 
@@ -66,7 +23,7 @@ Create `biome.jsonc` in your package root:
 }
 ```
 
-### Scripts
+## Scripts
 
 ```json
 {
@@ -79,7 +36,7 @@ Create `biome.jsonc` in your package root:
 }
 ```
 
-### CLI Wrapper
+## CLI Wrapper
 
 Use `lint-biome` instead of `biome` directly. This wrapper ensures consistent behavior across the monorepo.
 
@@ -89,7 +46,7 @@ lint-biome check --write .   # Fix auto-fixable issues
 lint-biome format .          # Format only
 ```
 
-### Package.json Handling
+## Package.json Handling
 
 The Biome preset excludes `package.json` files from processing. Instead, use `lint-package` which:
 
@@ -103,7 +60,7 @@ lint-package path/to/pkg  # Sort specific package.json
 
 This is automatically run as part of `pnpm fix`.
 
-### Rule Categories
+## Rule Categories
 
 The preset enables rules across categories:
 
@@ -113,7 +70,7 @@ The preset enables rules across categories:
 - **Performance** - Identify performance issues
 - **Security** - Flag potential security vulnerabilities
 
-### Ignoring Rules
+## Ignoring Rules
 
 When a rule genuinely doesn't apply, use inline comments:
 
@@ -124,12 +81,9 @@ items.forEach(item => process(item));
 
 Always include a reason explaining why the exception is necessary.
 
-## Essence
-
-Install the Biome extension for your editor:
+## Editor Setup
 
 - **VS Code**: [Biome extension](https://marketplace.visualstudio.com/items?itemName=biomejs.biome)
 - **JetBrains**: Built-in support via settings
 
-- [Biome Documentation](https://biomejs.dev/)
-- [Rules Reference](https://biomejs.dev/linter/rules/)
+Resources: [Biome Documentation](https://biomejs.dev/) · [Rules Reference](https://biomejs.dev/linter/rules/)

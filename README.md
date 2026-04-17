@@ -52,16 +52,16 @@ Detailed documentation is organized by topic:
 ### Concepts
 
 - [AI Agents](./docs/en/agents.md) - Instructions for AI coding assistants
-- [API](./docs/en/coding/api.md) - API design and implementation guidelines
-- [Coding](./docs/en/coding/coding.md) - TypeScript, React, and general patterns
-- [Commits](./docs/en/conventions/commits.md) - Conventional commits and changelog generation
-- [Documentation](./docs/en/conventions/documentation.md) - Documentation structure and conventions
-- [Naming](./docs/en/conventions/naming.md) - Consistent naming across languages
-- [Principles](./docs/en/coding/principles.md) - Code quality, architecture, maintainability
-- [React](./docs/en/coding/react.md) - React and TypeScript development patterns
-- [SQL](./docs/en/coding/sql.md) - PostgreSQL/Supabase schema styling and structure
-- [Testing](./docs/en/conventions/testing.md) - Testing philosophy and patterns
-- [Writing](./docs/en/conventions/writing.md) - Voice, tone, and language for content
+- [API](./docs/en/standards/api.md) - API design and implementation guidelines
+- [Coding](./docs/en/standards/coding.md) - TypeScript, React, and general patterns
+- [Commits](./docs/en/standards/commits.md) - Conventional commits and changelog generation
+- [Documentation](./docs/en/standards/documentation.md) - Documentation structure and conventions
+- [Naming](./docs/en/standards/naming.md) - Consistent naming across languages
+- [Principles](./docs/en/standards/principles.md) - Code quality, architecture, maintainability
+- [React](./docs/en/standards/react.md) - React and TypeScript development patterns
+- [SQL](./docs/en/standards/sql.md) - PostgreSQL schema styling, structure, and access control
+- [Testing](./docs/en/standards/testing.md) - Testing philosophy and patterns
+- [Writing](./docs/en/standards/writing.md) - Voice, tone, and language for content
 
 ### Toolchain
 

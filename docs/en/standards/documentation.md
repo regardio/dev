@@ -93,8 +93,8 @@ The [Writing in English](./writing.md) guide covers voice and tone in more depth
 
 - [Writing in English](./writing.md) — Voice, tone, and language
 - [Schreiben in Deutsch](../de/konventionen/schreiben.md) — Voice, tone, and language
-- [Coding Standards](../coding/coding.md) — TypeScript and React patterns
-- [Development Principles](../coding/principles.md) — Universal standards
+- [Coding Standards](./coding.md) — TypeScript and React patterns
+- [Development Principles](./principles.md) — Universal standards
 
 ---
 

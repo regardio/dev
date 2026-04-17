@@ -10,45 +10,9 @@ locale: en-US
 
 # AI Agent Guidelines
 
-Instructions for AI coding assistants working with Regardio projects.
+Baseline expectations for AI coding assistants working in Regardio projects. Follow the linked standards — they apply equally to agent and human contributions.
 
-## Impulse
-
-AI coding assistants are most helpful when they work from shared project expectations instead of improvising repository conventions.
-
-- Agent output can drift quickly without clear standards
-- Small inconsistencies compound when assistants touch many files and technologies
-- Shared guidance helps agents support the project without becoming disruptive
-
-## Signal
-
-Agent work is not separate from normal engineering work. It changes code, docs, tests, and release quality in the same system.
-
-- Type safety, code structure, and error handling matter as much for agent-written code as for human-written code
-- React, SQL, testing, and security patterns need to remain consistent across contributions
-- Documentation and commit quality shape how maintainable agent work stays over time
-
-## Effect
-
-There are several ways to guide AI assistants.
-
-- Very generic prompts are flexible, but they do not anchor repo-specific expectations
-- Highly detailed per-task instructions can work, but they are hard to repeat consistently
-- A shared project guide gives agents a stable baseline while still leaving room for task-specific direction
-
-## Accord
-
-We use a shared set of agent guidelines so AI assistants work within Regardio's coding, testing, and documentation standards.
-
-- Prefer explicit, maintainable TypeScript
-- Keep changes focused on what the task actually requires
-- Treat security, testing, and documentation as part of the same quality bar
-
-## Action
-
-Use the guidance below when an AI assistant writes, edits, reviews, or explains code in Regardio projects. For detailed coding, naming, testing, and tooling standards, follow the linked documents.
-
-### How Agents Should Work
+## How Agents Should Work
 
 - **Scope changes tightly** - Only change what the task requires. Do not refactor adjacent code, add features, or reorganize files unless asked.
 - **Read before writing** - Understand existing patterns in the file and its neighbors before editing. Match the style you find.
@@ -57,40 +21,37 @@ Use the guidance below when an AI assistant writes, edits, reviews, or explains 
 - **Preserve comments and documentation** - Do not add or remove comments unless the task calls for it.
 - **Explain uncertainty** - If something is ambiguous, say so rather than guessing.
 
-### Standards to Follow
+## Implementation Workflow
 
-Agents are expected to follow the same standards as human contributors. These are documented separately:
+When working on any non-trivial task, follow this sequence:
 
-- [Coding Standards](./coding/coding.md) — TypeScript, React, and general coding patterns
-- [React and TypeScript Standards](./coding/react.md) — Component, hook, and state patterns
-- [SQL Schema Standards](./coding/sql.md) — PostgreSQL naming, structure, and access control
-- [Development Principles](./coding/principles.md) — Code quality, architecture, security
-- [API Standards](./coding/api.md) — API design and implementation
-- [Naming Conventions](./conventions/naming.md) — Naming across TypeScript, SQL, CSS, Git
-- [Testing Approach](./conventions/testing.md) — Testing philosophy and patterns
-- [Commit Conventions](./conventions/commits.md) — Conventional commits and changelog generation
-- [Documentation Standard](./conventions/documentation.md) — Document structure and conventions
-- [Writing](./conventions/writing.md) — Voice, tone, and language
+1. **Understand the business logic** — Gather context before writing code. Read relevant domain documents. Know what is actually needed; do not implement what was not asked for.
+2. **Evaluate existing solutions** — Check for well-maintained libraries or utilities before writing custom code. Do not reinvent; do not introduce a dependency without verifying it exists and is actively maintained.
+3. **Define tests first** — Identify what tests describe the expected behavior before implementing. Tests are a contract. Do not modify tests to make them pass.
+4. **Implement with reusability in mind** — Prefer simple, readable code. Duplicate until a clear pattern emerges, then extract. Avoid speculative abstractions.
+5. **Stop if it gets complicated** — Growing complexity despite good preparation is a signal. Surface the difficulty, reconsider the approach, and back out rather than pushing through.
+6. **Document intent, stay lean** — Comments explain *why*, not *what*. Check existing documentation and business logic context before starting work.
 
-### Commands
+## Standards
+
+- [Coding Standards](./standards/coding.md) — TypeScript, React, and general coding patterns
+- [React and TypeScript Standards](./standards/react.md) — Component, hook, and state patterns
+- [SQL Schema Standards](./standards/sql.md) — PostgreSQL naming, structure, and access control
+- [Development Principles](./standards/principles.md) — Code quality, architecture, security
+- [API Standards](./standards/api.md) — API design and implementation
+- [Naming Conventions](./standards/naming.md) — Naming across TypeScript, SQL, CSS, Git
+- [Testing Approach](./standards/testing.md) — Testing philosophy and patterns
+- [Commit Conventions](./standards/commits.md) — Conventional commits and changelog generation
+- [Documentation Standard](./standards/documentation.md) — Document structure and conventions
+- [Writing](./standards/writing.md) — Voice, tone, and language
+
+## Commands
 
 ```bash
-pnpm build         # Build all packages
-pnpm dev           # Start development
-pnpm fix           # Run all fixes and linting
-pnpm lint          # Run linting only
-pnpm test          # Run tests
-pnpm typecheck     # TypeScript type checking
+pnpm fix        # Fix and lint everything
+pnpm lint       # Lint only
+pnpm test       # Run tests
+pnpm typecheck  # Type check
 ```
 
-Run `typecheck` regularly. Run linting when task is complete.
-
-## Essence
-
-This guide gives AI assistants a project-specific baseline for writing and editing code in Regardio.
-
-- Agent output stays closer to the same standards as human work
-- Reviewers can expect a more consistent level of code quality
-- Repository conventions remain visible instead of being rediscovered task by task
-
-All related documents are listed in the [Standards to Follow](#standards-to-follow) section above.
+Run `typecheck` and `lint` before marking a task complete.
