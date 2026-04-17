@@ -1,100 +1,176 @@
 ---
 
-handle: concepts/documentation
-title: Documentation Standard
-summary: How we write, organize, and connect documents in this project
-facet_type: STEP.ESSENCE
-status: PUBLISHED
-locale: en-US
+title: "Documentation Standard"
+description: "How Regardio documents its work — for agents to navigate, for humans to reason with, for tests to build on."
+publishedAt: 2026-04-17
+order: 1
+language: "en"
+status: "published"
 ---
 
-# Documentation Standard
+## Status
 
-Every document here is a **Facet** — a record of something worth knowing. Facets collect into **Plans**, which work the way folders do in file systems, but carry more meaning: a Plan has a name and a purpose, and the **Bridges** within it describe how the Facets it contains relate to each other. A cross-reference is a Bridge. Writing documentation is placing Facets in Plans and drawing Bridges between them.
+Accepted
 
-That is not a metaphor. It is the actual structure Ensemble uses, and this document is an example of it.
+## Context
 
----
+Regardio documentation is read by three audiences at once. Agents use it to answer questions about the system and to write code against a known contract. Humans use it to build a judgement of their own about what the project does and why. Tests use it as the specification the implementation is measured against.
 
-## What a document is
+Those audiences do not all need the same shape on every page. An architectural decision reads best as a short chain of reasoning — context, alternatives, what was chosen and why. A naming reference reads best as a catalogue. A quick introduction to a tool reads best as a few paragraphs and a short example. Forcing every document into one template serves the template rather than the content, and what the reader comes away with is ceremony instead of understanding.
 
-A document is a Facet of type STEP.ESSENCE — something distilled from experience, worth keeping. Its *frontmatter* places it in context the same way a Facet's properties do:
+What the documentation needs is enough predictability for tooling to rely on — a consistent frontmatter, a recognisable title, a place to find related reading — and enough freedom for each document to take the shape its content asks for.
 
-| Field | Notes |
-|---|---|
-| `title` | Noun phrase — what this is, not what it does |
-| `type` | `entity`, `concept`, `architecture`, `decision`, `guide` |
-| `facet_type` | The Regardio step or element this document most resembles |
-| `summary` | One sentence, without hedging |
-| `status` | `draft`, `active`, `deprecated` |
-| `id` | For entity documents: numeric identifier |
-| `alias` | For entity documents: short string used in code |
-| `related` | Filenames without extension — Bridges to other Facets |
-| `locale` | `en-US`, `de-DE` |
+## Decision
 
-Only `title` and `summary` are required. Everything else narrows the picture when it helps.
+Every Regardio document carries a small shared surface. Underneath, it takes whichever of a few shapes fits the content it carries.
 
----
+### Shared surface
 
-## What structure a document has
+Every document has the same top:
 
-The Regardio System offers a number of suggestions on how to structure a document to help think of everything.
+- **Frontmatter** that identifies the document and lets tooling index it
+- **A title** as a heading or implicit from frontmatter
+- **An opening that names what the document is for** — one or two sentences, before any sub-headings, so that a reader landing cold knows where they are
 
-The six **Steps** of the Regardio System — Impulse, Signal, Effect, Accord, Action, Essence — describe how any cooperative endeavor unfolds. They also describe how a piece of thinking unfolds: something prompts a question, the question needs context, context surfaces options, options lead to a direction, the direction requires action, and eventually something settles that is worth keeping.
+Every document has the same bottom:
 
-Not every document needs all six. A short guide might be mostly Action. A decision record might be mostly Accord, with just enough Impulse to explain why the decision was needed. A concept document might need only Signal and Essence. Use the steps as orientation, not as slots to fill.
+- **Cross-references** to documents the reader is likely to want next, either inline in the prose or collected under `## Related` at the end
 
-When a section has nothing to add, leave it out. A document with three sections that say something is better than one with six that perform thoroughness.
+Between the top and the bottom, the document takes the shape its content asks for.
 
-The guiding questions below help locate what belongs where:
+### Shapes the body takes
 
-**Impulse** — What tension or gap makes this document necessary? One or two sentences that name the problem. If you cannot name it, the document is not ready to be written.
+A few shapes recur. Pick the one the content fits; do not pad the content into a shape it resists.
 
-**Signal** — What does the reader need to understand before the rest makes sense? Context that changes how something is read — not everything relevant, only what would otherwise be missing.
+**Decision record.** When the document captures a choice with real trade-offs, the ADR shape carries the reasoning well: *Status → Context → Decision → Alternatives Considered → Operational Rules → Consequences*. Operational Rules are the part tests bind to. The shape is an option for decision-heavy documents, not a requirement for every document.
 
-**Effect** — What are the real options, and what does each one cost? If there was genuinely only one option, say so in a sentence and move on.
+**Reference catalogue.** When the content is a set of rules, names, or mappings that readers look up rather than read end-to-end, a catalogue of short sections with examples is the honest form. Naming conventions, file-layout rules, linter settings, and configuration tables read this way.
 
-**Accord** — What direction have we settled on, and why? This section should stand on its own: a reader who skips everything else should still be able to follow the reasoning.
+**Concept or entity note.** When the document describes a thing in the domain — a Channel, a Piece, a Plan — a short run of paragraphs that names the thing, its role, and its relations is usually enough. Two or three headings if the thing has parts worth naming separately.
 
-**Action** — What does this mean in practice? Procedures, patterns, conventions — specific enough to act on.
+**Quick introduction.** When the document introduces a tool or a workflow, a few paragraphs and a small example are enough. The reader needs to know what the thing is, when to reach for it, and where to go next. No ADR skeleton is required for a tool page.
 
-**Essence** — What remains when the thinking is done? What this produced, what it did not resolve, and where to go next.
+**Warm reasoning.** When the document is working something out — a use case, a walkthrough, an explanation of why a piece of the domain behaves the way it does — prose that follows the thought is the right form. Headings appear where they help the reader keep their place, not because structure is owed.
 
----
+A document can borrow from more than one shape. An architectural document might open with warm reasoning and close with Operational Rules. An entity note might include a short alternatives paragraph when the entity's shape had genuine contenders. The shapes are orientation, not slots.
 
-## How documents connect
+### Frontmatter
 
-A cross-reference is a Bridge. Every Bridge belongs to a Plan — the collection that gives it meaning. When linking to a related document, name the Plan the link belongs to:
+Frontmatter is the part tooling reads. Keep it stable.
+
+| Field | Required | Notes |
+|---|---|---|
+| `title` | yes | Noun phrase naming the document. Decision records may prefix `"ADR: "`. |
+| `description` | yes | One sentence. What this document is for, without hedging. |
+| `publishedAt` | yes | ISO date (`YYYY-MM-DD`) the document was first accepted. |
+| `status` | yes | `"draft"`, `"published"`, `"superseded"`. |
+| `language` | yes | `"en"`, `"de"`. |
+| `order` | no | Integer, when a sibling set has a meaningful reading order. |
+| `kind` | no | `"adr"`, `"entity"`, `"concept"`, `"architecture"`, `"guide"`, `"use-case"`, `"reference"`. Lets agents and renderers pick the right treatment. |
+| `area` | no | `"ensemble"`, `"supabase"`, `"connect"`, `"instrument"`, `"dev"`. Names the implementation the document belongs to. |
+| `supersedes` | no | Filename (without extension) of the document this one replaces. |
+| `supersededBy` | no | Filename of the document that replaced this one. |
+
+### Tense and stance
+
+Documents describe what the system does, in the present tense, observed rather than advertised. "The publication function returns pieces ordered by `sort_order`." Not "The publication function will return…" and not "We should implement…". The tense holds whether the behaviour is currently built or still being specified; the `status` frontmatter carries the difference.
+
+The stance is observational. A Regardio document is not a pitch. It notices how the system fits together and what follows from that. Reliability, safety, transparency, usefulness, and care for the people the software serves show up through how the reasoning is laid out, not by being claimed. A reader who finishes a document should be able to make their own judgement about whether the system is sound — that is what the prose is for.
+
+### What shows up where
+
+- **Code snippets** appear where they clarify a contract, a data shape, or a naming pattern. Reference catalogues quite properly carry several; decision records rarely need any. A snippet never stands in for the reasoning around it.
+- **Names** (files, functions, columns, handles) appear where they are contracts readers rely on. They do not appear as a substitute for describing what something does.
+- **Procedural steps** belong in runbooks and READMEs. A domain spec does not read like a cookbook.
+
+### Cross-references
+
+Links carry a short descriptor of what the link leads to, not just a filename:
 
 ```markdown
-[Facets](../system/facet.md) in the [System Overview](../system/)
-[Bridge](../entities/bridge.md) in the [Entity Reference](../entities/)
+The [Channel](../entities/channel.md) is the publication destination;
+the [Publishing Architecture](../architecture/publishing-architecture.md)
+describes how callers reach it.
 ```
 
-This keeps the reference situated. A Facet can appear in multiple Plans, and the same two Facets can be connected differently in different Plans. The Plan name is the context that makes a Bridge readable.
+`## Related` at the end of a document lists the next pages a reader is likely to want.
 
----
+### Voice
 
-## Voice and formatting
+The [Writing](./writing.md) standard covers voice, tone, and language. This document relies on it rather than repeating it.
 
-Write from inside the subject. The System is something observed, not a method imposed. Derive thought instead of asserting it — show how one idea leads to the next rather than declaring what things are.
+## Alternatives Considered
 
-**Bold** for Regardio System terms at first introduction, capitalize terms when indicated. *Italic* for any other emphasis. Code blocks with language identifiers. Tables for structured comparisons; prose for connected thought. No emojis.
+### A single ADR skeleton for every document
 
-Avoid: *must*, *critical*, *revolutionary*, *leverage*, *optimize*.
+**Dismissed because** it presses reference catalogues and tool introductions into a shape that does not suit them. The skeleton adds ceremony where the content is already clear, and readers learn to skim past sections that carry no weight. The skeleton remains available for documents whose content earns it.
 
-Prefer: *notice*, *explore*, *might*, *tends to*, *pattern*, *rhythm*.
+### No shared shape at all
 
-The [Writing in English](./writing.md) guide covers voice and tone in more depth.
+**Dismissed because** agents and tooling need something predictable to index against, and readers benefit from landing on any document and knowing roughly where to look. A thin shared surface — frontmatter, opening line, closing references — is enough.
 
----
+### Separate templates per document kind
 
-## Bridges
+**Dismissed because** the kinds blur at the edges. An entity note sometimes carries a decision; a use case sometimes carries a catalogue. A small set of recognisable shapes that documents can borrow from works better than a closed list of templates.
 
-- [Writing in English](./writing.md) — Voice, tone, and language
-- [Schreiben in Deutsch](../de/konventionen/schreiben.md) — Voice, tone, and language
-- [Coding Standards](./coding.md) — TypeScript and React patterns
-- [Development Principles](./principles.md) — Universal standards
+## Operational Rules
+
+### Frontmatter is complete
+
+Every document carries `title`, `description`, `publishedAt`, `status`, and `language`. Tooling that indexes or lists documents relies on these five.
+
+### Opening names the subject
+
+Before the first sub-heading, a reader can tell what the document is for. If the opening does not make this clear, the document is not ready.
+
+### Shape follows content
+
+The body takes the shape the content asks for. A decision record uses the ADR skeleton if that skeleton helps the reasoning; a reference uses a catalogue; an introduction stays short. Where a document borrows from more than one shape, it does so in service of the reader, not in service of the template.
+
+### Tense is present, stance is observational
+
+Documents describe the system as it is, in the present tense. Not-yet-built behaviour is flagged through `status` and the `## Status` line, not through hedged tense. The prose observes rather than promotes.
+
+### Reasoning is preserved, not rewritten
+
+When a decision is revisited, the existing document is superseded. The old reasoning stays readable so that future readers can see what was known at the time. An in-place rewrite that changes direction without supersession loses the history.
+
+### Code and names earn their place
+
+A snippet appears because it clarifies a contract the prose cannot carry alone. A specific name appears because callers rely on it. Both are tools for the reader, not decoration.
+
+### Tests can point at a document
+
+A behaviour worth testing has a place in a document that names it. The document does not need a section labelled "Operational Rules" for this — it needs prose clear enough that a test can quote it and both the test author and the reviewer know what is being verified.
+
+### One subject per document
+
+A document names one entity, one concept, one decision, one scenario. When a draft sprawls across several, the move is to split it.
+
+## Consequences
+
+### Positive
+
+- Documents read naturally for their content. ADRs feel like ADRs; reference catalogues feel like reference catalogues; introductions stay short.
+- Agents and humans find a predictable frontmatter and opening, and the body of each document carries its reasoning in the form that fits.
+- The docs stay honest. Observational prose about what the system does leaves room for the reader to form a judgement, rather than prescribing one.
+- Tests bind to the prose that describes behaviour, wherever in the document that prose lives.
+
+### Negative
+
+- "Shape follows content" asks for judgement. Contributors unsure of the right shape need a reference document to look at; the existing documents serve that role.
+- Without a single template, reviewers sometimes have to say "this would read better as a catalogue" or "this would read better as an ADR". That conversation is part of the standard, not a cost around it.
+
+### Mitigations
+
+- New documents are often patterned on a nearby existing one. A contributor writing a new entity note copies the shape of an adjacent entity note; a contributor writing an ADR copies an adjacent ADR.
+- Reviewers point at this document when a draft has picked a shape that resists its content, and help the author find the form the content already has.
+
+## Related
+
+- [Writing](./writing.md) — Voice, tone, language
+- [AI Agent Guidelines](../agents.md) — How agents use these documents
+- [Principles](./principles.md) — Shared development principles
 
 ---
 
