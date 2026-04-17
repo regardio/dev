@@ -1,42 +1,36 @@
 ---
 
-title: API Design Standards
-type: concept
-status: published
-summary: API design and implementation guidelines for Regardio projects
-related: [react-standards, sql-schema-standards, testing, development-principles]
-locale: en-US
+title: "API"
+description: "REST endpoint shape, error handling, security, and performance patterns for Regardio APIs."
+publishedAt: 2026-04-17
+order: 8
+language: "en"
+status: "published"
+kind: "reference"
+area: "dev"
 ---
 
-# API Design Standards
+Regardio APIs are resource-oriented, predictable, and consistent about errors. This page catalogues the shape of endpoints, the response envelope, and the patterns for authentication, validation, caching, and testing. The contract a client sees — URL, verb, status, envelope — stays stable; the implementation behind it is free to change.
 
-Patterns for REST endpoints, error handling, security, and performance. Apply these when designing and reviewing APIs.
+## Design
 
-## Design Principles
+### RESTful URLs
 
-### RESTful Patterns
-
-- Resource-oriented design
-- Use appropriate HTTP verbs (GET, POST, PUT, PATCH, DELETE)
-- Return meaningful HTTP status codes
-- Follow predictable URL patterns
+- One resource per URL
+- Standard HTTP verbs carry the operation
+- Status codes carry the outcome
 
 ```text
-GET    /api/users          # List users
-GET    /api/users/:id      # Get specific user
-POST   /api/users          # Create user
-PATCH  /api/users/:id      # Update user
-DELETE /api/users/:id      # Delete user
+GET    /api/users          List users
+GET    /api/users/:id      Get a specific user
+POST   /api/users          Create a user
+PATCH  /api/users/:id      Update a user
+DELETE /api/users/:id      Delete a user
 ```
 
-### Data Consistency
+### Response envelope
 
-- Maintain single source of truth
-- Implement proper access control
-- Standardized response formats
-- Version APIs for backward compatibility
-
-### Response Format
+Every response wraps its payload in a discriminated union so that a client never has to guess whether it received success or failure:
 
 ```typescript
 interface SuccessResponse<T> {
@@ -53,9 +47,11 @@ interface ErrorResponse {
 type ApiResponse<T> = SuccessResponse<T> | ErrorResponse;
 ```
 
-## Error Handling
+Breaking changes go through versioning; consistency across versions keeps clients portable.
 
-### Error Categories
+## Errors
+
+### Categories
 
 ```typescript
 enum ApiErrorType {
@@ -65,7 +61,7 @@ enum ApiErrorType {
   NOT_FOUND = 'not_found',
   CONFLICT = 'conflict',
   RATE_LIMIT = 'rate_limit',
-  SERVER = 'server'
+  SERVER = 'server',
 }
 
 class ApiError extends Error {
@@ -74,7 +70,7 @@ class ApiError extends Error {
     public type: ApiErrorType,
     public code: string,
     public statusCode: number,
-    public details?: unknown
+    public details?: unknown,
   ) {
     super(message);
     this.name = 'ApiError';
@@ -82,35 +78,35 @@ class ApiError extends Error {
 }
 ```
 
-### HTTP Status Codes
+### Status codes
 
-| Code | Use Case |
-|------|----------|
+| Code | Use |
+|------|-----|
 | 200 | Successful GET, PATCH, DELETE |
 | 201 | Successful POST |
 | 400 | Invalid request |
-| 401 | Missing/invalid authentication |
+| 401 | Missing or invalid authentication |
 | 403 | Insufficient permissions |
 | 404 | Resource not found |
 | 409 | Resource conflict |
-| 422 | Validation errors |
+| 422 | Validation failure |
 | 429 | Rate limit exceeded |
 | 500 | Server error |
 
-### Error Response Format
+### Error payload
 
-```typescript
+```json
 {
-  success: false,
-  error: {
-    code: 'VALIDATION_ERROR',
-    message: 'Invalid input data',
-    details: { fields: { email: 'Invalid email format' } }
+  "success": false,
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "Invalid input data",
+    "details": { "fields": { "email": "Invalid email format" } }
   }
 }
 ```
 
-### Client Error Handling
+### Client handling
 
 ```typescript
 async function fetchUser(id: string): Promise<User> {
@@ -122,7 +118,7 @@ async function fetchUser(id: string): Promise<User> {
       result.error.message,
       mapErrorCode(result.error.code),
       result.error.code,
-      response.status
+      response.status,
     );
   }
 
@@ -130,13 +126,13 @@ async function fetchUser(id: string): Promise<User> {
 }
 ```
 
-## Security Standards
+## Security
 
 ### Authentication
 
-- Use JWT or similar token mechanisms
-- Always use HTTPS in production
-- Implement token expiration and refresh
+- Token-based (JWT or equivalent)
+- HTTPS in every environment that sees real traffic
+- Tokens expire; refresh is explicit
 
 ```typescript
 interface AuthTokens {
@@ -144,31 +140,14 @@ interface AuthTokens {
   refreshToken: string;
   expiresAt: number;
 }
-
-class AuthService {
-  async login(email: string, password: string): Promise<AuthTokens> {
-    const response = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
-    });
-
-    if (!response.ok) {
-      throw new ApiError('Login failed', ApiErrorType.AUTHENTICATION, 'LOGIN_FAILED', response.status);
-    }
-
-    const result: ApiResponse<AuthTokens> = await response.json();
-    return result.data;
-  }
-}
 ```
 
-### Authorization
+### Authorisation
 
-- Grant minimum necessary permissions
-- Implement role-based access control
-- Verify resource ownership
-- Validate and sanitize all inputs
+- Minimum necessary permissions
+- Role-based access for cross-resource actions
+- Ownership verified on every resource-scoped action
+- Server-side validation is the line; the client is untrusted
 
 ```typescript
 async function updateUser(id: string, data: Partial<User>): Promise<User> {
@@ -179,15 +158,13 @@ async function updateUser(id: string, data: Partial<User>): Promise<User> {
   }
 
   const validatedData = validateUserUpdate(data);
-  return await userRepository.update(id, validatedData);
+  return userRepository.update(id, validatedData);
 }
 ```
 
-### Input Validation
+### Input validation
 
-- Never trust client data
-- Validate types, ranges, and formats
-- Sanitize dangerous characters
+Types, ranges, and formats are validated on the server. A schema library carries the shape so the contract stays single-sourced:
 
 ```typescript
 import { z } from 'zod';
@@ -195,7 +172,7 @@ import { z } from 'zod';
 const UserUpdateSchema = z.object({
   email: z.string().email().optional(),
   displayName: z.string().min(2).max(50).optional(),
-  age: z.number().int().min(18).max(120).optional()
+  age: z.number().int().min(18).max(120).optional(),
 });
 
 function validateUserUpdate(data: unknown): Partial<User> {
@@ -203,8 +180,13 @@ function validateUserUpdate(data: unknown): Partial<User> {
     return UserUpdateSchema.parse(data);
   } catch (error) {
     if (error instanceof z.ZodError) {
-      throw new ApiError('Validation failed', ApiErrorType.VALIDATION, 'VALIDATION_ERROR', 422,
-        { fields: error.flatten().fieldErrors });
+      throw new ApiError(
+        'Validation failed',
+        ApiErrorType.VALIDATION,
+        'VALIDATION_ERROR',
+        422,
+        { fields: error.flatten().fieldErrors },
+      );
     }
     throw error;
   }
@@ -213,11 +195,9 @@ function validateUserUpdate(data: unknown): Partial<User> {
 
 ## Performance
 
-### Query Optimization
+### Pagination
 
-- Implement pagination for list endpoints
-- Support filtering and field selection
-- Implement caching strategies
+List endpoints paginate; limits are capped so a client cannot ask for the world:
 
 ```typescript
 interface ListParams {
@@ -228,34 +208,36 @@ interface ListParams {
 }
 
 async function listUsers(params: ListParams): Promise<ApiResponse<User[]>> {
-  const page = params.page || 1;
-  const limit = Math.min(params.limit || 20, 100);
+  const page = params.page ?? 1;
+  const limit = Math.min(params.limit ?? 20, 100);
   const offset = (page - 1) * limit;
 
   const [users, total] = await Promise.all([
     userRepository.findMany({ offset, limit, sortBy: params.sortBy, sortOrder: params.sortOrder }),
-    userRepository.count()
+    userRepository.count(),
   ]);
 
   return {
     success: true,
     data: users,
-    meta: { page, limit, total, totalPages: Math.ceil(total / limit) }
+    meta: { page, limit, total, totalPages: Math.ceil(total / limit) },
   };
 }
 ```
 
-### Caching & Rate Limiting
+### Caching and rate limiting
 
-- Use Cache-Control headers and ETags
-- Cache frequently accessed data
-- Implement rate limiting
+- `Cache-Control` and ETags where the resource tolerates it
+- Rate limits protect against runaway clients and scraped keys
 
 ```typescript
 app.get('/api/users/:id', async (req, res) => {
   const user = await userRepository.findById(req.params.id);
   if (!user) {
-    return res.status(404).json({ success: false, error: { code: 'NOT_FOUND', message: 'User not found' } });
+    return res.status(404).json({
+      success: false,
+      error: { code: 'NOT_FOUND', message: 'User not found' },
+    });
   }
   res.set('Cache-Control', 'private, max-age=300');
   res.json({ success: true, data: user });
@@ -264,40 +246,40 @@ app.get('/api/users/:id', async (req, res) => {
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
-  message: { success: false, error: { code: 'RATE_LIMIT_EXCEEDED', message: 'Too many requests' } }
+  message: { success: false, error: { code: 'RATE_LIMIT_EXCEEDED', message: 'Too many requests' } },
 });
 app.use('/api/', apiLimiter);
 ```
 
 ## Documentation
 
-Document endpoints with:
+Each endpoint carries:
 
-- Purpose and authentication requirements
-- Parameters and response format
-- Possible error codes
-- Request/response examples
+- Purpose and authentication requirement
+- Parameters and response shape
+- Error codes that can arise
+- A request/response example
 
 ```typescript
 /**
- * Update user profile
- * @route PATCH /api/users/:id
- * @auth Required
- * @param {string} id - User ID
- * @returns {User} Updated user
- * @throws {401} UNAUTHORIZED
- * @throws {403} PERMISSION_DENIED
- * @throws {422} VALIDATION_ERROR
+ * Update a user profile.
+ * @route  PATCH /api/users/:id
+ * @auth   Required
+ * @param  id  User ID
+ * @returns    Updated user
+ * @throws 401 UNAUTHORIZED
+ * @throws 403 PERMISSION_DENIED
+ * @throws 422 VALIDATION_ERROR
  */
 ```
 
-Consider using OpenAPI/Swagger for comprehensive API documentation.
+For large APIs, OpenAPI/Swagger carries the same contract in a form tooling can consume.
 
 ## Testing
 
-- **Unit tests**: Individual functions and handlers
-- **Integration tests**: API endpoints with database
-- **Contract tests**: API contract verification
+- **Unit tests** — individual handlers and helpers
+- **Integration tests** — endpoints against a real database
+- **Contract tests** — request/response shape held to the documented contract
 
 ```typescript
 describe('User API', () => {
@@ -314,7 +296,7 @@ describe('User API', () => {
     expect(response.body.data.displayName).toBe('Updated Name');
   });
 
-  it('returns 403 when updating other user', async () => {
+  it('returns 403 when updating another user', async () => {
     const user1 = await createTestUser();
     const user2 = await createTestUser();
     const token = await generateAuthToken(user1);
@@ -330,9 +312,13 @@ describe('User API', () => {
 });
 ```
 
-Related documents:
+## Related
 
-- [React and TypeScript Standards](./react.md) — Component, hook, and state patterns
-- [SQL Standards](./sql.md) — PostgreSQL naming, structure, and access control
-- [Testing Approach](./testing.md) — Testing philosophy and patterns
-- [Development Principles](./principles.md) — Universal coding standards and principles
+- [React](./react.md) — Patterns for the clients that consume the API
+- [SQL](./sql.md) — Naming, structure, and access on the database side
+- [Testing](./testing.md) — Testing philosophy and layers
+- [Principles](./principles.md) — Shared principles
+
+---
+
+**License**: [CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) © Regardio

@@ -1,40 +1,38 @@
 ---
 
-title: Coding Standards
-type: concept
-status: published
-summary: TypeScript, React, and general coding patterns for Regardio projects
-related: [react-standards, development-principles, naming-conventions]
-locale: en-US
+title: "Coding"
+description: "TypeScript and general coding patterns Regardio projects hold to across packages and apps."
+publishedAt: 2026-04-17
+order: 5
+language: "en"
+status: "published"
+kind: "reference"
+area: "dev"
 ---
 
-# Coding Standards
-
-Patterns for TypeScript, React, and general implementation. Apply these when writing and reviewing code.
+Regardio code is TypeScript across the board. What keeps the packages readable to each other is a small set of patterns held consistently: strict types, small modules, small functions, deliberate error handling. This page catalogues those patterns.
 
 ## TypeScript
 
-### Type Safety
+### Type safety
 
-- Enable strict TypeScript type checking
-- Define explicit interfaces for data structures
-- Avoid `any` type except when absolutely necessary
+- Strict TypeScript is on
+- Data shapes are defined as `interface`; unions and aliases use `type`
+- `any` stays rare and gets a comment explaining why
+- Return types are explicit when inference leaves the reader guessing
 
-### Code Structure
+### Modules and exports
 
-- Group related functionality in modules
-- Use explicit exports in package.json (no barrel files)
-- Single responsibility per module
-- Extract common logic into utility functions
+- One responsibility per module
+- No barrel files; `package.json` `exports` names the public surface
+- Internal helpers stay internal, even when they look generally useful
 
-### Function Design
+### Function design
 
-- Write small, focused functions
-- Proper parameter typing and error handling
-- Return explicit types when inference is unclear
+- Small, focused functions
+- Parameters and non-obvious return types are typed explicitly
 
 ```typescript
-// Good
 interface UserProfile {
   id: string;
   displayName: string;
@@ -45,34 +43,29 @@ async function fetchUserProfile(userId: string): Promise<UserProfile> {
   const response = await api.get(`/users/${userId}`);
   return response.data;
 }
-
-// Bad: Implicit any, unclear return
-async function fetchUser(id) {
-  return await api.get(`/users/${id}`);
-}
 ```
 
 ## React
 
 ### Components
 
-- Use functional components with hooks
-- Small, focused components with single responsibility
-- Explicit prop interfaces with TypeScript
+- Functional components with hooks
+- One responsibility per component
+- Explicit props interfaces
 - Composition over inheritance
 
 ### Hooks
 
-- Proper dependency arrays for `useEffect` and `useMemo`
-- Extract reusable logic into custom hooks (`use` prefix)
-- Implement cleanup in `useEffect`
-- **`useEffect` is a code smell** - Avoid if possible
+- Dependencies declared in full for `useEffect`, `useMemo`, `useCallback`
+- Reusable logic extracts into custom hooks (`use` prefix)
+- Subscriptions, timers, and listeners are torn down in cleanup
+- `useEffect` reads as a code smell; most cases have a better form elsewhere
 
 ### State
 
-- Keep state close to usage
-- Prefer single state object over multiple `useState` calls
-- Use `useReducer` for complex state logic
+- Local state stays close to where it is used
+- Related state collapses into one object or a `useReducer`
+- Server state lives in a query layer, not in `useState`
 
 ```typescript
 interface ButtonProps {
@@ -91,23 +84,22 @@ function Button({ variant, isDisabled, onClick, children }: ButtonProps) {
 }
 ```
 
-## General Patterns
+See [React](./react.md) for the longer form.
 
-### Avoid Obvious Comments
+## General
 
-Comments explain *why*, not *what*:
+### Comments carry the *why*
+
+A comment that restates the next line gets deleted. A comment that names the reason behind a non-obvious choice stays.
 
 ```typescript
-// Bad: Obvious
-// Increment counter by 1
-counter += 1;
-
-// Good: Explains why
 // Reset to 1-based index for display
 counter += 1;
 ```
 
-#### Handle Errors Gracefully
+### Errors are designed, not caught and dropped
+
+The paths that fail are known when the function is written. Result types are preferred at API boundaries; thrown errors inside a module where the flow is clearer. No `catch` block silently swallows.
 
 ```typescript
 try {
@@ -119,35 +111,34 @@ try {
 }
 ```
 
-#### Use Implicit Type Inference
+### Inference where it reads, explicit where it doesn't
 
 ```typescript
-// Good: Inferred as string[]
-const names = ['Alice', 'Bob'];
-
-// Unnecessary
-const names: string[] = ['Alice', 'Bob'];
-
-// Good: Explicit when not obvious
-const config: AppConfig = loadConfig();
+const names = ['Alice', 'Bob'];           // inferred as string[]
+const config: AppConfig = loadConfig();    // explicit where the type isn't obvious
 ```
 
-### Exceptions
+### Exceptions leave a reason
 
-When rules do not apply, document why:
+Lint suppressions and type escapes carry a comment:
 
 ```typescript
-// biome-ignore lint/complexity/noForEach: forEach is clearer for side effects
-items.forEach(item => sendNotification(item));
+// biome-ignore lint/complexity/noForEach: forEach is clearer for side effects here
+items.forEach(sendNotification);
 
-// @ts-expect-error: Library types are incorrect for this overload
+// @ts-expect-error: library types are incorrect for this overload
 const result = legacyLib.process(data);
 ```
 
-Always include a reason explaining the exception.
+An unjustified suppression is a regression.
 
-Related documents:
+## Related
 
-- [Development Principles](./principles.md) — Universal coding standards and principles
-- [React and TypeScript Standards](./react.md) — Component, hook, and state patterns
-- [Testing Approach](./testing.md) — Testing philosophy and patterns
+- [Principles](./principles.md) — Shared principles the patterns build on
+- [React](./react.md) — Component, hook, and state patterns
+- [Naming](./naming.md) — Names across languages
+- [Testing](./testing.md) — Testing philosophy
+
+---
+
+**License**: [CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) © Regardio

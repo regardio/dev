@@ -1,21 +1,20 @@
 ---
 
-title: SQL Standards
-type: concept
-status: published
-summary: SQL file organization, formatting, naming, and linting conventions for PostgreSQL projects
-related: [naming-conventions, api-standards]
-locale: en-US
+title: "SQL"
+description: "PostgreSQL file organisation, formatting, naming, functions, and access control for Regardio schemas."
+publishedAt: 2026-04-17
+order: 7
+language: "en"
+status: "published"
+kind: "reference"
+area: "dev"
 ---
 
-# SQL Standards
-
-SQL file organization, formatting, naming, and linting conventions for PostgreSQL projects. All SQL is lowercase; files are numbered for explicit load order; SQLFluff enforces formatting.
+All SQL in Regardio is lowercase, schemas are organised by numbered files, SQLFluff enforces formatting, and RLS is on for every public table. This page catalogues the conventions. The reasoning behind the access pattern lives with the schema it protects — the standards here describe the form.
 
 ## Formatting
 
-All SQL uses **lowercase** — keywords, identifiers, data types, function names, and literals.
-This is enforced by SQLFluff.
+Keywords, identifiers, data types, function names, and casts are lowercase.
 
 ```sql
 create table public.task (
@@ -29,15 +28,15 @@ create table public.task (
 - 2-space indentation
 - Leading binary operators (`and`, `or`)
 - Trailing commas
-- Statements end with a semicolon
-- Maximum line length: 100 characters
 - Single quotes for string literals
-- Shorthand casting (`::type`, not `CAST(… AS type)`)
+- Shorthand casting (`::type`)
 - `!=` for not-equal (`<>` is not used)
+- Line length capped at 100
+- One statement per semicolon
 
 ## Linting
 
-SQLFluff is the SQL linter. Configuration lives in `.sqlfluff` at the project root. A ready-to-use blueprint is available at `@regardio/dev/sqlfluff/setup.cfg` — copy it into your project and adjust as needed (SQLFluff does not support config inheritance).
+SQLFluff is the linter. Configuration lives in `.sqlfluff` at the project root. A blueprint ships with `@regardio/dev/sqlfluff/setup.cfg` — projects copy it and adjust (SQLFluff does not support config inheritance).
 
 Key settings:
 
@@ -53,38 +52,36 @@ capitalisation_policy = lower
 extended_capitalisation_policy = lower
 ```
 
-Run linting with:
-
 ```bash
 sqlfluff lint schemas/
 sqlfluff fix schemas/
 ```
 
-## File Organization
+## File organisation
 
-Schema files live in `schemas/` and are numbered to control load order.
-Each file owns one domain or object group.
+Schema files live in `schemas/` and are numbered to control load order. Each file owns one domain or object group.
 
-### Naming Pattern
+### Naming pattern
 
 ```text
 {nn}_{category}_{name}.sql
 ```
 
-Examples: `00_schema_setup.sql`, `15_function_util.sql`, `30_core_task.sql`
+Examples: `00_schema_setup.sql`, `15_function_util.sql`, `30_core_task.sql`.
 
-### Number Ranges
+### Number ranges
 
-- **`00–09`** — Schema setup, enums
-- **`10–19`** — Functions (auth, jsonb, model, storage, etc.)
-- **`20–29`** — Reference tables (locale, timezone, country, etc.)
-- **`30–39`** — Core tables (user, task, tag, etc.)
-- **`40+`** — Domain tables (project, team, workflow, etc.)
+- `00–09` — schema setup, enums
+- `10–19` — functions (auth, jsonb, model, storage)
+- `20–29` — reference tables (locale, timezone, country)
+- `30–39` — core tables (member, task, tag)
+- `40+` — domain tables
 
-### File Header
+A file with a lower number does not depend on a file with a higher number.
 
-Every file opens with a banner comment documenting
-its number, title, purpose, and the sections it contains:
+### File header
+
+Every file opens with a banner naming its number, title, purpose, and sections:
 
 ```sql
 --------------------------------------------------------------------------------
@@ -98,9 +95,9 @@ its number, title, purpose, and the sections it contains:
 --------------------------------------------------------------------------------
 ```
 
-### Section Dividers
+### Section dividers
 
-Within a file, sections are separated by labeled dividers for consistent section order:
+Within a file, sections separate by labelled dividers in a fixed order:
 
 ```sql
 --[ 1. Table ]------------------------------------------------------------------
@@ -116,25 +113,34 @@ Within a file, sections are separated by labeled dividers for consistent section
 --[ 6. Permissions ]------------------------------------------------------------
 ```
 
-## Naming Conventions
+## Schema structure
 
-All identifiers use `snake_case`.
+- `public` — user-facing tables, views, and API functions (exposed to PostgREST)
+- `private` — server-internal tables and helpers (not exposed to PostgREST)
+- `extensions` — third-party PostgreSQL extensions
+- `auth` — Supabase auth schema; not modified
+
+## Naming
+
+Every identifier is `snake_case`.
 
 ### Tables
 
-Singular form: `user`, `task`, `project` — not `users`, `tasks`.
+Singular: `member`, `task`, `project` — not `members`, `tasks`.
 
 ### Columns
 
-- Primary key: `id uuid`
-- Foreign keys: `{referenced_table}_id`
-- Internationalized content: `{field}_intl jsonb`
-- Timestamps: `created_at`, `updated_at`, `deleted_at`, `{event}_at`
-- Soft delete: `deleted_at timestamptz null`
+- `id uuid` — primary key
+- `{referenced_table}_id` — foreign key
+- `{field}_intl jsonb` — internationalised content
+- `created_at`, `updated_at`, `deleted_at`, `{event}_at` — timestamps
+- `deleted_at timestamptz null` — soft-delete marker
 
-### Column Grouping
+Active-record queries use partial indexes filtered by `deleted_at is null`.
 
-Use inline `--- SECTION` markers to group related columns:
+### Column grouping
+
+Inline `--- SECTION` markers group related columns:
 
 ```sql
 create table public.task (
@@ -157,37 +163,28 @@ create table public.task (
 
 ### Functions
 
-Pattern: `{domain}_{verb}` or `{domain}_{verb}_{target}`
+Pattern: `{domain}_{verb}` or `{domain}_{verb}_{target}`.
 
 - `util_generate_slug`, `util_generate_code`
 - `jsonb_is_boolean`, `jsonb_deep_merge`
 - `task_get_status`, `task_check_ownership`
 - `access_check_permissions`, `user_get_role`
 
-Function parameters use a `_` prefix: `_length`, `_input`, `_user_id`.
+Parameters are prefixed `_` (`_input`, `_task_id`); local variables are prefixed `v_` (`v_result`, `v_count`).
 
-**Standard verbs**: `get`, `list`, `create`, `update`, `delete`, `check`, `is`, `has`, `set`, `generate`
+Standard verbs: `get`, `list`, `create`, `update`, `delete`, `check`, `is`, `has`, `set`, `generate`.
 
-### Constraints, Indexes, Triggers, Policies
+### Objects bound to a table
 
-- **Check constraints**: `chk_{table}_{field}_{purpose}`
-- **Unique constraints**: `uq_{table}_{field}`
-- **Indexes**: `idx_{table}_{field}`, unique indexes `idx_unique_{table}_{field}`
-- **Triggers**: `trg_{table}_{purpose}`
-- **RLS policies**: `pol_{table}_{operation}`
+- Check constraints — `chk_{table}_{field}_{purpose}`
+- Unique constraints — `uq_{table}_{field}`
+- Indexes — `idx_{table}_{field}`; unique as `idx_unique_{table}_{field}`
+- Triggers — `trg_{table}_{purpose}`
+- RLS policies — `pol_{table}_{operation}`
 
-Partial indexes with `where deleted_at is null` are the default for active-record queries.
+## Functions
 
-## Schema Structure
-
-- **`public`** — User-facing tables, views, and API functions (exposed to PostgREST)
-- **`private`** — Server-internal tables and helpers (not exposed to PostgREST)
-- **`extensions`** — Third-party PostgreSQL extensions
-- **`auth`** — Auth provider schema (do not modify)
-
-## Function Standards
-
-Every function declares volatility, security context, language, and a hardened search path:
+Every function declares volatility, security context, language, and a pinned empty search path:
 
 ```sql
 create or replace function public.util_generate_slug(
@@ -207,15 +204,13 @@ as $func$
 $func$;
 ```
 
-- `security invoker` for functions that act on behalf of the caller
-- `security definer` for functions that need elevated privileges
-- `set search_path = ''` always — use fully schema-qualified names throughout
-- Local variables use a `v_` prefix: `v_result`, `v_index`
+- `security invoker` is the default
+- `security definer` is chosen only when the function needs to act beyond the caller's grants
+- `set search_path = ''` always; schema-qualified names are used throughout
 
 ## Documentation
 
-Use `comment on` with dollar-quoted `$doc$` strings.
-Add comments to tables, columns, and functions immediately after their definition:
+Tables, columns, and functions carry `comment on` entries using dollar-quoted `$doc$` strings, placed immediately after the definition. The comment describes what the object is and what callers can assume about it — not how it is implemented.
 
 ```sql
 comment on table public.task is $doc$A unit of work within a project.$doc$;
@@ -232,9 +227,9 @@ Returns text: Lowercase hyphenated slug.
 $doc$;
 ```
 
-## Access Control
+## Access control
 
-Enable RLS on every table in `public`. The standard pattern:
+RLS is on and forced for every table in `public`. Grants revoke everything first, then grant only what is needed. Write paths prefer `security definer` functions over direct table grants.
 
 ```sql
 alter table public.task enable row level security;
@@ -251,10 +246,13 @@ create policy pol_task_update on public.task
   with check (owner_id = (select auth.uid()));
 ```
 
-- Revoke all, then grant only what is needed
-- Write operations go through `security definer` functions, not direct table grants
+## Related
 
-Related documents:
+- [Naming](./naming.md) — Names across languages
+- [API](./api.md) — How the schema is consumed
+- [Principles](./principles.md) — Shared principles
+- [Writing](./writing.md) — Voice, tone, language
 
-- [Naming Conventions](./naming.md) — Consistent naming patterns across the project
-- [API Design Standards](./api.md) — API design and implementation guidelines
+---
+
+**License**: [CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) © Regardio

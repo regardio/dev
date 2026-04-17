@@ -1,29 +1,29 @@
 ---
 
-title: Naming Conventions
-type: concept
-status: published
-summary: Consistent naming patterns across Regardio projects
-related: [coding-standards, sql-schema-standards]
-locale: en-US
+title: "Naming"
+description: "Naming patterns across TypeScript, SQL, CSS, Git, and configuration — each language in its own idiom, aligned across the seams."
+publishedAt: 2026-04-17
+order: 4
+language: "en"
+status: "published"
+kind: "reference"
+area: "dev"
 ---
 
-# Naming Conventions
+A name is the shortest documentation a thing gets. The same concept can appear in TypeScript, a SQL column, a CSS class, and a branch; when the words line up across those surfaces, the concept stays recognisable. The convention is to match each language's native idiom and keep the words in the same order across languages.
 
-Naming patterns for TypeScript, SQL, CSS, Git, and configuration. Prefer descriptive names over abbreviations; match the idiom of each language or domain.
+## General
 
-## General Principles
+- Names carry their purpose — `getUserById` not `getUsrByID`
+- Consistent patterns within each language
+- Abbreviations only when they are genuinely universal (`id`, `url`, `http`)
+- Domain language where domain words exist
 
-- Descriptive names that convey purpose
-- Consistent patterns within each language/domain
-- Avoid abbreviations (`getUserById` not `getUsrById`)
-- Use domain language
+## TypeScript and JavaScript
 
-## TypeScript / JavaScript
+### Variables and functions
 
-### Variables and Functions
-
-**camelCase**:
+`camelCase`:
 
 ```typescript
 const userName = 'alice';
@@ -31,9 +31,9 @@ function calculateTotal(items: Item[]): number { }
 async function fetchUserProfile(userId: string): Promise<User> { }
 ```
 
-### Types and Interfaces
+### Types, interfaces, classes
 
-**PascalCase**:
+`PascalCase`:
 
 ```typescript
 interface UserProfile { id: string; displayName: string; createdAt: Date; }
@@ -43,32 +43,33 @@ class PaymentProcessor { }
 
 ### Constants
 
-**UPPER_SNAKE_CASE**:
+`UPPER_SNAKE_CASE`:
 
 ```typescript
 const MAX_RETRY_ATTEMPTS = 3;
 const API_BASE_URL = 'https://api.example.com';
 ```
 
-### React Components
+### React components
 
-**PascalCase** for components, **camelCase** for props:
+`PascalCase` for components, `camelCase` for props:
 
 ```typescript
 interface ButtonProps { variant: 'primary' | 'secondary'; onClick: () => void; }
 function ActionButton({ variant, onClick }: ButtonProps) { }
 ```
 
-### Files and Directories
+### Files and directories
 
-- **All files**: lowercase kebab-case
-- **Tests**: `*.test.ts`
+- Lowercase `kebab-case`
+- Tests end in `.test.ts`
+- File names match the concept they export
 
-## SQL / Database
+## SQL
 
-### Tables and Columns
+### Tables and columns
 
-`snake_case`, singular table names:
+`snake_case`, tables in the singular:
 
 ```sql
 create table member (
@@ -78,16 +79,26 @@ create table member (
 );
 ```
 
+Column suffixes:
+
+- `id` — primary key
+- `{referenced_table}_id` — foreign key
+- `{field}_intl` — internationalised text (`jsonb`, keys are locale codes)
+- `{event}_at` — timestamps
+- `deleted_at` — soft-delete marker
+
 ### Functions
 
-`{domain}_{verb}` or `{domain}_{verb}_{target}`:
+Pattern: `{domain}_{verb}` or `{domain}_{verb}_{target}`
 
 ```sql
 create function util_generate_slug(_input text) ...
 create function task_get_status(_task_id uuid) ...
 ```
 
-### Parameters and Variables
+Standard verbs: `get`, `list`, `create`, `update`, `delete`, `check`, `is`, `has`, `set`, `generate`.
+
+### Parameters and variables
 
 Prefix `_` for parameters, `v_` for local variables:
 
@@ -99,14 +110,22 @@ as $func$
   declare
     v_total numeric;
   begin
-    -- implementation
+    -- body
   end;
 $func$;
 ```
 
-## CSS / Styling
+### Objects bound to a table
 
-**kebab-case**:
+- Check constraints — `chk_{table}_{field}_{purpose}`
+- Unique constraints — `uq_{table}_{field}`
+- Indexes — `idx_{table}_{field}`; unique as `idx_unique_{table}_{field}`
+- Triggers — `trg_{table}_{purpose}`
+- RLS policies — `pol_{table}_{operation}`
+
+## CSS
+
+`kebab-case`; BEM-style modifiers where useful:
 
 ```css
 .user-profile { }
@@ -120,9 +139,9 @@ $func$;
 
 ## Git
 
-### Branch Names
+### Branches
 
-**kebab-case** with type prefix:
+`kebab-case` with a type prefix:
 
 ```bash
 feature/user-authentication
@@ -130,20 +149,15 @@ fix/login-redirect-loop
 docs/api-documentation
 ```
 
-### Commit Messages
+### Commit subjects
 
-Follow [Conventional Commits](https://www.conventionalcommits.org/):
+Conventional Commits, imperative mood — see [Commits](./commits.md).
 
-```bash
-feat: add user profile page
-fix: resolve login redirect issue
-docs: update API documentation
-```
+## Configuration
 
-## Configuration Files
-
-**JSON/JSONC**: camelCase for keys
-**Environment Variables**: UPPER_SNAKE_CASE
+- JSON / JSONC keys — `camelCase`
+- Environment variables — `UPPER_SNAKE_CASE`
+- Package names — scoped, `kebab-case` (`@regardio/react`, `@regardio/ensemble-supabase`)
 
 ```json
 { "compilerOptions": { "strictNullChecks": true } }
@@ -154,7 +168,13 @@ DATABASE_URL=postgres://localhost:5432/mydb
 NODE_ENV=production
 ```
 
-Related documents:
+## Related
 
-- [Coding Standards](./coding.md) — TypeScript, React, and general coding patterns
-- [SQL Schema Standards](./sql.md) — SQL schema styling and structure guidelines for PostgreSQL and Supabase projects
+- [Coding](./coding.md) — TypeScript and general patterns
+- [SQL](./sql.md) — PostgreSQL naming, structure, and access
+- [Commits](./commits.md) — Branch and commit naming
+- [Writing](./writing.md) — Voice, tone, language
+
+---
+
+**License**: [CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) © Regardio

@@ -1,25 +1,24 @@
 ---
 
-title: React and TypeScript Standards
-type: concept
-status: published
-summary: TypeScript and React development patterns for Regardio projects
-related: [coding-standards, testing, development-principles]
-locale: en-US
+title: "React"
+description: "Component, hook, state, and performance patterns the Regardio React apps hold to."
+publishedAt: 2026-04-17
+order: 6
+language: "en"
+status: "published"
+kind: "reference"
+area: "dev"
 ---
 
-# React and TypeScript Standards
+Regardio's user-facing surfaces — the Instrument app, the channel apps, the Storybook-hosted component packages — are all React. They share a design system through `@regardio/react` and styling through `@regardio/tailwind`. A contributor moving between them finds the same component shapes and the same decisions about where state lives. This page names those shared patterns.
 
-Patterns for components, hooks, state, and testing. Apply these when designing frontend code.
+## TypeScript in React
 
-## TypeScript Standards
+### Types
 
-### Type Definitions
-
-- Explicit types for function parameters and return values
-- Prefer `interface` for object shapes, `type` for unions
-- Strict TypeScript configuration, no implicit any
-- Use generic constraints for type safety
+- Explicit types on function parameters and public return values
+- `interface` for object shapes; `type` for unions
+- Generic constraints when a type carries across boundaries
 
 ```typescript
 interface UserData {
@@ -28,25 +27,21 @@ interface UserData {
   displayName: string;
 }
 
-function processUser(data: UserData): Promise<ProcessedUser> { }
-
 interface Repository<T extends { id: string }> {
   findById(id: string): Promise<T | null>;
   create(data: Pick<T, Exclude<keyof T, 'id'>>): Promise<T>;
 }
 ```
 
-### Naming Conventions
+### Naming
 
-- **camelCase**: variables, functions, methods
-- **PascalCase**: types, interfaces, classes, components
-- **UPPER_SNAKE_CASE**: constants
+- `camelCase` — variables, functions, methods
+- `PascalCase` — types, interfaces, classes, components
+- `UPPER_SNAKE_CASE` — constants
 
-### Error Handling
+### Error handling
 
-- Use discriminated unions or Result types
-- Define specific error types for failure modes
-- Handle errors gracefully
+Result types at API boundaries; specific error types for known failure modes:
 
 ```typescript
 type Result<T, E = Error> =
@@ -63,14 +58,14 @@ async function fetchUser(id: string): Promise<Result<User>> {
 }
 ```
 
-## React Standards
+## Components
 
-### Component Structure
+### Structure
 
-- Use functional components with hooks
-- Single responsibility per component
+- Functional components with hooks
+- One responsibility per component
 - Composition over inheritance
-- Explicit props interfaces
+- Explicit props interface
 
 ```typescript
 interface CardProps {
@@ -91,12 +86,31 @@ export function Card({ title, description, onSelect, isSelected = false }: CardP
 }
 ```
 
-### Hook Usage
+### Categories
 
-- Extract reusable logic into custom hooks
-- Include all dependencies in useEffect arrays
-- Clean up subscriptions and timers
-- Use useMemo/useCallback judiciously
+- **UI components** — pure, reusable, no business logic
+- **Feature components** — domain logic, backend integration
+- **Page components** — route-level; compose features
+
+### File layout
+
+- `components/ui/` — reusable UI components
+- `components/features/` — feature-specific components
+- `hooks/` — custom hooks
+- `types/` — shared types
+- `utils/` — framework-agnostic helpers
+
+### Props
+
+- Pass only what the component uses
+- `useCallback` for function props that cross memoised boundaries
+- Sensible defaults; undefined handled gracefully
+
+## Hooks
+
+- Dependencies declared in full for `useEffect`, `useMemo`, `useCallback`
+- Reusable logic extracts into a custom hook, name prefixed `use`
+- Cleanup releases whatever the hook set up
 
 ```typescript
 function useWebSocket(url: string) {
@@ -115,11 +129,11 @@ function useWebSocket(url: string) {
 }
 ```
 
-### Event Handling
+### Event handling
 
-- Use correct React event types
-- Handle form submissions and prevent default
-- Include keyboard handlers for accessibility
+- Typed with the React event they receive
+- Forms prevent default and read values from controlled inputs
+- Keyboard handlers accompany mouse handlers
 
 ```typescript
 function SearchForm({ onSubmit }: { onSubmit: (query: string) => void }) {
@@ -144,34 +158,13 @@ function SearchForm({ onSubmit }: { onSubmit: (query: string) => void }) {
 }
 ```
 
-### File Organization
+## State
 
-- `components/ui/` - Reusable UI components
-- `components/features/` - Feature-specific components
-- `hooks/` - Custom hooks
-- `types/` - Type definitions
-- `utils/` - Utility functions
+### Local
 
-### Component Categories
-
-- **UI Components**: Pure, reusable, no business logic
-- **Feature Components**: Domain logic, backend integration
-- **Page Components**: Route-level, coordinate features
-
-### Props Design
-
-- Pass only what is needed
-- Use useCallback for function props
-- Provide sensible defaults
-- Handle undefined gracefully
-
-## State Management
-
-### Local State
-
-- **useState**: Simple component state
-- **useReducer**: Complex state logic
-- **Custom hooks**: Reusable state logic
+- `useState` for simple component state
+- `useReducer` when the shape grows beyond two or three related pieces
+- Custom hooks for reusable state logic
 
 ```typescript
 type State = { items: Item[]; filter: string; sortBy: 'name' | 'date'; loading: boolean };
@@ -191,20 +184,17 @@ function reducer(state: State, action: Action): State {
 }
 ```
 
-### Global State
+### Global
 
-- **Context**: Theme, user preferences, authentication
-- **External stores**: Complex application state
-- **Server state**: React Query or SWR
+- Context for theme, session, user preferences
+- A dedicated store for application state that genuinely spans the app
+- React Query (or equivalent) for server state
 
 ## Performance
 
-### Optimization Strategies
-
-- Code splitting by route and feature
-- Lazy load components and data
-- Memoize to prevent re-renders
-- Monitor bundle size
+- Code-split by route and feature; lazy-load what isn't needed yet
+- `React.memo`, `useMemo`, `useCallback` where profiling points at a win — not as defensive decoration
+- Bundle size monitored
 
 ```typescript
 const Dashboard = lazy(() => import('./pages/Dashboard'));
@@ -220,22 +210,9 @@ function App() {
 }
 ```
 
-### Rendering Performance
-
-- **React.memo**: Memoize expensive components
-- **useMemo**: Memoize calculations
-- **useCallback**: Stabilize function references
-
-```typescript
-const ListItem = React.memo(function ListItem({ item, onSelect }: { item: Item; onSelect: (id: string) => void }) {
-  const handleClick = useCallback(() => onSelect(item.id), [item.id, onSelect]);
-  return <div onClick={handleClick}>{item.name}</div>;
-});
-```
-
 ## Testing
 
-Test behavior, not implementation:
+Components are tested through the interface a user reaches — roles, labels, visible text, keyboard. Implementation-detail assertions (internal state, render counts) do not appear.
 
 ```typescript
 describe('SearchForm', () => {
@@ -250,15 +227,20 @@ describe('SearchForm', () => {
 });
 ```
 
-### Accessibility Testing
+### Accessibility
 
-- Verify keyboard navigation
-- Ensure screen reader access
-- Check ARIA attributes
-- Test focus management
+- Keyboard navigation verified
+- Screen-reader access through roles and labels
+- Focus management checked on interactive flows
+- ARIA attributes correct where they carry meaning
 
-Related documents:
+## Related
 
-- [Coding Standards](./coding.md) — TypeScript and general coding patterns
-- [Testing Approach](./testing.md) — Testing philosophy and patterns
-- [Development Principles](./principles.md) — Universal coding standards and principles
+- [Coding](./coding.md) — TypeScript patterns React code builds on
+- [Testing](./testing.md) — Testing philosophy and layers
+- [Principles](./principles.md) — Shared principles across the stack
+- [Naming](./naming.md) — Names across languages
+
+---
+
+**License**: [CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) © Regardio

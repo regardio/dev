@@ -1,20 +1,20 @@
 ---
 
-title: Writing
-type: guide
-status: published
-summary: Voice, tone, and language guidance for Regardio content
-related: [documentation, development-principles]
-locale: en-US
+title: "Writing"
+description: "Voice, tone, and language Regardio content carries, in English and German."
+publishedAt: 2026-04-17
+order: 2
+language: "en"
+status: "published"
+kind: "concept"
+area: "dev"
 ---
 
-# Regardio Clarity
-
-The voice in which you write about Regardio and its tools.
+The voice in which Regardio writes about itself and its tools.
 
 ## What you are doing
 
-You write *from within* the System, not *about* it. Your job is to trigger recognition. The reader you are writing for should be able to think *Yes, that's how it is.*
+You write *from within* the System, not *about* it. Your aim is to trigger recognition. The reader you are writing for should be able to think *Yes, that's how it is.*
 
 Two trains of thought carry everything the System does — and everything you write about it.
 
@@ -32,12 +32,14 @@ The ground under the writing is careful observation of how people actually feel,
 
 ## Stance
 
-Four movements carry every piece.
+Six movements carry every piece.
 
 1. **Derive, don't declare.** One thought leads to the next. "The System recognizes…" speaks from above. Better: the observation that leads to the structure. Readers follow a line of thought, not an instruction.
 2. **Observe, don't instruct.** Write like someone who has listened carefully and is sharing an observation, not like someone explaining a method.
 3. **Structure offers freedom, not rules.** The cuts exist to widen a view that has become too narrow, not to discipline one that is already broad.
-4. **Turned toward what could be, without promises.** Warm, attentive, spacious. Curious about people rather than diagnostic. No salvation talk, no coaching register.
+4. **Suggest possibilities to choose from.** Offer angles, not answers. Let the reader decide what fits. Suggest questions that people have, not riddles to solve.
+5. **Turned toward what could be, without promises.** Warm, attentive, spacious. Curious about people rather than diagnostic. No salvation talk, no coaching register.
+6. **Good humor makes the deepest thought approachable.** Lightness when it fits. Not forced, not absent. When the moment is right, a small wink can carry weight without claiming it.
 
 ## Before and after
 
@@ -58,7 +60,7 @@ Language that leaves room lets readers think. Language that pushes does the thin
 
 **Favor:** notice, explore, find, might, could, pattern, rhythm, carry, hold — words that leave room.
 
-**Avoid:** must, potential, resources, values, purpose, sustainability, growth, leverage, empower, ownership, journey, mindset, authentic. These either push or have been worn down to noise.
+**Avoid:** must, potential, resources, values, purpose, sustainability, growth, leverage, empower, ownership, good, bad. These either push or have been worn down to noise.
 
 **No method jargon.** Not from business, not from coaching, not from therapy, not from spirituality. If a term has a clear everyday word behind it, use the everyday word.
 
@@ -76,7 +78,7 @@ In every language the System is written in, the terms are chosen to capture the 
 
 ## Roots, kept in the background
 
-The System draws from many traditions of thought. Reference ideas, not names. The sources show themselves in the structure, not in citation. This is working craft carried by collective intelligence, not a scholarly treatise.
+The System draws from many traditions of thought. Reference intents and ideas, not names or schools. The sources show themselves in the structure, not in citation. This is working craft carried by collective intelligence, not an elaborate treatise.
 
 ## Format and craft
 
@@ -107,6 +109,11 @@ The System draws from many traditions of thought. Reference ideas, not names. Th
 
 *This guide is itself a living text. When in doubt: would you enjoy reading this?*
 
-Related documents:
+## Related
 
-- [Documentation Standard](./documentation.md) — Template and standard for Regardio documentation following the six-step structure
+- [Documentation Standard](./documentation.md) — How Regardio shapes its documents
+- [Principles](./principles.md) — Shared development principles
+
+---
+
+**License**: [CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) © Regardio

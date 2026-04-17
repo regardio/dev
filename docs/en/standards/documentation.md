@@ -8,10 +8,6 @@ language: "en"
 status: "published"
 ---
 
-## Status
-
-Accepted
-
 ## Context
 
 Regardio documentation is read by three audiences at once. Agents use it to answer questions about the system and to write code against a known contract. Humans use it to build a judgement of their own about what the project does and why. Tests use it as the specification the implementation is measured against.
@@ -129,7 +125,7 @@ The body takes the shape the content asks for. A decision record uses the ADR sk
 
 ### Tense is present, stance is observational
 
-Documents describe the system as it is, in the present tense. Not-yet-built behaviour is flagged through `status` and the `## Status` line, not through hedged tense. The prose observes rather than promotes.
+Documents describe the system as it is, in the present tense. Not-yet-built behaviour is flagged through `status`, not through hedged tense. The prose observes rather than promotes.
 
 ### Reasoning is preserved, not rewritten
 

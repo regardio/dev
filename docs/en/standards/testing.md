@@ -1,36 +1,38 @@
 ---
 
-title: Testing Approach
-type: concept
-status: published
-summary: Testing philosophy and patterns for Regardio projects
-related: [react-standards, development-principles]
-locale: en-US
+title: "Testing"
+description: "How Regardio tests its code — layered, behaviour-first, and written as specification."
+publishedAt: 2026-04-17
+order: 9
+language: "en"
+status: "published"
+kind: "reference"
+area: "dev"
 ---
 
-# Testing Approach
+Tests are the bridge between the prose that describes behaviour and the code that produces it. A test quotes what the docs say the system does and checks that the code holds to it. When the bridge stays honest, refactors are safe because tests describe behaviour rather than shape; when it slips, tests break on every refactor and pass through every regression that preserves the shape they pinned.
 
-Layered testing approach for Regardio projects. Prefer tests that describe behavior, not implementation. Keep fast feedback in unit and integration tests; reserve end-to-end tests for critical flows.
+## Core principles
 
-## Core Principles
+- Test what the caller observes, not how the code achieves it
+- Fast feedback on the lowest layer that can verify a behaviour
+- Deterministic runs; no reliance on time-of-day, order, or shared state
+- Readable as specifications in their own right
+- Cover the success path, the edges, and the errors
 
-- Test business logic, not implementation details
-- Fast feedback loops for rapid development
-- Reliable and deterministic tests
-- Maintainable and readable
-- Comprehensive coverage (success paths, edge cases, errors)
+## Layers
 
-## Testing Pyramid
+| Level | Share | Purpose | Tool |
+|-------|-------|---------|------|
+| **Unit** | ~70% | Functions, components, small pieces of business logic | Vitest |
+| **Integration** | ~20% | Modules together, API contracts, database behaviour | Vitest |
+| **End-to-end** | ~10% | Critical user flows across the stack | Playwright |
 
-| Level | % | Purpose | Tools |
-|-------|---|---------|-------|
-| **Unit** | 70% | Functions, components, business logic | Vitest |
-| **Integration** | 20% | API endpoints, cross-component | Vitest |
-| **End-to-End** | 10% | Complete user workflows | Playwright |
+The distribution follows cost and signal. Unit tests give the fastest feedback and the clearest error; integration tests catch contract mistakes between modules; end-to-end tests protect the flows users actually feel, and are too expensive to carry for everything else.
 
-## Writing Good Tests
+## Writing tests
 
-### Structure: Arrange-Act-Assert
+### Arrange, Act, Assert
 
 ```typescript
 it('calculates total with discount', () => {
@@ -44,95 +46,94 @@ it('calculates total with discount', () => {
 });
 ```
 
-### Naming
-
-Describe expected behavior:
+### Names describe behaviour
 
 ```typescript
 // Good
-it('returns empty array when no items match filter', () => {});
-it('throws ValidationError when email is invalid', () => {});
+it('returns an empty array when no items match the filter', () => {});
+it('throws ValidationError when the email is invalid', () => {});
 
-// Bad
+// Not good
 it('test1', () => {});
+it('sets isError to true', () => {});
 ```
 
 ### Independence
 
-- Set up own state
-- No dependencies on other tests
-- Clean up after itself
-- Runnable in isolation
+- Each test sets up its own state
+- No dependency on the order other tests ran in
+- Cleanup leaves nothing behind
 
-## Frontend Testing
+## Frontend testing
 
-Test behavior, not implementation:
+Components are tested through the interface a user reaches — roles, labels, visible text, keyboard:
 
 ```typescript
-// Good: User-visible behavior
-it('displays error message when form submission fails', async () => {
+it('displays an error when submission fails', async () => {
   render(<ContactForm />);
   await user.click(screen.getByRole('button', { name: /submit/i }));
   expect(screen.getByRole('alert')).toHaveTextContent(/failed/i);
 });
-
-// Bad: Implementation details
-it('sets isError state to true', () => {});
 ```
 
-### Accessibility Testing
+Implementation-detail assertions (`isError` flags, render counts, private method calls) do not appear.
 
-- Keyboard navigation
-- Screen reader access
-- Color contrast
-- Focus management
+### Accessibility
 
-## Database Testing
+- Keyboard navigation verified
+- Screen-reader access through roles and labels
+- Colour contrast checked where it matters
+- Focus management correct on interactive flows
 
-- Validate business rules
-- Test access control boundaries
-- Verify data validation
-- Check error handling
-- Monitor query performance
-- Verify index effectiveness
+## Database testing
 
-## Coverage Requirements
+Schema tests run against a real Postgres so policies and triggers behave as they do in production:
 
-Library packages: 80% minimum for statements, branches, functions, lines
+- Business rules held
+- RLS boundaries enforced
+- Validation errors return the expected shape
+- Queries use the indexes they are meant to
+- Error paths are reached and handled
+
+## Coverage
+
+Library packages hold a floor around 80% for statements, branches, functions, and lines. The floor is a minimum, not a target — the goal is meaningful tests, not arithmetic.
 
 Enforced at:
 
-- Local development (`pnpm test`)
-- Release script (`ship-staging`)
-- CI/CD (GitHub Actions)
+- Local development — `pnpm test`
+- Release preparation — `ship-staging`
+- CI — GitHub Actions
 
-## Quality Gates
+## Quality gates
 
-Before npm publishing:
+Before a package publishes:
 
 1. Build succeeds
 2. Type check passes
-3. Coverage meets thresholds
+3. Coverage meets the floor
+4. Tests pass — no skipped or failing
 
-## Continuous Integration
+## Continuous integration
 
 - Pre-commit hooks run linting (Biome)
-- CI pipeline runs build, typecheck, coverage
-- Release workflow blocks publishing on failures
+- CI runs build, typecheck, and the test suite with coverage
+- Release workflow blocks publishing on any failure
 
-## Test Maintenance
+## Test maintenance
 
-- Delete tests that no longer provide value
-- Update tests when requirements change
-- Refactor tests alongside production code
-- Keep test code clean
+- Tests that no longer describe current behaviour are updated or deleted
+- Tests are refactored alongside the production code they accompany
+- A suite with failing or skipped tests is a broken suite
 
-Related documents:
+## Related
 
-- [Vitest](../tools/vitest.md) — Unit and integration testing for TypeScript projects
-- [Playwright](../tools/playwright.md) — End-to-end testing for web applications
-- [React and TypeScript Standards](./react.md) — TypeScript and React development patterns
+- [Principles](./principles.md) — Shared principles, including specification-led workflow
+- [React](./react.md) — How components are shaped to be testable
+- [API](./api.md) — Testing API endpoints and contracts
+- [Vitest](../tools/vitest.md) — Unit and integration testing
+- [Playwright](../tools/playwright.md) — End-to-end testing
 
-### Resources
+---
 
-- [Testing Library Best Practices](https://testing-library.com/docs/guiding-principles)
+**License**: [CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) © Regardio
